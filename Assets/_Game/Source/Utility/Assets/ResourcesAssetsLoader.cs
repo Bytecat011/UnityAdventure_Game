@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public class ResourcesAssetsLoader
+namespace Game.Utility.Assets
 {
-    public T Load<T>(string resourcePath) where T : Object
-        => Resources.Load<T>(resourcePath);
+    public class ResourcesAssetsLoader
+    {
+        public T Load<T>(string resourcePath) where T : Object
+            => Resources.Load<T>(resourcePath);
+    }
 }
