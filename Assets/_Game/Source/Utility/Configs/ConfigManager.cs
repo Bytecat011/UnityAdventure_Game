@@ -11,7 +11,7 @@ namespace Game.Utility.Configs
 
         private readonly IConfigLoader[] _loaders;
 
-        public ConfigManager(IConfigLoader[] loaders)
+        public ConfigManager(params IConfigLoader[] loaders)
         {
             _loaders = loaders;
         }
