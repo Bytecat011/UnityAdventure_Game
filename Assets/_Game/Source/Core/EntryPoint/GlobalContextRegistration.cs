@@ -1,5 +1,6 @@
 using Game.Configs;
 using Game.Core.DI;
+using Game.Meta.Config;
 using Game.Data;
 using Game.Meta.Features.Resources;
 using Game.Utility.Assets;
@@ -22,7 +23,8 @@ namespace Game.Core.EntryPoint
     {
         private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
         {
-            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" }
+            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
+            {typeof(LevelsListConfig) , "Gameplay/LevelsList"}
         };
 
         public static void Process(DIContainer container)
