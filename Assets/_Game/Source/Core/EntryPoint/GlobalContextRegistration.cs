@@ -1,8 +1,10 @@
 using Game.Core.DI;
+using Game.Meta.Features.Resources;
 using Game.Utility.Assets;
 using Game.Utility.Configs;
 using Game.Utility.CoroutineManagment;
 using Game.Utility.LoadingScreen;
+using Game.Utility.Reactive;
 using Game.Utility.SceneManagment;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,18 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle(CreateSceneSwitcherService);
 
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
+
+            container.RegisterAsSingle(CreateResourceStorage);
+        }
+
+        private static ResourceStorage CreateResourceStorage(DIContainer c)
+        {
+            Dictionary<ResourceType, ReactiveVariable<int>> resources = new();
+
+            foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))
+                resources[resourceType] = new ReactiveVariable<int>();
+
+            return new ResourceStorage(resources);
         }
 
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer c)
