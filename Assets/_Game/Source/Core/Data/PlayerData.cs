@@ -1,9 +1,10 @@
 using Game.Meta.Features.Resources;
+using Game.Utility.DataManagment;
 using System.Collections.Generic;
 
-namespace Game.Utility.DataManagment
+namespace Game.Data
 {
-    public class PlayerData
+    public class PlayerData : ISaveData
     {
         public Dictionary<ResourceType, int> ResourceData;
     }

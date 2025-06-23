@@ -1,13 +1,19 @@
 using Game.Core.DI;
+using Game.Data;
 using Game.Meta.Features.Resources;
 using Game.Utility.Assets;
 using Game.Utility.Configs;
 using Game.Utility.CoroutineManagment;
+using Game.Utility.DataManagment;
+using Game.Utility.DataManagment.KeysStorage;
+using Game.Utility.DataManagment.Serializers;
+using Game.Utility.DataManagment.Storage;
 using Game.Utility.LoadingScreen;
 using Game.Utility.Reactive;
 using Game.Utility.SceneManagment;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Game.Core.EntryPoint
 {
@@ -32,6 +38,22 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
 
             container.RegisterAsSingle(CreateResourceStorage);
+
+            container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
+        }
+
+        private static SaveLoadService CreateSaveLoadService(DIContainer c)
+        {
+            IDataSerializer dataSerializer = new JsonSerializer(Newtonsoft.Json.Formatting.Indented);
+            IDataKeyStarage dataKeyStarage = new MapDataKeyStorage(new Dictionary<Type, string> {
+                { typeof(PlayerData), "PlayerData" }
+            });
+
+            string saveFolderPath = Application.isEditor ? Application.dataPath : Application.persistentDataPath;
+
+            IDataStorage dataStorage = new LocalFileDataStorage(saveFolderPath, "json");
+
+            return new SaveLoadService(dataSerializer, dataKeyStarage, dataStorage);
         }
 
         private static ResourceStorage CreateResourceStorage(DIContainer c)
