@@ -1,3 +1,4 @@
+using Game.Configs;
 using Game.Core.DI;
 using Game.Data;
 using Game.Meta.Features.Resources;
@@ -21,6 +22,7 @@ namespace Game.Core.EntryPoint
     {
         private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
         {
+            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" }
         };
 
         public static void Process(DIContainer container)
@@ -40,7 +42,12 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle(CreateResourceStorage);
 
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
+
+            container.RegisterAsSingle(CreatePlayerDataProvider);
         }
+
+        private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
+            => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigManager>());
 
         private static SaveLoadService CreateSaveLoadService(DIContainer c)
         {

@@ -1,4 +1,5 @@
 using Game.Core.DI;
+using Game.Data;
 using Game.Utility.Configs;
 using Game.Utility.CoroutineManagment;
 using Game.Utility.LoadingScreen;
@@ -31,10 +32,23 @@ namespace Game.Core.EntryPoint
         {
             ILoadingScreen loadingScreen = container.Resolve<ILoadingScreen>();
             SceneSwitcherService sceneSwitcherService = container.Resolve<SceneSwitcherService>();
+            PlayerDataProvider playerDataProvider = container.Resolve<PlayerDataProvider>();
 
             loadingScreen.Show();
 
             yield return container.Resolve<ConfigManager>().LoadAsync();
+
+            bool isPlayerDataSaveExists = false;
+
+            yield return playerDataProvider.Exists(result => isPlayerDataSaveExists = result);
+
+            if (isPlayerDataSaveExists)
+            {
+                yield return playerDataProvider.Load();
+            } else
+            {
+                playerDataProvider.Reset();
+            }
 
             loadingScreen.Hide();
 
