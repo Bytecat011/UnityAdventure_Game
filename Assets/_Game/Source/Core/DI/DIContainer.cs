@@ -15,13 +15,15 @@ namespace Game.Core.DI
 
         public DIContainer(DIContainer parent) => _parent = parent;
 
-        public void RegisterAsSingle<T>(Func<DIContainer, T> creator)
+        public IRegistrationOptions RegisterAsSingle<T>(Func<DIContainer, T> creator)
         {
             if (IsAlreadyRegister<T>())
                 throw new InvalidOperationException($"{typeof(T)} already register");
 
             var registration = new Registracion(container => creator.Invoke(container));
             _container.Add(typeof(T), registration);
+
+            return registration;
         }
 
         public bool IsAlreadyRegister<T>()
@@ -56,6 +58,15 @@ namespace Game.Core.DI
             }
 
             throw new InvalidOperationException($"Registration for {typeof(T)} not exists");
+        }
+
+        public void Inizialize()
+        {
+            foreach (var regitration in _container.Values)
+            {
+                if (regitration.IsNonLazy) 
+                    regitration.CreateInstanceFrom(this);
+            }
         }
     }
 }

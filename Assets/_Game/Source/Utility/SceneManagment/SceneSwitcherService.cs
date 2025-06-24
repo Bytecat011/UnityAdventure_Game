@@ -37,6 +37,8 @@ namespace Game.Utility.SceneManagment
 
             sceneBootstrap.ProcessRegistrations(sceneContainer, sceneArgs);
 
+            sceneContainer.Inizialize();
+
             yield return sceneBootstrap.Initialize();
 
             _loadingScreen.Hide();

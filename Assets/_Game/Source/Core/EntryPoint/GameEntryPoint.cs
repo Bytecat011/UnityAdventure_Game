@@ -19,6 +19,8 @@ namespace Game.Core.EntryPoint
 
             GlobalContextRegistration.Process(gloabalContainer);
 
+            gloabalContainer.Inizialize();
+
             gloabalContainer.Resolve<ICoroutineRunner>().StartTask(Initialize(gloabalContainer));
         }
 

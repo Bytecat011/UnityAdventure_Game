@@ -39,7 +39,7 @@ namespace Game.Core.EntryPoint
 
             container.RegisterAsSingle<ILoadingScreen>(CreateLoadingScreen);
 
-            container.RegisterAsSingle(CreateResourceStorage);
+            container.RegisterAsSingle(CreateResourceStorage).NonLazy();
 
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
 
@@ -70,7 +70,7 @@ namespace Game.Core.EntryPoint
             foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))
                 resources[resourceType] = new ReactiveVariable<int>();
 
-            return new ResourceStorage(resources);
+            return new ResourceStorage(resources, c.Resolve<PlayerDataProvider>());
         }
 
         private static SceneSwitcherService CreateSceneSwitcherService(DIContainer c)

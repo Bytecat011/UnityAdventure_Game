@@ -2,10 +2,12 @@ using System;
 
 namespace Game.Core.DI
 {
-    public class Registracion
+    public class Registracion : IRegistrationOptions
     {
         private Func<DIContainer, object> _creator;
         private object _cachedInstance;
+
+        public bool IsNonLazy { get; private set; }
 
         public Registracion(Func<DIContainer, object> creator)
         {
@@ -24,5 +26,7 @@ namespace Game.Core.DI
 
             return _cachedInstance;
         }
+
+        public void NonLazy() => IsNonLazy = true;
     }
 }
