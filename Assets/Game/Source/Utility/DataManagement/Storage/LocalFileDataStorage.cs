@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 
-namespace Game.Utility.DataManagment.Storage
+namespace Game.Utility.DataManagement.Storage
 {
     public class LocalFileDataStorage : IDataStorage
     {

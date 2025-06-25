@@ -1,4 +1,4 @@
-using Game.Utility.SceneManagment;
+using Game.Utility.SceneManagement;
 
 namespace Game.Gameplay.Core
 {

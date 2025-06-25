@@ -1,5 +1,5 @@
 using Game.Meta.Features.Resources;
-using Game.Utility.DataManagment;
+using Game.Utility.DataManagement;
 using System.Collections.Generic;
 
 namespace Game.Data

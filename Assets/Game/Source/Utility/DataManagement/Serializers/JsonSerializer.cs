@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Game.Utility.DataManagment.Serializers
+namespace Game.Utility.DataManagement.Serializers
 {
     public class JsonSerializer : IDataSerializer
     {

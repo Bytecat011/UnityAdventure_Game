@@ -1,5 +1,5 @@
 using Game.Core.DI;
-using Game.Utility.SceneManagment;
+using Game.Utility.SceneManagement;
 using System.Collections;
 using UnityEngine;
 

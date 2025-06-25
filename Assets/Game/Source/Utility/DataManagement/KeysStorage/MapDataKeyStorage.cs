@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Game.Utility.DataManagment.KeysStorage
+namespace Game.Utility.DataManagement.KeysStorage
 {
     public class MapDataKeyStorage : IDataKeyStarage
     {

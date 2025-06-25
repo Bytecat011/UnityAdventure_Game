@@ -1,4 +1,4 @@
-namespace Game.Utility.DataManagment
+namespace Game.Utility.DataManagement
 {
     public interface ISaveData { }
 }

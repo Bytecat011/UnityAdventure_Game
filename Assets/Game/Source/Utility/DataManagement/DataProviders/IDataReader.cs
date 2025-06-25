@@ -1,4 +1,4 @@
-namespace Game.Utility.DataManagment.DataProviders
+namespace Game.Utility.DataManagement.DataProviders
 {
     public interface IDataReader<TData> where TData : ISaveData
     {

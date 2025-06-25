@@ -1,4 +1,4 @@
-namespace Game.Utility.DataManagment.Serializers
+namespace Game.Utility.DataManagement.Serializers
 {
     public interface IDataSerializer
     {

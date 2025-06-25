@@ -1,8 +1,8 @@
 using Game.Configs;
 using Game.Meta.Features.Resources;
 using Game.Utility.Configs;
-using Game.Utility.DataManagment;
-using Game.Utility.DataManagment.DataProviders;
+using Game.Utility.DataManagement;
+using Game.Utility.DataManagement.DataProviders;
 using Game.Utility.Reactive;
 using System;
 using System.Collections.Generic;

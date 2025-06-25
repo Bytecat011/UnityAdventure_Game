@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Game.Utility.DataManagment.Storage
+namespace Game.Utility.DataManagement.Storage
 {
     public class PlayerPrefsDataStorage : IDataStorage
     {

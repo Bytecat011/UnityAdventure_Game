@@ -3,7 +3,7 @@ using Game.Core.DI;
 using Game.Utility.LoadingScreen;
 using System.Collections;
 
-namespace Game.Utility.SceneManagment
+namespace Game.Utility.SceneManagement
 {
     public class SceneSwitcherService
     {

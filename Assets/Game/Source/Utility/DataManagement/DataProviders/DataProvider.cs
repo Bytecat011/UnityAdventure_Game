@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Game.Utility.DataManagment.DataProviders
+namespace Game.Utility.DataManagement.DataProviders
 {
     public abstract class DataProvider<TData> where TData : ISaveData
     {

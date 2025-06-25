@@ -1,4 +1,4 @@
-namespace Game.Utility.SceneManagment
+namespace Game.Utility.SceneManagement
 {
 	public class Scenes
 	{

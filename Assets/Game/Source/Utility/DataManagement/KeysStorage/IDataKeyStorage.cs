@@ -1,4 +1,4 @@
-namespace Game.Utility.DataManagment.KeysStorage
+namespace Game.Utility.DataManagement.KeysStorage
 {
     public interface IDataKeyStarage
     {

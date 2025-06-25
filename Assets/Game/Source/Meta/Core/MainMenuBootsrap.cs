@@ -1,6 +1,6 @@
 using Game.Core;
 using Game.Core.DI;
-using Game.Utility.SceneManagment;
+using Game.Utility.SceneManagement;
 using System.Collections;
 
 namespace Game.Meta.Core

@@ -1,9 +1,9 @@
 using Game.Core.DI;
 using Game.Data;
 using Game.Utility.Configs;
-using Game.Utility.CoroutineManagment;
+using Game.Utility.CoroutineManagement;
 using Game.Utility.LoadingScreen;
-using Game.Utility.SceneManagment;
+using Game.Utility.SceneManagement;
 using System.Collections;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Game.Utility.DataManagment.Storage
+namespace Game.Utility.DataManagement.Storage
 {
     public interface IDataStorage
     {

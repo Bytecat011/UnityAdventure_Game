@@ -1,7 +1,7 @@
 using Game.Utility.Reactive;
 using System.Collections.Generic;
 using System;
-using Game.Utility.DataManagment.DataProviders;
+using Game.Utility.DataManagement.DataProviders;
 using Game.Data;
 
 namespace Game.Meta.Features.Resources

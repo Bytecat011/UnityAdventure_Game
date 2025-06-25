@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Game.Utility.DataManagment
+namespace Game.Utility.DataManagement
 {
     public interface ISaveLoadService 
     {
