@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Game.Meta.Core
 {
-    public class MainMenuBootsrap : SceneBootstrap
+    public class MainMenuBootstrap : SceneBootstrap
     {
         private DIContainer _container;
 
