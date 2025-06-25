@@ -23,6 +23,7 @@ namespace Game.Data
             return new PlayerData
             {
                 ResourceData = InitResourceData(),
+                LevelsStatistics = new LevelsStatistics()
             };
         }
 
@@ -30,10 +31,9 @@ namespace Game.Data
         {
             Dictionary<ResourceType, int> resourceData = new();
 
-            StartResourcesDataConfig resourcesConfig = _configManager.GetConfig<StartResourcesDataConfig>();
+            EconomyConfig economyConfig = _configManager.GetConfig<EconomyConfig>();
 
-            foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))
-                resourceData[resourceType] =resourcesConfig.GetValueFor(resourceType);
+            resourceData[ResourceType.Gold] = economyConfig.StartGoldAmount;
 
             return resourceData;
         }

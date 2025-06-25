@@ -3,8 +3,13 @@ using Game.Core.DI;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections;
+using Game.Configs;
+using Game.Data;
 using Game.Gameplay.Config;
 using Game.Gameplay.TypingGameplay;
+using Game.Meta.Features.LevelStatistics;
+using Game.Meta.Features.Resources;
+using Game.Utility.Configs;
 using Game.Utility.CoroutineManagement;
 
 namespace Game.Gameplay.Core
@@ -43,12 +48,31 @@ namespace Game.Gameplay.Core
 
         private void HandleGameplayResult(bool won)
         {
+            var coroutineRunner = _container.Resolve<ICoroutineRunner>();
+            
+            var levelStatisticsService = _container.Resolve<LevelStatisticsService>();
+            levelStatisticsService.HandleLevelResult(won);
+            
+            HandleGoldForLevelResult(won);
+
+            coroutineRunner.StartTask(_container.Resolve<PlayerDataProvider>().Save());
+            
             string nextScene = won == true ? Scenes.MainMenu : Scenes.Gameplay;
 
             SceneSwitcherService sceneSwitcher = _container.Resolve<SceneSwitcherService>();
-            _container.Resolve<ICoroutineRunner>().StartTask(sceneSwitcher.SwitchTo(nextScene, _inputArgs));
+            coroutineRunner.StartTask(sceneSwitcher.SwitchTo(nextScene, _inputArgs));
         }
-        
+
+        private void HandleGoldForLevelResult(bool won)
+        {
+            var economyConfig = _container.Resolve<ConfigManager>().GetConfig<EconomyConfig>();
+            var resourceStorage = _container.Resolve<ResourceStorage>();
+            if (won)
+                resourceStorage.Add(ResourceType.Gold, economyConfig.GainGoldAmountForWin);
+            else if (resourceStorage.IsEnough(ResourceType.Gold, economyConfig.LoseGoldAmountForLose))
+                resourceStorage.Spend(ResourceType.Gold, economyConfig.LoseGoldAmountForLose);
+        }
+
         public override void Run()
         {
             _typingGameplayController.Start();

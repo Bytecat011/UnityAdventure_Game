@@ -1,3 +1,4 @@
+using System;
 using Game.Core;
 using Game.Core.DI;
 using Game.Utility.SceneManagement;
@@ -6,7 +7,7 @@ using Game.Meta.MainMenu;
 
 namespace Game.Meta.Core
 {
-    public class MainMenuBootsrap : SceneBootstrap
+    public class MainMenuBootstrap : SceneBootstrap
     {
         private DIContainer _container;
         private LevelSelector _levelSelector;
@@ -28,6 +29,16 @@ namespace Game.Meta.Core
         public override void Run()
         {
             _levelSelector.Start();
+            _container.Resolve<PlayerGoldDisplayService>().Start();
+            _container.Resolve<LevelsStatisticsResetter>().Start();
+            _container.Resolve<LevelsStatisticsDisplayService>().Start();
+        }
+
+        private void OnDestroy()
+        {
+            _container.Resolve<PlayerGoldDisplayService>().Dispose();
+            _container.Resolve<LevelsStatisticsResetter>().Dispose();
+            _container.Resolve<LevelsStatisticsDisplayService>().Dispose();
         }
     }
 }

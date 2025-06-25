@@ -15,6 +15,7 @@ using Game.Utility.SceneManagement;
 using System;
 using System.Collections.Generic;
 using Game.Gameplay.Config;
+using Game.Meta.Features.LevelStatistics;
 using UnityEngine;
 
 namespace Game.Core.EntryPoint
@@ -24,6 +25,7 @@ namespace Game.Core.EntryPoint
         private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
         {
             { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
+            { typeof(EconomyConfig), "Configs/Meta/Resources/EconomyConfig" },
             { typeof(LevelsConfig), "Configs/Gameplay/Typing/LevelsConfig" },
         };
 
@@ -46,8 +48,13 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
 
             container.RegisterAsSingle(CreatePlayerDataProvider);
+            
+            container.RegisterAsSingle(CreateLevelStatisticsService);
         }
 
+        private static LevelStatisticsService CreateLevelStatisticsService(DIContainer c)
+            => new LevelStatisticsService(c.Resolve<PlayerDataProvider>());
+        
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
             => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigManager>());
 
