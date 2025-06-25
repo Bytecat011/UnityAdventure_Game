@@ -14,6 +14,7 @@ using Game.Utility.Reactive;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections.Generic;
+using Game.Gameplay.Config;
 using UnityEngine;
 
 namespace Game.Core.EntryPoint
@@ -22,7 +23,8 @@ namespace Game.Core.EntryPoint
     {
         private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
         {
-            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" }
+            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
+            { typeof(LevelsConfig), "Configs/Gameplay/Typing/LevelsConfig" },
         };
 
         public static void Process(DIContainer container)

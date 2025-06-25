@@ -1,14 +1,15 @@
+using Game.Gameplay.TypingGameplay;
 using Game.Utility.SceneManagement;
 
 namespace Game.Gameplay.Core
 {
     public class GameplayInputArgs : IInputSceneArgs
     {
-        public GameplayInputArgs(int levelNumber)
+        public GameplayInputArgs(GameplayModeType gameplayMode)
         {
-            LevelNumber = levelNumber;
+            GameplayMode = gameplayMode;
         }
 
-        public int LevelNumber { get; }
+        public GameplayModeType GameplayMode { get; }
     }
 }
