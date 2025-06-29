@@ -319,7 +319,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainGroup: {fileID: 4369653455983648015}
   _anticlicker: {fileID: 4995413906352473541}
-  _body: {fileID: 3841651559258658979}
+  _body: {fileID: 1156910981004733236}
+  _animationType: 0
   _text: {fileID: 3953520966895987210}
 --- !u!225 &4369653455983648015
 CanvasGroup:

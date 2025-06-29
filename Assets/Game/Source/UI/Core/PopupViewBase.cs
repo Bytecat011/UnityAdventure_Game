@@ -11,13 +11,18 @@ namespace Game.UI.Core
         
         [SerializeField] private CanvasGroup _mainGroup;
         [SerializeField] private Image _anticlicker;
-        [SerializeField] private Transform _body;
+        [SerializeField] private CanvasGroup _body;
 
+        [SerializeField] private PopupAnimationTypes _animationType;
+
+        private float _anticlickerDefaultAlpha;
+        
         private Tween _currentAnimation;
         
         private void Awake()
         {
             _mainGroup.alpha = 0;
+            _anticlickerDefaultAlpha = _anticlicker.color.a;
         }
         
         public void OnCloseButtonClick() => CloseRequest?.Invoke();
@@ -30,16 +35,8 @@ namespace Game.UI.Core
 
             _mainGroup.alpha = 1;
 
-            Sequence animation = DOTween.Sequence();
-            
-            animation
-                .Append(_anticlicker
-                    .DOFade(0.75f, 0.2f)
-                    .From(0))
-                .Join(_body
-                    .DOScale(1, 0.5f)
-                    .From(0)
-                    .SetEase(Ease.OutBack));
+            Sequence animation = PopupAnimationsCreator
+                .CreateShowAnimation(_body, _anticlicker, _animationType, _anticlickerDefaultAlpha);
             
             ModifyShowAnimation(animation);
 
@@ -56,7 +53,8 @@ namespace Game.UI.Core
             
             OnPreHide();
             
-            Sequence animation = DOTween.Sequence();
+            Sequence animation = PopupAnimationsCreator
+                .CreateHideAnimation(_body, _anticlicker, _animationType, _anticlickerDefaultAlpha);
             
             ModifyHideAnimation(animation);
             
