@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
+using Game.UI.LevelsMenuPopup;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 namespace Game.UI.Core
 {
     public abstract class PopupService : IDisposable
     {
-        protected readonly ViewsFactory _viewsFactory;
+        protected readonly ViewsFactory ViewsFactory;
         
         private readonly ProjectPresentersFactory _presentersFactory;
 
@@ -16,15 +18,26 @@ namespace Game.UI.Core
             ViewsFactory viewsFactory,
             ProjectPresentersFactory presentersFactory)
         {
-            _viewsFactory = viewsFactory;
+            ViewsFactory = viewsFactory;
             _presentersFactory = presentersFactory;
         }
         
         protected abstract Transform PopupLayer { get; }
 
+        public LevelsMenuPopupPresenter OpenLevelsMenuPopup()
+        {
+            LevelsMenuPopupView view = ViewsFactory.Create<LevelsMenuPopupView>(ViewIDs.LevelsMenuPopup, PopupLayer);
+
+            LevelsMenuPopupPresenter popup = _presentersFactory.CreateLevelMenuPopupPresenter(view);
+            
+            OnPopupCreated(popup, view);
+
+            return popup;
+        }
+        
         public TestPopupPresenter OpenTestPopup(Action closeCallback = null)
         {
-            TestPopupView view = _viewsFactory.Create<TestPopupView>(ViewIDs.TestPopup, PopupLayer);
+            TestPopupView view = ViewsFactory.Create<TestPopupView>(ViewIDs.TestPopup, PopupLayer);
 
             TestPopupPresenter popup = _presentersFactory.CreateTestPopupPresenter(view);
             
@@ -74,7 +87,7 @@ namespace Game.UI.Core
         private void DisposeFor(PopupPresenterBase popup)
         {
             popup.Dispose();
-            _viewsFactory.Release(_presenterToInfo[popup].View);
+            ViewsFactory.Release(_presenterToInfo[popup].View);
         }
 
         private class PopupInfo

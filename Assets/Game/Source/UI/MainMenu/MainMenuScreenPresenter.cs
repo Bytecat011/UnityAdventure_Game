@@ -26,7 +26,7 @@ namespace Game.UI.MainMenu
 
         public void Initialize()
         {
-            _screen.OpenTestPopupButtonClicked += OnOpenTestPopupButtonClicked;
+            _screen.OpenLevelsMenuButtonClicked += OnOpenLevelsMenuButtonClicked;
             
             CreateResources();
 
@@ -36,16 +36,16 @@ namespace Game.UI.MainMenu
 
         public void Dispose()
         {
-            _screen.OpenTestPopupButtonClicked -= OnOpenTestPopupButtonClicked;
+            _screen.OpenLevelsMenuButtonClicked -= OnOpenLevelsMenuButtonClicked;
             foreach (var presenter in _childPresenters)
                 presenter.Dispose();
             
             _childPresenters.Clear();
         }
 
-        private void OnOpenTestPopupButtonClicked()
+        private void OnOpenLevelsMenuButtonClicked()
         {
-            _popupService.OpenTestPopup();
+            _popupService.OpenLevelsMenuPopup();
         }
         
         private void CreateResources()

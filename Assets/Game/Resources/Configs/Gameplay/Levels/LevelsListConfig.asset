@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dfc5b30e4634e1a88415250fccbfc11, type: 3}
   m_Name: LevelsListConfig
   m_EditorClassIdentifier: 
-  _levels: []
+  _levels:
+  - {fileID: 11400000, guid: 0c8bc7711d1b9c548a3ad35ee79e8dcd, type: 2}
+  - {fileID: 11400000, guid: e6516a2747e8f5b4ba043a45ca7f736f, type: 2}
+  - {fileID: 11400000, guid: a3d78166c89211943a106ea60549a38b, type: 2}
+  - {fileID: 11400000, guid: d150a5ec124a14c44b7b21af58e11892, type: 2}
+  - {fileID: 11400000, guid: 132758871b9fdd144bf3a4c039bf8ac7, type: 2}
+  - {fileID: 11400000, guid: 01cf5dc89021efc41a5a342e6b657f33, type: 2}
