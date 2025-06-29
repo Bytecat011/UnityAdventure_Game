@@ -19,6 +19,8 @@ namespace Game.Meta.Features.Resources
             playerDataProvider.RegisterReader(this);
         }
 
+        public IEnumerable<ResourceType> AvailableResources() => _resources.Keys;
+        
         public IReactiveVariable<int> GetResource(ResourceType type) => _resources[type];
 
         public bool IsEnough(ResourceType type, int amount)

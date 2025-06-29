@@ -10,6 +10,8 @@ namespace Game.Utility.SceneManagement
         private readonly SceneLoaderService _sceneLoaderService;
         private readonly ILoadingScreen _loadingScreen;
         private readonly DIContainer _globalContainer;
+        
+        private DIContainer _currentSceneContainer;
 
         public SceneSwitcherService(
             SceneLoaderService sceneLoaderService,
@@ -25,6 +27,8 @@ namespace Game.Utility.SceneManagement
         {
             _loadingScreen.Show();
 
+            _currentSceneContainer?.Dispose();
+            
             yield return _sceneLoaderService.LoadAsync(Scenes.Empty);
             yield return _sceneLoaderService.LoadAsync(sceneName);
 
@@ -33,11 +37,11 @@ namespace Game.Utility.SceneManagement
             if (sceneBootstrap ==  null) 
                 throw new System.NullReferenceException($"{nameof(sceneBootstrap)} not found");
 
-            var sceneContainer = new DIContainer(_globalContainer);
+            _currentSceneContainer = new DIContainer(_globalContainer);
 
-            sceneBootstrap.ProcessRegistrations(sceneContainer, sceneArgs);
+            sceneBootstrap.ProcessRegistrations(_currentSceneContainer, sceneArgs);
 
-            sceneContainer.Inizialize();
+            _currentSceneContainer.Inizialize();
 
             yield return sceneBootstrap.Initialize();
 

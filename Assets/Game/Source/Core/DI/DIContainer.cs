@@ -62,11 +62,19 @@ namespace Game.Core.DI
 
         public void Inizialize()
         {
-            foreach (var regitration in _container.Values)
+            foreach (var registration in _container.Values)
             {
-                if (regitration.IsNonLazy) 
-                    regitration.CreateInstanceFrom(this);
+                if (registration.IsNonLazy) 
+                    registration.CreateInstanceFrom(this);
+                
+                registration.OnInitialize();
             }
+        }
+
+        public void Dispose()
+        {
+            foreach (var registration in _container.Values)
+                registration.OnDispose();
         }
     }
 }

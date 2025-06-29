@@ -1,0 +1,9 @@
+namespace Game.UI.Core
+{
+    public static class ViewIDs
+    {
+        public const string ResourceView = nameof(ResourceView);
+        public const string MainMenuScreen = nameof(MainMenuScreen);
+        public const string TestPopup = nameof(TestPopup);
+    }
+}

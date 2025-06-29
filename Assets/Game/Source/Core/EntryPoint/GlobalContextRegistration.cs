@@ -14,6 +14,8 @@ using Game.Utility.Reactive;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections.Generic;
+using Game.UI;
+using Game.UI.Core;
 using UnityEngine;
 
 namespace Game.Core.EntryPoint
@@ -22,7 +24,8 @@ namespace Game.Core.EntryPoint
     {
         private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
         {
-            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" }
+            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
+            { typeof(ResourceIconsConfig), "Configs/Meta/Resources/ResourceIconsConfig" },
         };
 
         public static void Process(DIContainer container)
@@ -44,8 +47,18 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle<ISaveLoadService>(CreateSaveLoadService);
 
             container.RegisterAsSingle(CreatePlayerDataProvider);
+            
+            container.RegisterAsSingle(CreateProjectPresentersFactory);
+            
+            container.RegisterAsSingle(CreateViewsFactory);
         }
 
+        private static ViewsFactory CreateViewsFactory(DIContainer c)
+            => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
+        
+        private static ProjectPresentersFactory CreateProjectPresentersFactory(DIContainer c)
+            => new ProjectPresentersFactory(c);
+        
         private static PlayerDataProvider CreatePlayerDataProvider(DIContainer c)
             => new PlayerDataProvider(c.Resolve<ISaveLoadService>(), c.Resolve<ConfigManager>());
 
