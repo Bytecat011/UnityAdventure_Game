@@ -1,4 +1,8 @@
 using System;
+using System.Collections;
+using DG.Tweening;
+using Game.Utility.CoroutineManagement;
+using UnityEngine;
 
 namespace Game.UI.Core
 {
@@ -6,6 +10,15 @@ namespace Game.UI.Core
     {
         public event Action<PopupPresenterBase> CloseRequest;
         
+        private readonly ICoroutineRunner _coroutineRunner;
+
+        private Coroutine _activeTask;
+        
+        protected PopupPresenterBase(ICoroutineRunner coroutineRunner)
+        {
+            _coroutineRunner = coroutineRunner;
+        }
+
         protected abstract PopupViewBase PopupView { get; }
         
         public virtual void Initialize()
@@ -14,23 +27,23 @@ namespace Game.UI.Core
 
         public virtual void Dispose()
         {
+            KillProcess();
+            
             PopupView.CloseRequest -= OnCloseRequest;
         }
 
         public void Show()
         {
-            OnPreShow();
-            PopupView.Show();
-            OnPostShow();
+            KillProcess();
+            
+            _activeTask = _coroutineRunner.StartTask(ShowTask());
         }
 
         public void Hide(Action callback = null)
         {
-            OnPreHide();
-            PopupView.Hide();
-            OnPostHide();
+            KillProcess();
             
-            callback?.Invoke();
+            _activeTask = _coroutineRunner.StartTask(HideTask(callback));
         }
         
         protected virtual void OnPreShow()
@@ -48,5 +61,27 @@ namespace Game.UI.Core
         protected virtual void OnPostHide() { }
 
         protected void OnCloseRequest() => CloseRequest?.Invoke(this);
+
+        private IEnumerator ShowTask()
+        {
+            OnPreShow();
+            yield return PopupView.Show().WaitForCompletion();
+            OnPostShow();
+        }
+        
+        private IEnumerator HideTask(Action callback = null)
+        {
+            OnPreHide();
+            yield return PopupView.Hide().WaitForCompletion();
+            OnPostHide();
+            
+            callback?.Invoke();
+        }
+        
+        private void KillProcess()
+        {
+            if (_activeTask != null)
+                _coroutineRunner.StopTask(_activeTask);
+        }
     }
 }

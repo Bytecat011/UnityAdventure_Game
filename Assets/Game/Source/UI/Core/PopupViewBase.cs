@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using DG.Tweening;
+using UnityEngine.UI;
 
 namespace Game.UI.Core
 {
@@ -8,7 +10,11 @@ namespace Game.UI.Core
         public event Action CloseRequest;
         
         [SerializeField] private CanvasGroup _mainGroup;
+        [SerializeField] private Image _anticlicker;
+        [SerializeField] private Transform _body;
 
+        private Tween _currentAnimation;
+        
         private void Awake()
         {
             _mainGroup.alpha = 0;
@@ -16,20 +22,55 @@ namespace Game.UI.Core
         
         public void OnCloseButtonClick() => CloseRequest?.Invoke();
 
-        public void Show()
+        public Tween Show()
         {
-            OnPreShow(); 
+            KillCurrentAnimation();
+            
+            OnPreShow();
+
             _mainGroup.alpha = 1;
-            OnPostShow();
+
+            Sequence animation = DOTween.Sequence();
+            
+            animation
+                .Append(_anticlicker
+                    .DOFade(0.75f, 0.2f)
+                    .From(0))
+                .Join(_body
+                    .DOScale(1, 0.5f)
+                    .From(0)
+                    .SetEase(Ease.OutBack));
+            
+            ModifyShowAnimation(animation);
+
+            animation.OnComplete(OnPostShow);
+            
+            _currentAnimation = animation.SetUpdate(true).Play();
+
+            return animation;
         }
 
-        public void Hide()
+        public Tween Hide()
         {
+            KillCurrentAnimation();
+            
             OnPreHide();
-            _mainGroup.alpha = 0;
-            OnPostHide();
+            
+            Sequence animation = DOTween.Sequence();
+            
+            ModifyHideAnimation(animation);
+            
+            animation.OnComplete(OnPostHide);
+            
+            _currentAnimation = animation.SetUpdate(true).Play();
+            
+            return animation;
         }
 
+        protected virtual void ModifyShowAnimation(Sequence animation) { }
+        
+        protected virtual void ModifyHideAnimation(Sequence animation) { }
+        
         protected virtual void OnPreShow() { }
 
         protected virtual void OnPostShow() { }
@@ -37,5 +78,12 @@ namespace Game.UI.Core
         protected virtual void OnPreHide() { }
 
         protected virtual void OnPostHide() { }
+
+        private void OnDestroy() => KillCurrentAnimation();
+
+        private void KillCurrentAnimation()
+        {
+            _currentAnimation?.Kill();
+        }
     }
 }

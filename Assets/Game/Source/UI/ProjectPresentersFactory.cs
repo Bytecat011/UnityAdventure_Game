@@ -5,6 +5,7 @@ using Game.UI.CommonViews;
 using Game.UI.Core;
 using Game.UI.Resources;
 using Game.Utility.Configs;
+using Game.Utility.CoroutineManagement;
 using Game.Utility.Reactive;
 
 namespace Game.UI
@@ -41,7 +42,9 @@ namespace Game.UI
 
         public TestPopupPresenter CreateTestPopupPresenter(TestPopupView view)
         {
-            return new TestPopupPresenter(view);
+            return new TestPopupPresenter(
+                view,
+                _container.Resolve<ICoroutineRunner>());
         }
     }
 }
