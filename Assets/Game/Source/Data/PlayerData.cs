@@ -7,5 +7,6 @@ namespace Game.Data
     public class PlayerData : ISaveData
     {
         public Dictionary<ResourceType, int> ResourceData;
+        public List<int> CompletedLevels;
     }
 }

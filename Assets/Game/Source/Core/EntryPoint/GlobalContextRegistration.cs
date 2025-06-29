@@ -1,4 +1,3 @@
-using Game.Configs;
 using Game.Core.DI;
 using Game.Data;
 using Game.Meta.Features.Resources;
@@ -14,6 +13,7 @@ using Game.Utility.Reactive;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections.Generic;
+using Game.Meta.Features.LevelsProgression;
 using Game.UI;
 using Game.UI.Core;
 using UnityEngine;
@@ -22,12 +22,6 @@ namespace Game.Core.EntryPoint
 {
     public static class GlobalContextRegistration
     {
-        private static Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
-        {
-            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
-            { typeof(ResourceIconsConfig), "Configs/Meta/Resources/ResourceIconsConfig" },
-        };
-
         public static void Process(DIContainer container)
         {
             container.RegisterAsSingle(CreateConfigManager);
@@ -51,8 +45,13 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle(CreateProjectPresentersFactory);
             
             container.RegisterAsSingle(CreateViewsFactory);
+            
+            container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
         }
 
+        private static LevelsProgressionService CreateLevelsProgressionService(DIContainer c)
+            => new LevelsProgressionService(c.Resolve<PlayerDataProvider>());
+        
         private static ViewsFactory CreateViewsFactory(DIContainer c)
             => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());
         
@@ -100,7 +99,7 @@ namespace Game.Core.EntryPoint
         {
             var resourceAssetsLoader = c.Resolve<ResourcesAssetsLoader>();
 
-            var resourceConfigLoader = new ResourcesConfigLoader(resourceAssetsLoader, _configsResourcesPaths);
+            var resourceConfigLoader = new ResourcesConfigLoader(resourceAssetsLoader);
 
             return new ConfigManager(resourceConfigLoader);
         }

@@ -23,6 +23,7 @@ namespace Game.Data
             return new PlayerData
             {
                 ResourceData = InitResourceData(),
+                CompletedLevels = new()
             };
         }
 

@@ -2,6 +2,8 @@ using Game.Utility.Assets;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Configs;
+using Game.Configs.Gameplay.Levels;
 using UnityEngine;
 
 namespace Game.Utility.Configs
@@ -10,12 +12,16 @@ namespace Game.Utility.Configs
     {
         private readonly ResourcesAssetsLoader _resources;
 
-        private readonly Dictionary<Type, string> _configsResourcesPaths;
+        private readonly Dictionary<Type, string> _configsResourcesPaths = new Dictionary<Type, string>
+        {
+            { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
+            { typeof(ResourceIconsConfig), "Configs/Meta/Resources/ResourceIconsConfig" },
+            { typeof(LevelsListConfig), "Configs/Gameplay/Levels/LevelsListConfig" }
+        };
 
-        public ResourcesConfigLoader(ResourcesAssetsLoader resources, Dictionary<Type, string> configsResourcesPaths)
+        public ResourcesConfigLoader(ResourcesAssetsLoader resources)
         {
             _resources = resources;
-            _configsResourcesPaths = configsResourcesPaths ?? new();
         }
 
         public IEnumerator LoadAsync(Action<Dictionary<Type, object>> onConfigLoaded)
