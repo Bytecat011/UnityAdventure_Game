@@ -10,5 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 440ab8d0ca114f15a2301644d9f606b1, type: 3}
-  m_Name: LevelConfig 4
+  m_Name: LevelLetters
   m_EditorClassIdentifier: 
+  <GameplayMode>k__BackingField: 1
+  <WordLength>k__BackingField: 5
+  <AllowedCharacters>k__BackingField: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ

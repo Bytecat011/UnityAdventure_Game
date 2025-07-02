@@ -23,7 +23,7 @@ namespace Game.Data
             return new PlayerData
             {
                 ResourceData = InitResourceData(),
-                CompletedLevels = new()
+                LevelsStatistics = new(),
             };
         }
 
@@ -34,7 +34,7 @@ namespace Game.Data
             StartResourcesDataConfig resourcesConfig = _configManager.GetConfig<StartResourcesDataConfig>();
 
             foreach (ResourceType resourceType in Enum.GetValues(typeof(ResourceType)))
-                resourceData[resourceType] =resourcesConfig.GetValueFor(resourceType);
+                resourceData[resourceType] = resourcesConfig.GetValueFor(resourceType);
 
             return resourceData;
         }

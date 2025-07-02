@@ -1,6 +1,6 @@
 using Game.Configs;
 using Game.Core.DI;
-using Game.Meta.Features.LevelsProgression;
+using Game.Gameplay.TypingGameplay;
 using Game.Meta.Features.Resources;
 using Game.UI.CommonViews;
 using Game.UI.Core;
@@ -50,13 +50,12 @@ namespace Game.UI
                 _container.Resolve<ICoroutineRunner>());
         }
 
-        public LevelTilePresenter CreateLevelTilePresenter(LevelTileView view, int levelNumber)
+        public LevelTilePresenter CreateLevelTilePresenter(LevelTileView view, GameplayModeType gameplayMode)
         {
             return new LevelTilePresenter(
-                _container.Resolve<LevelsProgressionService>(),
                 _container.Resolve<SceneSwitcherService>(),
                 _container.Resolve<ICoroutineRunner>(),
-                levelNumber,
+                gameplayMode,
                 view);
         }
 

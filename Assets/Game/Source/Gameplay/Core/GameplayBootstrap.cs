@@ -3,6 +3,7 @@ using Game.Core.DI;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections;
+using Game.Gameplay.TypingGameplay;
 
 namespace Game.Gameplay.Core
 {
@@ -32,6 +33,7 @@ namespace Game.Gameplay.Core
 
         public override void Run()
         {
+            _container.Resolve<GameplayFlowController>().Start();
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Game.UI.LevelsMenuPopup
 
                 _view.LevelTilesListView.Add(levelTileView);
 
-                var levelTilePresenter = _presentersFactory.CreateLevelTilePresenter(levelTileView, i + 1);
+                var levelTilePresenter = _presentersFactory.CreateLevelTilePresenter(levelTileView, levelsListConfig.Levels[i].GameplayMode);
 
                 levelTilePresenter.Initialize();
 

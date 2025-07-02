@@ -16,6 +16,7 @@ namespace Game.UI.Core
             { ViewIDs.TestPopup, "UI/TestPopup" },
             { ViewIDs.LevelTile, "UI/LevelsMenuPopup/LevelTile" },
             { ViewIDs.LevelsMenuPopup, "UI/LevelsMenuPopup/LevelsMenuPopup" },
+            { ViewIDs.GameplayScreen, "UI/Gameplay/GameplayScreenView" },
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)

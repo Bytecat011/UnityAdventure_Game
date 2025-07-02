@@ -21,7 +21,6 @@ namespace Game.UI.LevelsMenuPopup
             foreach (var levelTileView in _levelTilesListView.Elements)
             {
                 animation.Append(levelTileView.Show());
-                animation.AppendInterval(0.1f);
             }
         }
     }

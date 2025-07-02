@@ -13,7 +13,7 @@ using Game.Utility.Reactive;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections.Generic;
-using Game.Meta.Features.LevelsProgression;
+using Game.Meta.Features.LevelStatistics;
 using Game.UI;
 using Game.UI.Core;
 using UnityEngine;
@@ -46,11 +46,11 @@ namespace Game.Core.EntryPoint
             
             container.RegisterAsSingle(CreateViewsFactory);
             
-            container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
+            container.RegisterAsSingle(CreateLevelsStatisticsService).NonLazy();
         }
 
-        private static LevelsProgressionService CreateLevelsProgressionService(DIContainer c)
-            => new LevelsProgressionService(c.Resolve<PlayerDataProvider>());
+        private static LevelStatisticsService CreateLevelsStatisticsService(DIContainer c)
+            => new LevelStatisticsService(c.Resolve<PlayerDataProvider>());
         
         private static ViewsFactory CreateViewsFactory(DIContainer c)
             => new ViewsFactory(c.Resolve<ResourcesAssetsLoader>());

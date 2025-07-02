@@ -56,6 +56,7 @@ namespace Game.Utility.DataManagement.DataProviders
         public void Reset()
         {
             _data = GetOriginData();
+            SendDataToReaders();
         }
 
         protected abstract TData GetOriginData();

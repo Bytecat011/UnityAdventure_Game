@@ -1,5 +1,5 @@
 using Game.Gameplay.Core;
-using Game.Meta.Features.LevelsProgression;
+using Game.Gameplay.TypingGameplay;
 using Game.UI.Core;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
@@ -9,25 +9,22 @@ namespace Game.UI.LevelsMenuPopup
 {
     public class LevelTilePresenter : ISubscribePresernter
     {
-        private readonly LevelsProgressionService _levelService;
         private readonly SceneSwitcherService _sceneSwitcherService;
         private readonly ICoroutineRunner _coroutineRunner;
 
-        private readonly int _levelNumber;
+        private readonly GameplayModeType _gameplayMode;
 
         private readonly LevelTileView _view;
 
         public LevelTilePresenter(
-            LevelsProgressionService levelService,
             SceneSwitcherService sceneSwitcherService,
             ICoroutineRunner coroutineRunner,
-            int levelNumber,
+            GameplayModeType gameplayMode,
             LevelTileView view)
         {
-            _levelService = levelService;
             _sceneSwitcherService = sceneSwitcherService;
             _coroutineRunner = coroutineRunner;
-            _levelNumber = levelNumber;
+            _gameplayMode = gameplayMode;
             _view = view;
         }
 
@@ -35,19 +32,9 @@ namespace Game.UI.LevelsMenuPopup
 
         public void Initialize()
         {
-            _view.SetLevel(_levelNumber.ToString());
+            _view.SetLevel(_gameplayMode.ToString());
 
-            if (_levelService.CanPlay(_levelNumber))
-            {
-                if(_levelService.IsLevelCompleted(_levelNumber))
-                    _view.SetComplete();
-                else
-                    _view.SetActive();
-            }
-            else
-            {
-                _view.SetBlock();
-            }
+            _view.SetActive();
         }
         
         public void Dispose()
@@ -67,15 +54,9 @@ namespace Game.UI.LevelsMenuPopup
         
         private void OnViewClicked()
         {
-            if (_levelService.CanPlay(_levelNumber) == false)
-            {
-                Debug.Log("Level locked, complete previous");
-                return;
-            }
-
             _coroutineRunner.StartTask(_sceneSwitcherService.SwitchTo(
                 Scenes.Gameplay,
-                new GameplayInputArgs(_levelNumber)));
+                new GameplayInputArgs(_gameplayMode)));
         }
     }
 }
