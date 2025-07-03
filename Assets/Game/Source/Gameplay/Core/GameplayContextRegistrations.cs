@@ -1,8 +1,10 @@
 using System.Linq;
 using Game.Configs.Gameplay.Levels;
 using Game.Core.DI;
+using Game.Data;
 using Game.Gameplay.TypingGameplay;
 using Game.Meta.Features.LevelStatistics;
+using Game.Meta.Features.Resources;
 using Game.UI;
 using Game.UI.Core;
 using Game.UI.Gameplay;
@@ -21,6 +23,7 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateWordGeneratorService);
             container.RegisterAsSingle(CreateGameMode).NonLazy();
             container.RegisterAsSingle((c) => CreateGameModeFlowController(c, args)).NonLazy();
+            container.RegisterAsSingle(CreateLevelRewardHandler).NonLazy();
             
             container.RegisterAsSingle(CreateGameplayUIRoot).NonLazy();
             container.RegisterAsSingle(CreateGameplayPresentersFactory);
@@ -28,6 +31,14 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateGameplayPopupService);
         }
 
+        private static LevelRewardHandler CreateLevelRewardHandler(DIContainer c)
+            => new LevelRewardHandler(
+                c.Resolve<ConfigManager>(),
+                c.Resolve<PlayerDataProvider>(),
+                c.Resolve<TypingGameMode>(),
+                c.Resolve<ResourceStorage>(),
+                c.Resolve<ICoroutineRunner>());
+        
         private static GameplayPopupService CreateGameplayPopupService(DIContainer c)
         {
             return new GameplayPopupService(
