@@ -1,6 +1,7 @@
 using System;
 using Game.UI.CommonViews;
 using Game.UI.Core;
+using Game.UI.LevelStatistics;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -13,6 +14,9 @@ namespace Game.UI.MainMenu
         
         [field: SerializeField] public IconTextListView ResourcesView { get; private set; }
 
+        [field: SerializeField] public LevelStatisticsView LevelStatisticsView { get; private set; }
+        [field: SerializeField] public ButtonView ResetLevelStatisticsView { get; private set; }
+        
         [SerializeField] private Button _openLevelsMenuButton;
 
         private void OnEnable()

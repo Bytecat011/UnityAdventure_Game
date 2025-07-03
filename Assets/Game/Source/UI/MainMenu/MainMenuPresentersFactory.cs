@@ -1,4 +1,5 @@
 using Game.Core.DI;
+using Game.Meta.Features.LevelStatistics;
 
 namespace Game.UI.MainMenu
 {
@@ -16,7 +17,8 @@ namespace Game.UI.MainMenu
             return new MainMenuScreenPresenter(
                 view,
                 _container.Resolve<ProjectPresentersFactory>(),
-                _container.Resolve<MainMenuPopupService>());
+                _container.Resolve<MainMenuPopupService>(),
+                _container.Resolve<LevelStatisticsService>());
         }
     }
 }

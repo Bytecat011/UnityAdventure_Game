@@ -1,10 +1,13 @@
 using Game.Configs;
 using Game.Core.DI;
+using Game.Data;
 using Game.Gameplay.TypingGameplay;
+using Game.Meta.Features.LevelStatistics;
 using Game.Meta.Features.Resources;
 using Game.UI.CommonViews;
 using Game.UI.Core;
 using Game.UI.LevelsMenuPopup;
+using Game.UI.LevelStatistics;
 using Game.UI.Resources;
 using Game.Utility.Configs;
 using Game.Utility.CoroutineManagement;
@@ -67,6 +70,22 @@ namespace Game.UI
                 this,
                 _container.Resolve<ViewsFactory>(),
                 view);
+        }
+
+        public ResetLevelStatisticsPresenter CreateResetLevelStatisticsPresenter(ButtonView view)
+        {
+            return new ResetLevelStatisticsPresenter(
+                _container.Resolve<LevelStatisticsService>(),
+                _container.Resolve<ResourceStorage>(),
+                _container.Resolve<PlayerDataProvider>(),
+                _container.Resolve<ConfigManager>(),
+                _container.Resolve<ICoroutineRunner>(),
+                view);
+        }
+
+        public LevelStatisticsPresenter CreateLevelStatisticsPresenter(LevelStatisticsView view)
+        {
+            return new LevelStatisticsPresenter(_container.Resolve<LevelStatisticsService>(), view);
         }
     }
 }
