@@ -4,6 +4,7 @@ using Game.Utility.SceneManagement;
 using System;
 using System.Collections;
 using Game.Configs.Gameplay;
+using Game.Gameplay.EntitiesCore;
 using UnityEngine;
 
 namespace Game.Gameplay.Core
@@ -14,6 +15,8 @@ namespace Game.Gameplay.Core
         private GameplayInputArgs _inputArgs;
 
         [SerializeField] private TestGameplay _testGameplay;
+
+        private EntitiesWorld _entitiesWorld;
         
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
         {
@@ -31,6 +34,8 @@ namespace Game.Gameplay.Core
 
         public override IEnumerator Initialize()
         {
+            _entitiesWorld = _container.Resolve<EntitiesWorld>();
+            
             _testGameplay.Initialize(_container);
             yield break;
         }
@@ -38,6 +43,11 @@ namespace Game.Gameplay.Core
         public override void Run()
         {
             _testGameplay.Run();
+        }
+
+        private void Update()
+        {
+            _entitiesWorld?.Update(Time.deltaTime);
         }
     }
 }
