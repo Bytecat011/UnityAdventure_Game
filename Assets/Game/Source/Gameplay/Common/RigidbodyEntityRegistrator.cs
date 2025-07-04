@@ -8,7 +8,7 @@ namespace Game.Gameplay.Common
     {
         public override void Register(Entity entity)
         {
-            entity.AddComponent(new RigidbodyComponent() { Value = GetComponent<Rigidbody>() });
+            entity.AddRigidbody(GetComponent<Rigidbody>());
         }
     }
 }

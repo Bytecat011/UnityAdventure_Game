@@ -14,9 +14,9 @@ namespace Game.Gameplay.Features.Movement
         
         public void OnInit(Entity entity)
         {
-            _moveDirection = entity.GetComponent<MoveDirection>().Value;
-            _moveSpeed = entity.GetComponent<MoveSpeed>().Value;
-            _rigidbody = entity.GetComponent<RigidbodyComponent>().Value;
+            _moveDirection = entity.MoveDirection;
+            _moveSpeed = entity.MoveSpeed;
+            _rigidbody = entity.Rigidbody;
         }
 
         public void OnUpdate(float deltaTime)
