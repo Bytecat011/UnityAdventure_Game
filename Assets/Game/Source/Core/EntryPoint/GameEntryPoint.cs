@@ -5,6 +5,7 @@ using Game.Utility.CoroutineManagement;
 using Game.Utility.LoadingScreen;
 using Game.Utility.SceneManagement;
 using System.Collections;
+using Game.Gameplay.Core;
 using UnityEngine;
 
 namespace Game.Core.EntryPoint
@@ -54,7 +55,7 @@ namespace Game.Core.EntryPoint
 
             loadingScreen.Hide();
 
-            yield return sceneSwitcherService.SwitchTo(Scenes.MainMenu);
+            yield return sceneSwitcherService.SwitchTo(Scenes.Gameplay, new GameplayInputArgs(1));
         }
     }
 }

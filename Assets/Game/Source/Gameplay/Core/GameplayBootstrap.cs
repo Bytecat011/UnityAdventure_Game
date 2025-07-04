@@ -3,6 +3,8 @@ using Game.Core.DI;
 using Game.Utility.SceneManagement;
 using System;
 using System.Collections;
+using Game.Configs.Gameplay;
+using UnityEngine;
 
 namespace Game.Gameplay.Core
 {
@@ -11,6 +13,8 @@ namespace Game.Gameplay.Core
         private DIContainer _container;
         private GameplayInputArgs _inputArgs;
 
+        [SerializeField] private TestGameplay _testGameplay;
+        
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
         {
             _container = container;
@@ -27,11 +31,13 @@ namespace Game.Gameplay.Core
 
         public override IEnumerator Initialize()
         {
+            _testGameplay.Initialize(_container);
             yield break;
         }
 
         public override void Run()
         {
+            _testGameplay.Run();
         }
     }
 }
