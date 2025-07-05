@@ -14,9 +14,6 @@ namespace Game.Editor
     {
         private const string AssemblyName = "Assembly-CSharp";
 
-        private static string OutputPath
-            => Path.Combine(Application.dataPath, "Game/Source/Gameplay/EntitiesCore/Generated/EntityAPI.cs");
-
         [InitializeOnLoadMethod]
         [MenuItem("Tools/GenerateEntityAPI")]
         private static void Generate()
