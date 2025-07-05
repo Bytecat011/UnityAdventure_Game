@@ -11,6 +11,8 @@ namespace Game.Gameplay.EntitiesCore.Mono
             if(registrators != null)
                 foreach(MonoEntityRegistrator registrator in registrators)
                     registrator.Register(entity);
+
+            entity.AddTransform(transform);
         }
 
         public void Cleanup(Entity entity)

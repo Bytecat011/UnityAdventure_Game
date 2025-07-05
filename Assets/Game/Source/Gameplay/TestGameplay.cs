@@ -10,6 +10,7 @@ namespace Game.Gameplay
     {
         private DIContainer _container;
         private EntitiesFactory _entitiesFactory;
+        private EntitiesWorld _entitiesWorld;
 
         private Entity _entity;
         
@@ -19,12 +20,11 @@ namespace Game.Gameplay
         {
             _container = container;
             _entitiesFactory = _container.Resolve<EntitiesFactory>();
+            _entitiesWorld = _container.Resolve<EntitiesWorld>();
         }
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateTestEntity(Vector3.zero);
-            
             _isRunning = true;
         }
 
@@ -32,10 +32,31 @@ namespace Game.Gameplay
         {
             if (_isRunning == false)
                 return;
+
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (_entity != null)
+                    _entitiesWorld.Release(_entity);
+
+                _entity = _entitiesFactory.CreateRigidbodyCharacter(Vector3.zero);
+                Debug.Log("Rigidbody character created");
+            }
             
-            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (_entity != null)
+                    _entitiesWorld.Release(_entity);
+
+                _entity = _entitiesFactory.CreateCharacterControllerCharacter(Vector3.zero);
+                Debug.Log("CharacterController character created");
+            }
             
-            _entity.MoveDirection.Value = input;
+            if (_entity != null)
+            {
+                Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+
+                _entity.MoveDirection.Value = input;
+            }
         }
     }
 }

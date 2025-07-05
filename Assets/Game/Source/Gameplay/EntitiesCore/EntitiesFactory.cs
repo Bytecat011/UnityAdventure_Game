@@ -1,6 +1,7 @@
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.Movement;
+using Game.Gameplay.Features.Rotation;
 using Game.Utility.Reactive;
 using UnityEngine;
 
@@ -31,6 +32,50 @@ namespace Game.Gameplay.EntitiesCore
                 .AddMoveSpeed(new ReactiveVariable<float>(10));
 
             entity.AddSystem(new RigidbodyMovementSystem());
+            
+            _entitiesWorld.Add(entity);
+            
+            return entity;
+        }
+
+        public Entity CreateRigidbodyCharacter(Vector3 position)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/RigidbodyCharacterEntity");
+            
+            entity
+                .AddMoveDirection()
+                .AddMoveSpeed(new ReactiveVariable<float>(10))
+                .AddRotation()
+                .AddRotationSpeed(new ReactiveVariable<float>(5));
+
+            entity
+                .AddSystem(new RigidbodyMovementSystem())
+                .AddSystem(new RigidbodyRotationSystem())
+                .AddSystem(new RotateTowardMovementSystem());
+            
+            _entitiesWorld.Add(entity);
+            
+            return entity;
+        }
+        
+        public Entity CreateCharacterControllerCharacter(Vector3 position)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/CharacterControllerCharacterEntity");
+            
+            entity
+                .AddMoveDirection()
+                .AddMoveSpeed(new ReactiveVariable<float>(10))
+                .AddRotation()
+                .AddRotationSpeed(new ReactiveVariable<float>(5));
+
+            entity
+                .AddSystem(new CharacterControllerMovementSystem())
+                .AddSystem(new TransformRotationSystem())
+                .AddSystem(new RotateTowardMovementSystem());
             
             _entitiesWorld.Add(entity);
             
