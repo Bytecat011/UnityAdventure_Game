@@ -35,7 +35,7 @@ namespace Game.Gameplay
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _entity.CurrentHealth.Value -= 50;
+                _entity.DamageRequest.Notify(50);
             }
             
             Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
