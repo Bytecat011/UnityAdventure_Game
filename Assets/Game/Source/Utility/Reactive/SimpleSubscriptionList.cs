@@ -3,6 +3,118 @@ using System.Collections.Generic;
 
 namespace Game.Utility.Reactive
 {
+    public class SimpleSubscriptionList
+    {
+        private class Subscription : ISubscription
+        {
+            private readonly Action _action;
+            private readonly Action<Subscription> _onRemove;
+
+            public Subscription(Action action, Action<Subscription> onRemove)
+            {
+                _action = action;
+                _onRemove = onRemove;
+            }
+
+            public void Notify() => _action?.Invoke();
+
+            public void Unsubscribe()
+            {
+                _onRemove?.Invoke(this);
+            }
+        }
+
+        private readonly List<Subscription> _items = new();
+        private readonly List<Subscription> _toAdd = new();
+        private readonly List<Subscription> _toRemove = new();
+
+        public ISubscription CreateSubscription(Action action)
+        {
+            var subscription = new Subscription(action, Remove);
+            _toAdd.Add(subscription);
+            return subscription;
+        }
+
+        private void Remove(Subscription subscription)
+        {
+            _toRemove.Add(subscription);
+        }
+
+        public void Notify()
+        {
+            if (_toAdd.Count > 0)
+            {
+                _items.AddRange(_toAdd);
+                _toAdd.Clear();
+            }
+
+            if (_toRemove.Count > 0)
+            {
+                _items.AddRange(_toRemove);
+                _toRemove.Clear();
+            }
+
+            foreach (var item in _items)
+                item.Notify();
+        }
+    }
+    
+    public class SimpleSubscriptionList<T>
+    {
+        private class Subscription : ISubscription
+        {
+            private readonly Action<T> _action;
+            private readonly Action<Subscription> _onRemove;
+
+            public Subscription(Action<T> action, Action<Subscription> onRemove)
+            {
+                _action = action;
+                _onRemove = onRemove;
+            }
+
+            public void Notify(T arg) => _action?.Invoke(arg);
+
+            public void Unsubscribe()
+            {
+                _onRemove?.Invoke(this);
+            }
+        }
+
+        private readonly List<Subscription> _items = new();
+        private readonly List<Subscription> _toAdd = new();
+        private readonly List<Subscription> _toRemove = new();
+
+        public ISubscription CreateSubscription(Action<T> action)
+        {
+            var subscription = new Subscription(action, Remove);
+            _toAdd.Add(subscription);
+            return subscription;
+        }
+
+        private void Remove(Subscription subscription)
+        {
+            _toRemove.Add(subscription);
+        }
+
+        public void Notify(T value)
+        {
+            if (_toAdd.Count > 0)
+            {
+                _items.AddRange(_toAdd);
+                _toAdd.Clear();
+            }
+
+            if (_toRemove.Count > 0)
+            {
+                _items.AddRange(_toRemove);
+                _toRemove.Clear();
+            }
+
+            foreach (var item in _items)
+                item.Notify(value);
+        }
+    }
+    
     public class SimpleSubscriptionList<T, K>
     {
         private class Subscription : ISubscription
