@@ -13,4 +13,14 @@ namespace Game.Gameplay.Features.Movement
     {
         public ReactiveVariable<float> Value;
     }
+    
+    public class RotationDirection : IEntityComponent
+    {
+        public ReactiveVariable<Vector3> Value;
+    }
+
+    public class RotationSpeed : IEntityComponent
+    {
+        public ReactiveVariable<float> Value;
+    }
 }
