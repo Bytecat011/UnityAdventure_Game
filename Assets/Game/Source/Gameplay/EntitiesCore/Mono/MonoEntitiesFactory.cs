@@ -29,6 +29,8 @@ namespace Game.Gameplay.EntitiesCore.Mono
             
             viewInstance.Setup(entity);
             
+            _entityToMono.Add(entity, viewInstance);
+            
             return viewInstance;
         }
 

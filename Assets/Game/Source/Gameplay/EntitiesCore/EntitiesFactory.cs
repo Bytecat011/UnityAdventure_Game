@@ -1,5 +1,6 @@
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
+using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
 using Game.Utility.Reactive;
 using UnityEngine;
@@ -30,11 +31,16 @@ namespace Game.Gameplay.EntitiesCore
                 .AddMoveDirection()
                 .AddMoveSpeed(new ReactiveVariable<float>(10))
                 .AddRotationDirection()
-                .AddRotationSpeed(new ReactiveVariable<float>(900));
+                .AddRotationSpeed(new ReactiveVariable<float>(900))
+                .AddMaxHealth(new ReactiveVariable<float>(100))
+                .AddCurrentHealth(new ReactiveVariable<float>(100))
+                .AddIsDead();
 
             entity
                 .AddSystem(new RigidbodyMovementSystem())
-                .AddSystem(new RigidbodyRotationSystem());
+                .AddSystem(new RigidbodyRotationSystem())
+                .AddSystem(new DeathSystem())
+                .AddSystem(new SelfReleaseSystem(_entitiesWorld));
             
             _entitiesWorld.Add(entity);
             
