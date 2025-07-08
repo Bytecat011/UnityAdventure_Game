@@ -11,6 +11,7 @@ namespace Game.Gameplay.Features.LifeCycle
         private Entity _entity;
 
         private ReactiveVariable<bool> _isDead;
+        private ReactiveVariable<bool> _inDeathProcess;
 
 
         public SelfReleaseSystem(EntitiesWorld entitiesWorld)
@@ -22,11 +23,12 @@ namespace Game.Gameplay.Features.LifeCycle
         {
             _entity = entity;
             _isDead = entity.IsDead;
+            _inDeathProcess = entity.InDeathProcess;
         }
 
         public void OnUpdate(float deltaTime)
         {
-            if (_isDead.Value)
+            if (_isDead.Value && _inDeathProcess.Value == false)
             {
                 _entitiesWorld.Release(_entity);
             }
