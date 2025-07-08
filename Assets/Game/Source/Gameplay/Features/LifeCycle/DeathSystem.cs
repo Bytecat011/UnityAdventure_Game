@@ -1,5 +1,6 @@
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
+using Game.Utility.Conditions;
 using Game.Utility.Reactive;
 
 namespace Game.Gameplay.Features.LifeCycle
@@ -8,13 +9,13 @@ namespace Game.Gameplay.Features.LifeCycle
     {
         private ReactiveVariable<bool> _isDead;
         
-        private ReactiveVariable<float> _currentHealth;
+        private ICompositeCondition _mustDie;
 
 
         public void OnInit(Entity entity)
         {
             _isDead = entity.IsDead;
-            _currentHealth = entity.CurrentHealth;
+            _mustDie = entity.MustDie;
         }
 
         public void OnUpdate(float deltaTime)
@@ -22,10 +23,8 @@ namespace Game.Gameplay.Features.LifeCycle
             if (_isDead.Value)
                 return;
             
-            if (_currentHealth.Value <= 0)
-            {
+            if (_mustDie.Evaluate())
                 _isDead.Value = true;
-            }
         }
     }
 }

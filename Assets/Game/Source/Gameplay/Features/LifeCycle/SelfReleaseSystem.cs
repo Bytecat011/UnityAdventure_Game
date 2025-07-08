@@ -1,5 +1,6 @@
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
+using Game.Utility.Conditions;
 using Game.Utility.Reactive;
 
 namespace Game.Gameplay.Features.LifeCycle
@@ -10,8 +11,7 @@ namespace Game.Gameplay.Features.LifeCycle
         
         private Entity _entity;
 
-        private ReactiveVariable<bool> _isDead;
-        private ReactiveVariable<bool> _inDeathProcess;
+        private ICompositeCondition _mustSelfRelease;
 
 
         public SelfReleaseSystem(EntitiesWorld entitiesWorld)
@@ -22,13 +22,12 @@ namespace Game.Gameplay.Features.LifeCycle
         public void OnInit(Entity entity)
         {
             _entity = entity;
-            _isDead = entity.IsDead;
-            _inDeathProcess = entity.InDeathProcess;
+            _mustSelfRelease = entity.MustSelfRelease;
         }
 
         public void OnUpdate(float deltaTime)
         {
-            if (_isDead.Value && _inDeathProcess.Value == false)
+            if (_mustSelfRelease.Evaluate())
             {
                 _entitiesWorld.Release(_entity);
             }

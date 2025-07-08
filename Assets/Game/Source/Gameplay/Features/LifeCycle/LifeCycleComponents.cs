@@ -1,4 +1,5 @@
 using Game.Gameplay.EntitiesCore;
+using Game.Utility.Conditions;
 using Game.Utility.Reactive;
 
 namespace Game.Gameplay.Features.LifeCycle
@@ -16,6 +17,16 @@ namespace Game.Gameplay.Features.LifeCycle
     public class IsDead : IEntityComponent
     {
         public ReactiveVariable<bool> Value;
+    }
+    
+    public class MustDie : IEntityComponent
+    {
+        public ICompositeCondition Value;
+    }
+    
+    public class MustSelfRelease : IEntityComponent
+    {
+        public ICompositeCondition Value;
     }
     
     public class DeathProcessInitialTime : IEntityComponent

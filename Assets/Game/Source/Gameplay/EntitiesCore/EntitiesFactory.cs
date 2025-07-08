@@ -2,6 +2,7 @@ using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
+using Game.Utility.Conditions;
 using Game.Utility.Reactive;
 using UnityEngine;
 
@@ -39,6 +40,25 @@ namespace Game.Gameplay.EntitiesCore
                 .AddDeathProcessInitialTime(new ReactiveVariable<float>(2))
                 .AddDeathProcessCurrentTime();
 
+            var canMove = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+            
+            var canRotate = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+            
+            var mustDie = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.CurrentHealth.Value <= 0));
+            
+            var mustSelfRelease = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value))
+                .Add(new FuncCondition(() => entity.InDeathProcess.Value == false));
+
+            entity
+                .AddCanMove(canMove)
+                .AddCanRotate(canRotate)
+                .AddMustDie(mustDie)
+                .AddMustSelfRelease(mustSelfRelease);
+            
             entity
                 .AddSystem(new RigidbodyMovementSystem())
                 .AddSystem(new RigidbodyRotationSystem())
