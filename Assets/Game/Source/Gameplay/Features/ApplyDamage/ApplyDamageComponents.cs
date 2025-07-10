@@ -4,12 +4,12 @@ using Game.Utility.Reactive;
 
 namespace Game.Gameplay.Features.ApplyDamage
 {
-    public class DamageRequest : IEntityComponent
+    public class TakeDamageRequest : IEntityComponent
     {
         public ReactiveEvent<float> Value;
     }
 
-    public class DamageEvent : IEntityComponent
+    public class TakeDamageEvent : IEntityComponent
     {
         public ReactiveEvent<float> Value;
     }

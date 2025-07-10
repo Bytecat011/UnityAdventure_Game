@@ -19,8 +19,8 @@ namespace Game.Gameplay.Features.ApplyDamage
 
         public void OnInit(Entity entity)
         {
-            _damageRequest = entity.DamageRequest;
-            _damageEvent = entity.DamageEvent;
+            _damageRequest = entity.TakeDamageRequest;
+            _damageEvent = entity.TakeDamageEvent;
 
             _health = entity.CurrentHealth;
             

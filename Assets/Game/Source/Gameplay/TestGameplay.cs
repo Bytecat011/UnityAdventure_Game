@@ -33,11 +33,6 @@ namespace Game.Gameplay
         {
             if (_isRunning == false)
                 return;
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _entity.DamageRequest.Notify(50);
-            }
             
             Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             
