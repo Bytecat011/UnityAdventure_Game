@@ -23,7 +23,7 @@ namespace Game.Gameplay
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateGhost(Vector3.zero);
+            _entity = _entitiesFactory.CreateHero(Vector3.zero);
             _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
             
             _isRunning = true;
