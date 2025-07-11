@@ -12,6 +12,7 @@ namespace Game.Gameplay.Features.Movement
         private ReactiveVariable<Vector3> _moveDirection;
         private ReactiveVariable<float> _moveSpeed;
         private Rigidbody _rigidbody;
+        private ReactiveVariable<bool> _isMoving;
         
         private ICompositeCondition _canMove;
         
@@ -20,6 +21,7 @@ namespace Game.Gameplay.Features.Movement
             _moveDirection = entity.MoveDirection;
             _moveSpeed = entity.MoveSpeed;
             _rigidbody = entity.Rigidbody;
+            _isMoving = entity.IsMoving;
 
             _canMove = entity.CanMove;
         }
@@ -33,6 +35,8 @@ namespace Game.Gameplay.Features.Movement
             }
 
             Vector3 velocity = _moveDirection.Value.normalized * _moveSpeed.Value;
+            
+            _isMoving.Value = velocity.sqrMagnitude > 0;
             
             _rigidbody.velocity = velocity;
         }

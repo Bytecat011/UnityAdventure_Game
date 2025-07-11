@@ -34,6 +34,9 @@ namespace Game.Gameplay
             if (_isRunning == false)
                 return;
             
+            if (Input.GetKeyDown(KeyCode.R))
+                _entity.StartAttackRequest.Notify();
+            
             Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
             
             _entity.MoveDirection.Value = input;
