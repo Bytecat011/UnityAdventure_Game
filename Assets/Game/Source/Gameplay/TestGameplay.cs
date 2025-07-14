@@ -23,8 +23,12 @@ namespace Game.Gameplay
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateHero(Vector3.zero);
+            _entity = _entitiesFactory.CreateTeleportingCharacter(Vector3.zero);
             _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
+            _entitiesFactory.CreateGhost(Vector3.zero + Vector3.left * 3);
+            _entitiesFactory.CreateGhost(Vector3.zero + Vector3.right * 3);
+            _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5 + Vector3.left * 1.5f);
+            _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5 + Vector3.right * 1.5f);
             
             _isRunning = true;
         }
@@ -34,13 +38,8 @@ namespace Game.Gameplay
             if (_isRunning == false)
                 return;
             
-            if (Input.GetKeyDown(KeyCode.R))
-                _entity.StartAttackRequest.Notify();
-            
-            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            
-            _entity.MoveDirection.Value = input;
-            _entity.RotationDirection.Value = input;
+            if (Input.GetKeyDown(KeyCode.Space))
+                _entity.TeleportAbilityStartRequest.Notify();
         }
     }
 }
