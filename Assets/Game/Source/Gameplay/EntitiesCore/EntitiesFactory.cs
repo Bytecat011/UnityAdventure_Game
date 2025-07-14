@@ -2,11 +2,14 @@ using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.ApplyDamage;
 using Game.Gameplay.Features.Attack;
+using Game.Gameplay.Features.Attack.AreaDamage;
 using Game.Gameplay.Features.Attack.Shoot;
 using Game.Gameplay.Features.ContactTakeDamage;
+using Game.Gameplay.Features.Energy;
 using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
 using Game.Gameplay.Features.Sensors;
+using Game.Gameplay.Features.TeleportAbility;
 using Game.Utility;
 using Game.Utility.Conditions;
 using Game.Utility.Reactive;
@@ -238,6 +241,78 @@ namespace Game.Gameplay.EntitiesCore
             return entity;
         }
 
+        public Entity CreateTeleportingCharacter(Vector3 position)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/TeleportingCharacter");
+
+            entity
+                .AddMaxHealth(new ReactiveVariable<float>(100))
+                .AddCurrentHealth(new ReactiveVariable<float>(100))
+                .AddIsDead()
+                .AddInDeathProcess()
+                .AddDeathProcessInitialTime(new ReactiveVariable<float>(2))
+                .AddDeathProcessCurrentTime()
+                .AddTakeDamageEvent()
+                .AddTakeDamageRequest()
+                .AddMaximumEnergy(new ReactiveVariable<float>(80))
+                .AddCurrentEnergy(new ReactiveVariable<float>(80))
+                .AddEnergyRestorationInterval(new ReactiveVariable<float>(2))
+                .AddEnergyRestorationPercentageAmount(new ReactiveVariable<float>(10))
+                .AddEnergyRestorationTimer()
+                .AddTeleportAbilityCastCurrentTime()
+                .AddTeleportAbilityCastInitialTime(new ReactiveVariable<float>(0))
+                .AddTeleportAbilityStartRequest()
+                .AddTeleportAbilityStartEvent()
+                .AddTeleportAbilityEnergyCost(new ReactiveVariable<float>(15))
+                .AddTeleportAbilityRange(new ReactiveVariable<float>(5f))
+                .AddInTeleportAbilityCastProcess()
+                .AddTeleportAbilityEndEvent()
+                .AddAreaDamage(new ReactiveVariable<float>(50))
+                .AddAreaDamageRange(new ReactiveVariable<float>(3f))
+                .AddAreaDamageRequest()
+                .AddAreaDamageLayerMask(UnityLayers.LayerMaskCharacters);
+
+            var mustDie = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.CurrentHealth.Value <= 0));
+
+            var mustSelfRelease = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value))
+                .Add(new FuncCondition(() => entity.InDeathProcess.Value == false));
+
+            var canApplyDamage = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+            
+            var canUseTeleportAbility = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false))
+                .Add(new FuncCondition(() => entity.CurrentEnergy.Value >= entity.TeleportAbilityEnergyCost.Value))
+                .Add(new FuncCondition(() => entity.InTeleportAbilityCastProcess.Value == false));
+
+            entity
+                .AddMustDie(mustDie)
+                .AddMustSelfRelease(mustSelfRelease)
+                .AddCanApplyDamage(canApplyDamage)
+                .AddCanUseTeleportAbility(canUseTeleportAbility);
+
+            entity
+                .AddSystem(new EnergyRestorationSystem())
+                .AddSystem(new StartTeleportAbilitySystem())
+                .AddSystem(new TeleportAbilityCastSystem())
+                .AddSystem(new TeleportAbilitySystem())
+                .AddSystem(new AreaDamageOnTeleportSystem())
+                .AddSystem(new InstantAreaDamageSystem(_collidersRegistryService))
+                .AddSystem(new ApplyDamageSystem())
+                .AddSystem(new DeathSystem())
+                .AddSystem(new DisableCollidersOnDeathSystem())
+                .AddSystem(new DeathProcessTimerSystem())
+                .AddSystem(new SelfReleaseSystem(_entitiesWorld));
+
+            _entitiesWorld.Add(entity);
+
+            return entity;
+        }
+        
         private Entity CreateEmpty() => new Entity();
     }
 }
