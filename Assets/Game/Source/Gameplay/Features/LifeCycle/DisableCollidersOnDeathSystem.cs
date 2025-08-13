@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
@@ -11,7 +12,7 @@ namespace Game.Gameplay.Features.LifeCycle
         private List<Collider> _colliders;
         private ReactiveVariable<bool> _isDead;
         
-        private ISubscription _isDeadChangedSubscription;
+        private IDisposable _isDeadChangedSubscription;
 
         public void OnInit(Entity entity)
         {
@@ -30,7 +31,7 @@ namespace Game.Gameplay.Features.LifeCycle
 
         public void OnDispose()
         {
-            _isDeadChangedSubscription.Unsubscribe();
+            _isDeadChangedSubscription.Dispose();
         }
     }
 }

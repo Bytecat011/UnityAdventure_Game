@@ -15,7 +15,7 @@ namespace Game.Gameplay.Features.ApplyDamage
         
         private ICompositeCondition _canApplyDamage;
 
-        private ISubscription _requestSubscription;
+        private IDisposable _requestSubscription;
 
         public void OnInit(Entity entity)
         {
@@ -31,7 +31,7 @@ namespace Game.Gameplay.Features.ApplyDamage
 
         public void OnDispose()
         {
-            _requestSubscription.Unsubscribe();
+            _requestSubscription.Dispose();
         }
 
         private void OnDamageRequest(float damage)

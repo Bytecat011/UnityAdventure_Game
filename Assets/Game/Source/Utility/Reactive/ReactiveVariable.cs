@@ -26,7 +26,7 @@ namespace Game.Utility.Reactive
             }
         }
 
-        public ISubscription Subscribe(Action<T, T> action)
+        public IDisposable Subscribe(Action<T, T> action)
             => _subscriptions.CreateSubscription(action);
     }
 }

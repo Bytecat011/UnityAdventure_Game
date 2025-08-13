@@ -6,6 +6,6 @@ namespace Game.Utility.Reactive
     {
         T Value { get; }
 
-        ISubscription Subscribe(Action<T, T> action);
+        IDisposable Subscribe(Action<T, T> action);
     }
 }

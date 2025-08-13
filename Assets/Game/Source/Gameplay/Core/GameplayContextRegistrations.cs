@@ -1,6 +1,7 @@
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Mono;
+using Game.Gameplay.Features.AI;
 using Game.Utility.Assets;
 
 namespace Game.Gameplay.Core
@@ -12,9 +13,15 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateEntitiesFactory);
             container.RegisterAsSingle(CreateEntitiesWorld);
             container.RegisterAsSingle(CreateCollidersRegistryService);
+            container.RegisterAsSingle(CreateBrainsFactory);
+            container.RegisterAsSingle(CreateAIBrainsContext);
             container.RegisterAsSingle(creaMonoEntitiesFactory).NonLazy();
         }
 
+        private static AIBrainsContext CreateAIBrainsContext(DIContainer c) => new AIBrainsContext();
+        
+        private static BrainsFactory CreateBrainsFactory(DIContainer c) => new BrainsFactory(c);
+        
         private static CollidersRegistryService CreateCollidersRegistryService(DIContainer c)
         {
             return new CollidersRegistryService();

@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using Game.Configs.Gameplay;
 using Game.Gameplay.EntitiesCore;
+using Game.Gameplay.Features.AI;
 using UnityEngine;
 
 namespace Game.Gameplay.Core
@@ -17,6 +18,7 @@ namespace Game.Gameplay.Core
         [SerializeField] private TestGameplay _testGameplay;
 
         private EntitiesWorld _entitiesWorld;
+        private AIBrainsContext _brainsContext;
         
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
         {
@@ -36,6 +38,8 @@ namespace Game.Gameplay.Core
         {
             _entitiesWorld = _container.Resolve<EntitiesWorld>();
             
+            _brainsContext = _container.Resolve<AIBrainsContext>();
+            
             _testGameplay.Initialize(_container);
             yield break;
         }
@@ -47,6 +51,7 @@ namespace Game.Gameplay.Core
 
         private void Update()
         {
+            _brainsContext?.Update(Time.deltaTime);
             _entitiesWorld?.Update(Time.deltaTime);
         }
     }

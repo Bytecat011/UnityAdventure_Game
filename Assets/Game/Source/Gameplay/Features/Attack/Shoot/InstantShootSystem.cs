@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -13,7 +14,7 @@ namespace Game.Gameplay.Features.Attack.Shoot
         private ReactiveVariable<float> _damage;
         private Transform _shootPoint;
 
-        private ISubscription _attackDelayEndSubscription;
+        private IDisposable _attackDelayEndSubscription;
 
         public InstantShootSystem(EntitiesFactory entitiesFactory)
         {
@@ -36,7 +37,7 @@ namespace Game.Gameplay.Features.Attack.Shoot
 
         public void OnDispose()
         {
-            _attackDelayEndSubscription.Unsubscribe();
+            _attackDelayEndSubscription.Dispose();
         }
     }
 }

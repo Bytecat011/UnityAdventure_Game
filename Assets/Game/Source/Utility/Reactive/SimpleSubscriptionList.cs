@@ -5,7 +5,7 @@ namespace Game.Utility.Reactive
 {
     public class SimpleSubscriptionList
     {
-        private class Subscription : ISubscription
+        private class Subscription : IDisposable
         {
             private readonly Action _action;
             private readonly Action<Subscription> _onRemove;
@@ -18,7 +18,7 @@ namespace Game.Utility.Reactive
 
             public void Notify() => _action?.Invoke();
 
-            public void Unsubscribe()
+            public void Dispose()
             {
                 _onRemove?.Invoke(this);
             }
@@ -28,7 +28,7 @@ namespace Game.Utility.Reactive
         private readonly List<Subscription> _toAdd = new();
         private readonly List<Subscription> _toRemove = new();
 
-        public ISubscription CreateSubscription(Action action)
+        public IDisposable CreateSubscription(Action action)
         {
             var subscription = new Subscription(action, Remove);
             _toAdd.Add(subscription);
@@ -61,7 +61,7 @@ namespace Game.Utility.Reactive
     
     public class SimpleSubscriptionList<T>
     {
-        private class Subscription : ISubscription
+        private class Subscription : IDisposable
         {
             private readonly Action<T> _action;
             private readonly Action<Subscription> _onRemove;
@@ -74,7 +74,7 @@ namespace Game.Utility.Reactive
 
             public void Notify(T arg) => _action?.Invoke(arg);
 
-            public void Unsubscribe()
+            public void Dispose()
             {
                 _onRemove?.Invoke(this);
             }
@@ -84,7 +84,7 @@ namespace Game.Utility.Reactive
         private readonly List<Subscription> _toAdd = new();
         private readonly List<Subscription> _toRemove = new();
 
-        public ISubscription CreateSubscription(Action<T> action)
+        public IDisposable CreateSubscription(Action<T> action)
         {
             var subscription = new Subscription(action, Remove);
             _toAdd.Add(subscription);
@@ -117,7 +117,7 @@ namespace Game.Utility.Reactive
     
     public class SimpleSubscriptionList<T, K>
     {
-        private class Subscription : ISubscription
+        private class Subscription : IDisposable
         {
             private readonly Action<T, K> _action;
             private readonly Action<Subscription> _onRemove;
@@ -130,7 +130,7 @@ namespace Game.Utility.Reactive
 
             public void Notify(T arg1, K arg2) => _action?.Invoke(arg1, arg2);
 
-            public void Unsubscribe()
+            public void Dispose()
             {
                 _onRemove?.Invoke(this);
             }
@@ -140,7 +140,7 @@ namespace Game.Utility.Reactive
         private readonly List<Subscription> _toAdd = new();
         private readonly List<Subscription> _toRemove = new();
 
-        public ISubscription CreateSubscription(Action<T, K> action)
+        public IDisposable CreateSubscription(Action<T, K> action)
         {
             var subscription = new Subscription(action, Remove);
             _toAdd.Add(subscription);

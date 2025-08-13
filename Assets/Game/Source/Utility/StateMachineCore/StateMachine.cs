@@ -13,7 +13,14 @@ namespace Game.Utility.StateMachineCore
 
         private bool _isRunning;
         
+        private readonly List<IDisposable> _disposables;
+        
         protected TState CurrentState => _currentState?.State;
+
+        public StateMachine(List<IDisposable> disposables)
+        {
+            _disposables = new List<IDisposable>(disposables);
+        }
         
         public void AddState(TState state) => _states.Add(new StateNode<TState>(state));
 
@@ -38,7 +45,14 @@ namespace Game.Utility.StateMachineCore
                     break;
                 }
             }
+
+            UpdateLogic(deltaTime);
         }
+
+        protected virtual void UpdateLogic(float deltaTime)
+        {
+            
+        } 
 
         public void Enter()
         {
@@ -64,6 +78,11 @@ namespace Game.Utility.StateMachineCore
                     disposableState.Dispose();
             
             _states.Clear();
+            
+            foreach (var disposable in _disposables)
+                disposable.Dispose();
+            
+            _disposables.Clear();
         }
 
         private void SwitchState(StateNode<TState> nextState)

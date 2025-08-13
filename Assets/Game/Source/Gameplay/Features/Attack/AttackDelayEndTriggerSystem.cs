@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -14,8 +15,8 @@ namespace Game.Gameplay.Features.Attack
         
         private bool _alreadyAttacked;
         
-        private ISubscription _timerSubscription;
-        private ISubscription _startAttackSubscription;
+        private IDisposable _timerSubscription;
+        private IDisposable _startAttackSubscription;
 
         public void OnInit(Entity entity)
         {
@@ -48,8 +49,8 @@ namespace Game.Gameplay.Features.Attack
 
         public void OnDispose()
         {
-            _timerSubscription.Unsubscribe();
-            _startAttackSubscription.Unsubscribe();
+            _timerSubscription.Dispose();
+            _startAttackSubscription.Dispose();
         }
     }
 }

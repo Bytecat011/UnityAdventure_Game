@@ -12,6 +12,6 @@ namespace Game.Utility.StateMachineCore
 
         public virtual void Enter() => _entered.Notify();
 
-        public void Exit() => _exited.Notify();
+        public virtual void Exit() => _exited.Notify();
     }
 }

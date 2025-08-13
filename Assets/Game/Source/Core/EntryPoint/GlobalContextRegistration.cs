@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Game.Meta.Features.LevelsProgression;
 using Game.UI;
 using Game.UI.Core;
+using Game.Utility.Timer;
 using UnityEngine;
 
 namespace Game.Core.EntryPoint
@@ -45,10 +46,15 @@ namespace Game.Core.EntryPoint
             container.RegisterAsSingle(CreateProjectPresentersFactory);
             
             container.RegisterAsSingle(CreateViewsFactory);
+
+            container.RegisterAsSingle(CreateTimerService);
             
             container.RegisterAsSingle(CreateLevelsProgressionService).NonLazy();
         }
 
+        private static TimerServiceFactory CreateTimerService(DIContainer c)
+            => new TimerServiceFactory(c);
+        
         private static LevelsProgressionService CreateLevelsProgressionService(DIContainer c)
             => new LevelsProgressionService(c.Resolve<PlayerDataProvider>());
         

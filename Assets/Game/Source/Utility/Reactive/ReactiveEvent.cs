@@ -8,7 +8,7 @@ namespace Game.Utility.Reactive
 
         public void Notify() => _subscriptions.Notify();
         
-        public ISubscription Subscribe(Action action)
+        public IDisposable Subscribe(Action action)
             => _subscriptions.CreateSubscription(action);
     }
     
@@ -18,7 +18,7 @@ namespace Game.Utility.Reactive
 
         public void Notify(T value) => _subscriptions.Notify(value);
         
-        public ISubscription Subscribe(Action<T> action)
+        public IDisposable Subscribe(Action<T> action)
             => _subscriptions.CreateSubscription(action);
     }
 }

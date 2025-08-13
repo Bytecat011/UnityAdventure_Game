@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -10,7 +11,7 @@ namespace Game.Gameplay.Features.Attack
         private ReactiveVariable<bool> _inAttackProcess;
         private ReactiveEvent _startAttackEvent;
 
-        private ISubscription _startAttackEventSubscription;
+        private IDisposable _startAttackEventSubscription;
         
         public void OnInit(Entity entity)
         {
@@ -36,7 +37,7 @@ namespace Game.Gameplay.Features.Attack
 
         public void OnDispose()
         {
-            _startAttackEventSubscription.Unsubscribe();
+            _startAttackEventSubscription.Dispose();
         }
     }
 }

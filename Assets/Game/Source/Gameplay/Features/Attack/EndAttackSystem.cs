@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -12,7 +13,7 @@ namespace Game.Gameplay.Features.Attack
         private ReactiveVariable<float> _attackProcessInitialTime;
         private ReactiveVariable<float> _attackProcessCurrentTime;
 
-        private ISubscription _timerSubscription;
+        private IDisposable _timerSubscription;
         
         public void OnInit(Entity entity)
         {
@@ -38,7 +39,7 @@ namespace Game.Gameplay.Features.Attack
 
         public void OnDispose()
         {
-            _timerSubscription.Unsubscribe();
+            _timerSubscription.Dispose();
         }
     }
 }

@@ -16,6 +16,8 @@ namespace Game.Gameplay.EntitiesCore
 
         private bool _isInit;
         
+        public bool IsInit => _isInit;
+        
         public void Initialize()
         {
             foreach (var system in _initializables)

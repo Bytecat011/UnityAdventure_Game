@@ -1,3 +1,4 @@
+using System;
 using Game.Configs;
 using Game.Meta.Features.Resources;
 using Game.UI.CommonViews;
@@ -13,7 +14,7 @@ namespace Game.UI.Resources
         private readonly ResourceIconsConfig _resourceIconsConfig;
         private readonly IconTextView _view;
         
-        private ISubscription _resourceChangedSubscription;
+        private IDisposable _resourceChangedSubscription;
         
         public ResourcePresenter(
             IReactiveVariable<int> resource, 
@@ -39,7 +40,7 @@ namespace Game.UI.Resources
 
         public void Dispose()
         {
-            _resourceChangedSubscription.Unsubscribe();    
+            _resourceChangedSubscription.Dispose();    
         }
         
         private void OnResourceChanged(int oldValue, int newValue) => UpdateValue(newValue);

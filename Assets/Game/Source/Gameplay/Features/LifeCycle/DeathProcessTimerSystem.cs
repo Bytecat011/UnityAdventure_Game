@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -11,7 +12,7 @@ namespace Game.Gameplay.Features.LifeCycle
         private ReactiveVariable<float> _initialTime;
         private ReactiveVariable<float> _currentTime;
         
-        private ISubscription _isDeadChangedSubscription;
+        private IDisposable _isDeadChangedSubscription;
         
         public void OnInit(Entity entity)
         {
@@ -36,7 +37,7 @@ namespace Game.Gameplay.Features.LifeCycle
 
         public void OnDispose()
         {
-            _isDeadChangedSubscription.Unsubscribe();
+            _isDeadChangedSubscription.Dispose();
         }
         
         private void OnIsDeadChanged(bool _, bool isDead)

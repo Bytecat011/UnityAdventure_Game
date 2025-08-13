@@ -4,11 +4,11 @@ namespace Game.Utility.Reactive
 {
     public interface IReadOnlyEvent
     {
-        ISubscription Subscribe(Action action);
+        IDisposable Subscribe(Action action);
     }
     
     public interface IReadOnlyEvent<T>
     {
-        ISubscription Subscribe(Action<T> action);
+        IDisposable Subscribe(Action<T> action);
     }
 }
