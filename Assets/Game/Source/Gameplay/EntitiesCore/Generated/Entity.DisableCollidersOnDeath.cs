@@ -6,6 +6,16 @@ namespace Game.Gameplay.EntitiesCore
 
 		public System.Collections.Generic.List<UnityEngine.Collider> DisableCollidersOnDeath => DisableCollidersOnDeathC.Value;
 
+		public bool TryGetDisableCollidersOnDeath(out System.Collections.Generic.List<UnityEngine.Collider> value)
+		{
+			bool result = TryGetComponent(out Game.Gameplay.Features.LifeCycle.DisableCollidersOnDeath component);
+			if(result)
+				value = component.Value;
+			else
+				value = default(System.Collections.Generic.List<UnityEngine.Collider>);
+			return result;
+		}
+
 		public Game.Gameplay.EntitiesCore.Entity AddDisableCollidersOnDeath()
 		{
 			return AddComponent(new Game.Gameplay.Features.LifeCycle.DisableCollidersOnDeath() {Value = new System.Collections.Generic.List<UnityEngine.Collider>() });

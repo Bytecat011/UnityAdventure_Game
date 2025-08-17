@@ -6,6 +6,16 @@ namespace Game.Gameplay.EntitiesCore
 
 		public Game.Utility.Reactive.ReactiveEvent<System.Single> TakeDamageEvent => TakeDamageEventC.Value;
 
+		public bool TryGetTakeDamageEvent(out Game.Utility.Reactive.ReactiveEvent<System.Single> value)
+		{
+			bool result = TryGetComponent(out Game.Gameplay.Features.ApplyDamage.TakeDamageEvent component);
+			if(result)
+				value = component.Value;
+			else
+				value = default(Game.Utility.Reactive.ReactiveEvent<System.Single>);
+			return result;
+		}
+
 		public Game.Gameplay.EntitiesCore.Entity AddTakeDamageEvent()
 		{
 			return AddComponent(new Game.Gameplay.Features.ApplyDamage.TakeDamageEvent() {Value = new Game.Utility.Reactive.ReactiveEvent<System.Single>() });

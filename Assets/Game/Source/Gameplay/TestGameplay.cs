@@ -2,6 +2,7 @@ using System;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.AI.States;
 using Game.Gameplay.Features.Movement;
 using UnityEngine;
 
@@ -28,6 +29,9 @@ namespace Game.Gameplay
         public void Run()
         {
             _entity = _entitiesFactory.CreateHero(Vector3.zero);
+            _entity.AddCurrentTarget();
+            _brainsFactory.CreateMainHeroBrain(_entity, new NearestDamageableTargetSelector(_entity));
+            
             _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
             
             _isRunning = true;
@@ -43,11 +47,6 @@ namespace Game.Gameplay
 
             if (Input.GetKeyDown(KeyCode.I))
                 _brainsFactory.CreateGhostBrain(_ghost);
-            
-            Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            
-            _entity.MoveDirection.Value = input;
-            _entity.RotationDirection.Value = input;
         }
     }
 }

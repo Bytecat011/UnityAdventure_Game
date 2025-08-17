@@ -61,6 +61,18 @@ namespace Game.Editor
                         $"\t\tpublic {GetValidTypeName(field.FieldType)} {componentName} => {modifiedComponentName}.{field.Name};");
                     sb.AppendLine();
 
+                    //метод TryGet
+                    sb.AppendLine($"\t\tpublic bool TryGet{componentName}(out {GetValidTypeName(field.FieldType)} {GetVariableNameFrom(field.Name)})");
+                    sb.AppendLine("\t\t{");
+                    sb.AppendLine($"\t\t\tbool result = TryGetComponent(out {fullTypeName} component);");
+                    sb.AppendLine($"\t\t\tif(result)");
+                    sb.AppendLine($"\t\t\t\t{GetVariableNameFrom(field.Name)} = component.{field.Name};");
+                    sb.AppendLine($"\t\t\telse");
+                    sb.AppendLine($"\t\t\t\t{GetVariableNameFrom(field.Name)} = default({GetValidTypeName(field.FieldType)});");
+                    sb.AppendLine($"\t\t\treturn result;");
+                    sb.AppendLine("\t\t}");
+                    sb.AppendLine();
+                    
                     if (HasEmptyConstructor(field.FieldType))
                     {
                         string initializer = "{" + field.Name + " = new " + GetValidTypeName(field.FieldType) + "() }";
