@@ -267,6 +267,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddTeleportAbilityStartEvent()
                 .AddTeleportAbilityEnergyCost(new ReactiveVariable<float>(15))
                 .AddTeleportAbilityRange(new ReactiveVariable<float>(5f))
+                .AddTeleportAbilityTarget(new ReactiveVariable<Vector3>())
                 .AddInTeleportAbilityCastProcess()
                 .AddTeleportAbilityEndEvent()
                 .AddAreaDamage(new ReactiveVariable<float>(50))

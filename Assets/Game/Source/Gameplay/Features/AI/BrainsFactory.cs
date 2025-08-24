@@ -75,6 +75,16 @@ namespace Game.Gameplay.Features.AI
             return brain;
         }
 
+        public StateMachineBrain CreateRandomTeleportBrain(Entity entity)
+        {
+            AIStateMachine stateMachine = CreateRandomTeleportStateMachine(entity);
+            StateMachineBrain brain = new StateMachineBrain(stateMachine);
+
+            _brainsContext.SetFor(entity, brain);
+
+            return brain;
+        }
+
         private AIStateMachine CreateRandomMovementStateMachine(Entity entity)
         {
             List<IDisposable> disposables = new List<IDisposable>();
@@ -139,6 +149,17 @@ namespace Game.Gameplay.Features.AI
 
             stateMachine.AddTransition(rotateToTargetState, attackTriggerState, fromRotateToAttackCondition);
             stateMachine.AddTransition(attackTriggerState, rotateToTargetState, fromAttackToRotateStateCondition);
+
+            return stateMachine;
+        }
+        
+        private AIStateMachine CreateRandomTeleportStateMachine(Entity entity)
+        {
+            RandomTeleportState randomTeleportState = new RandomTeleportState(entity, 1f);
+
+            AIStateMachine stateMachine = new AIStateMachine();
+
+            stateMachine.AddState(randomTeleportState);
 
             return stateMachine;
         }

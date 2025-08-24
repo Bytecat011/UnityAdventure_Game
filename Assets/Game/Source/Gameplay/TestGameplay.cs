@@ -1,9 +1,6 @@
-using System;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
-using Game.Gameplay.Features.AI.States;
-using Game.Gameplay.Features.Movement;
 using UnityEngine;
 
 namespace Game.Gameplay
@@ -13,9 +10,9 @@ namespace Game.Gameplay
         private DIContainer _container;
         private EntitiesFactory _entitiesFactory;
         private BrainsFactory _brainsFactory;
+        private EntitiesWorld _entitiesWorld;
 
         private Entity _entity;
-        private Entity _ghost;
         
         private bool _isRunning;
 
@@ -24,15 +21,17 @@ namespace Game.Gameplay
             _container = container;
             _entitiesFactory = _container.Resolve<EntitiesFactory>();
             _brainsFactory = _container.Resolve<BrainsFactory>();
+            _entitiesWorld = _container.Resolve<EntitiesWorld>();
         }
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateHero(Vector3.zero);
-            _entity.AddCurrentTarget();
-            _brainsFactory.CreateMainHeroBrain(_entity, new NearestDamageableTargetSelector(_entity));
-            
-            _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
+            var _ghost1 = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
+            _brainsFactory.CreateGhostBrain(_ghost1);
+            var _ghost2 = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.left * 5);
+            _brainsFactory.CreateGhostBrain(_ghost2);
+            var _ghost3 = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.right * 5);
+            _brainsFactory.CreateGhostBrain(_ghost3);
             
             _isRunning = true;
         }
@@ -45,8 +44,17 @@ namespace Game.Gameplay
             if (Input.GetKeyDown(KeyCode.R))
                 _entity.StartAttackRequest.Notify();
 
-            if (Input.GetKeyDown(KeyCode.I))
-                _brainsFactory.CreateGhostBrain(_ghost);
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                if (_entity != null)
+                {
+                    _entitiesWorld.Release(_entity);  
+                }
+                
+                _entity = _entitiesFactory.CreateTeleportingCharacter(Vector3.zero);
+                _brainsFactory.CreateRandomTeleportBrain(_entity);
+            }
+                
         }
     }
 }
