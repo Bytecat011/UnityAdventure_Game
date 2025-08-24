@@ -10,27 +10,27 @@ namespace Game.Gameplay.Features.TeleportAbility
     {
         private ReactiveEvent<Vector3> _areaDamageRequest;
         private ReactiveEvent _teleportEndEvent;
-        private Rigidbody _rigidbody;
+        private Transform _transform;
         
-        private ISubscription _teleportEndSubscription;
+        private IDisposable _teleportEndSubscription;
 
         public void OnInit(Entity entity)
         {
             _areaDamageRequest = entity.AreaDamageRequest;
             _teleportEndEvent = entity.TeleportAbilityEndEvent;
-            _rigidbody = entity.Rigidbody;
+            _transform = entity.Transform;
 
             _teleportEndSubscription = _teleportEndEvent.Subscribe(OnTeleportEnded);
         }
 
         private void OnTeleportEnded()
         {
-            _areaDamageRequest.Notify(_rigidbody.position);
+            _areaDamageRequest.Notify(_transform.position);
         }
 
         public void OnDispose()
         {
-            _teleportEndSubscription.Unsubscribe();
+            _teleportEndSubscription.Dispose();
         }
     }
 }

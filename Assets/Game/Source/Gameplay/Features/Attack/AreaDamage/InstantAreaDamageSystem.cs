@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Gameplay.Features.ApplyDamage;
@@ -18,7 +19,7 @@ namespace Game.Gameplay.Features.Attack.AreaDamage
         private LayerMask _layerMask;
         private CapsuleCollider _body;
 
-        private ISubscription _requestSubscription;
+        private IDisposable _requestSubscription;
 
         public InstantAreaDamageSystem(CollidersRegistryService collidersRegistryService)
         {
@@ -60,7 +61,7 @@ namespace Game.Gameplay.Features.Attack.AreaDamage
 
         public void OnDispose()
         {
-            _requestSubscription.Unsubscribe();
+            _requestSubscription.Dispose();
         }
     }
 }

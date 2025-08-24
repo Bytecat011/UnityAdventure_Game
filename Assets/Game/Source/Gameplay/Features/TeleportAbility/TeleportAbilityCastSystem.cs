@@ -1,3 +1,4 @@
+using System;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Utility.Reactive;
@@ -11,7 +12,7 @@ namespace Game.Gameplay.Features.TeleportAbility
         private ReactiveVariable<bool> _inUseProcess;
         private ReactiveEvent _startEvent;
 
-        private ISubscription _startEventSubscription;
+        private IDisposable _startEventSubscription;
         
         public void OnInit(Entity entity)
         {
@@ -38,7 +39,7 @@ namespace Game.Gameplay.Features.TeleportAbility
 
         public void OnDispose()
         {
-            _startEventSubscription.Unsubscribe();
+            _startEventSubscription.Dispose();
         }
     }
 }
