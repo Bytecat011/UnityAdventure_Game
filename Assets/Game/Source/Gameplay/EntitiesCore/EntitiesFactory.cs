@@ -248,8 +248,8 @@ namespace Game.Gameplay.EntitiesCore
             _monoEntitiesFactory.Create(entity, position, "Entities/TeleportingCharacter");
 
             entity
-                .AddMaxHealth(new ReactiveVariable<float>(100))
-                .AddCurrentHealth(new ReactiveVariable<float>(100))
+                .AddMaxHealth(new ReactiveVariable<float>(1000))
+                .AddCurrentHealth(new ReactiveVariable<float>(1000))
                 .AddIsDead()
                 .AddInDeathProcess()
                 .AddDeathProcessInitialTime(new ReactiveVariable<float>(2))

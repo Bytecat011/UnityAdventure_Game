@@ -84,6 +84,28 @@ namespace Game.Gameplay.Features.AI
 
             return brain;
         }
+        
+        public StateMachineBrain CreatTeleportToTargetBrain(Entity entity, ITargetSelector targetSelector, float energyPercentLimit)
+        {
+            AIStateMachine rootStateMachine = new AIStateMachine();
+            
+            AIStateMachine teleportState = CreateAITeleportStateMachine(entity, targetSelector);
+            EmptyState idleState = new EmptyState();
+            
+            rootStateMachine.AddState(idleState);
+            rootStateMachine.AddState(teleportState);
+            
+            ReactiveVariable<float> currentEnergy = entity.CurrentEnergy;
+            ReactiveVariable<float> maxEnergy = entity.MaximumEnergy;
+            rootStateMachine.AddTransition(idleState, teleportState, new FuncCondition(() =>  currentEnergy.Value / maxEnergy.Value >= energyPercentLimit));
+            rootStateMachine.AddTransition(teleportState, idleState, new FuncCondition(() =>  currentEnergy.Value / maxEnergy.Value < energyPercentLimit));
+            
+            StateMachineBrain brain = new StateMachineBrain(rootStateMachine);
+
+            _brainsContext.SetFor(entity, brain);
+
+            return brain;
+        }
 
         private AIStateMachine CreateRandomMovementStateMachine(Entity entity)
         {
@@ -160,6 +182,20 @@ namespace Game.Gameplay.Features.AI
             AIStateMachine stateMachine = new AIStateMachine();
 
             stateMachine.AddState(randomTeleportState);
+
+            return stateMachine;
+        }
+        
+        private AIStateMachine CreateAITeleportStateMachine(Entity entity, ITargetSelector targetSelector)
+        {
+            TeleportToTargetState randomTeleportState = new TeleportToTargetState(entity, 1f);
+            FindTargetState findTargetState = new FindTargetState(targetSelector, _entitiesWorld, entity);
+
+            AIParallelState parallelState = new AIParallelState(randomTeleportState, findTargetState);
+            
+            AIStateMachine stateMachine = new AIStateMachine();
+
+            stateMachine.AddState(parallelState);
 
             return stateMachine;
         }

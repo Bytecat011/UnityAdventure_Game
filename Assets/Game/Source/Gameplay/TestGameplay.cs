@@ -1,6 +1,8 @@
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.AI.States;
+using Game.Utility.Reactive;
 using UnityEngine;
 
 namespace Game.Gameplay
@@ -54,7 +56,18 @@ namespace Game.Gameplay
                 _entity = _entitiesFactory.CreateTeleportingCharacter(Vector3.zero);
                 _brainsFactory.CreateRandomTeleportBrain(_entity);
             }
+             
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                if (_entity != null)
+                {
+                    _entitiesWorld.Release(_entity);  
+                }
                 
+                _entity = _entitiesFactory.CreateTeleportingCharacter(Vector3.zero);
+                _entity.AddCurrentTarget();
+                _brainsFactory.CreatTeleportToTargetBrain(_entity, new LowestHealthInRangeTargetSelector(_entity), 0.4f);
+            }
         }
     }
 }
