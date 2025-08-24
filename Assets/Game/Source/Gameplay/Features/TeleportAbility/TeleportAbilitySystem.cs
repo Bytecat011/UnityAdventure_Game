@@ -11,7 +11,7 @@ namespace Game.Gameplay.Features.TeleportAbility
         private Rigidbody _rigidbody;
         private ReactiveVariable<float> _currentEnergy;
         private ReactiveVariable<float> _energyCost;
-        private ReactiveVariable<float> _range;
+        private ReactiveVariable<Vector3> _targetPosition;
         private ReactiveVariable<float> _timer;
         private ReactiveVariable<bool> _inCastProcess;
         
@@ -21,9 +21,9 @@ namespace Game.Gameplay.Features.TeleportAbility
             _rigidbody = entity.Rigidbody;
             _currentEnergy = entity.CurrentEnergy;
             _energyCost = entity.TeleportAbilityEnergyCost;
-            _range = entity.TeleportAbilityRange;
             _timer = entity.TeleportAbilityCastCurrentTime;
             _inCastProcess = entity.InTeleportAbilityCastProcess;
+            _targetPosition = entity.TeleportAbilityTarget;
         }
 
         public void OnUpdate(float deltaTime)
@@ -44,13 +44,9 @@ namespace Game.Gameplay.Features.TeleportAbility
         private void PerformAbility()
         {
             _currentEnergy.Value -= _energyCost.Value;
-
-            var currentPosition = _rigidbody.position;
-            var offset = Random.insideUnitSphere * _range.Value;
-            offset.y = 0f;
-            var newPosition = currentPosition + offset;
             
-            _rigidbody.MovePosition(newPosition);
+            _rigidbody.MovePosition(_targetPosition.Value);
+            _targetPosition.Value = Vector3.zero;
             
             _endEvent.Notify();
         }

@@ -14,10 +14,15 @@ namespace Game.Gameplay.Features.TeleportAbility
     {
         public ReactiveVariable<float> Value;
     }
+
+    public class TeleportAbilityTarget : IEntityComponent
+    {
+        public ReactiveVariable<Vector3> Value;
+    }
     
     public class TeleportAbilityStartRequest : IEntityComponent
     {
-        public ReactiveEvent Value;
+        public ReactiveEvent<Vector3> Value;
     }
     
     public class TeleportAbilityStartEvent : IEntityComponent
