@@ -28,40 +28,30 @@ namespace Game.Gameplay.Features.AI
             _entitiesWorld = _container.Resolve<EntitiesWorld>();
         }
 
-        public StateMachineBrain CreateMainHeroBrain(Entity entity, ITargetSelector targetSelector)
+        public StateMachineBrain CreateMainHeroBrain(Entity entity)
         {
-            AIStateMachine combatState = CreateAutoAttackStateMachine(entity);
+            AIStateMachine combatState = CreatePlayerInputAttackStateMachine(entity);
 
             PlayerInputMovementState movementState =
                 new PlayerInputMovementState(entity, _inputService);
 
-            ReactiveVariable<Entity> currentTarget = entity.CurrentTarget;
+            ICondition fromMovementToCombatStateCondition =
+                new FuncCondition(() => _inputService.Direction == Vector3.zero);
 
-            ICompositeCondition fromMovementToCombatStateCondition = new CompositeCondition()
-                .Add(new FuncCondition(() => currentTarget.Value != null))
-                .Add(new FuncCondition(() => _inputService.Direction == Vector3.zero));
-            
-            ICompositeCondition fromCombatToMovementStateCondition = new CompositeCondition(LogicOperations.Or)
-                .Add(new FuncCondition(() => currentTarget.Value == null))
-                .Add(new FuncCondition(() => _inputService.Direction != Vector3.zero));
+            ICondition fromCombatToMovementStateCondition =
+                new FuncCondition(() => _inputService.Direction != Vector3.zero);
 
             AIStateMachine behavior = new AIStateMachine();
-            
+
             behavior.AddState(movementState);
             behavior.AddState(combatState);
-            
+
             behavior.AddTransition(movementState, combatState, fromMovementToCombatStateCondition);
             behavior.AddTransition(combatState, movementState, fromCombatToMovementStateCondition);
 
-            FindTargetState findTargetState = new FindTargetState(targetSelector, _entitiesWorld, entity);
-            AIParallelState parallelState = new AIParallelState(findTargetState, behavior);
-            
-            AIStateMachine rootStateMachine = new AIStateMachine();
-            rootStateMachine.AddState(parallelState);
-            
-            StateMachineBrain brain = new StateMachineBrain(rootStateMachine);
+            StateMachineBrain brain = new StateMachineBrain(behavior);
             _brainsContext.SetFor(entity, brain);
-            
+
             return brain;
         }
 
@@ -84,22 +74,25 @@ namespace Game.Gameplay.Features.AI
 
             return brain;
         }
-        
-        public StateMachineBrain CreatTeleportToTargetBrain(Entity entity, ITargetSelector targetSelector, float energyPercentLimit)
+
+        public StateMachineBrain CreatTeleportToTargetBrain(Entity entity, ITargetSelector targetSelector,
+            float energyPercentLimit)
         {
             AIStateMachine rootStateMachine = new AIStateMachine();
-            
+
             AIStateMachine teleportState = CreateAITeleportStateMachine(entity, targetSelector);
             EmptyState idleState = new EmptyState();
-            
+
             rootStateMachine.AddState(idleState);
             rootStateMachine.AddState(teleportState);
-            
+
             ReactiveVariable<float> currentEnergy = entity.CurrentEnergy;
             ReactiveVariable<float> maxEnergy = entity.MaximumEnergy;
-            rootStateMachine.AddTransition(idleState, teleportState, new FuncCondition(() =>  currentEnergy.Value / maxEnergy.Value >= energyPercentLimit));
-            rootStateMachine.AddTransition(teleportState, idleState, new FuncCondition(() =>  currentEnergy.Value / maxEnergy.Value < energyPercentLimit));
-            
+            rootStateMachine.AddTransition(idleState, teleportState,
+                new FuncCondition(() => currentEnergy.Value / maxEnergy.Value >= energyPercentLimit));
+            rootStateMachine.AddTransition(teleportState, idleState,
+                new FuncCondition(() => currentEnergy.Value / maxEnergy.Value < energyPercentLimit));
+
             StateMachineBrain brain = new StateMachineBrain(rootStateMachine);
 
             _brainsContext.SetFor(entity, brain);
@@ -174,7 +167,34 @@ namespace Game.Gameplay.Features.AI
 
             return stateMachine;
         }
-        
+
+        private AIStateMachine CreatePlayerInputAttackStateMachine(Entity entity)
+        {
+            PlayerInputAimingState aimingState = new PlayerInputAimingState(entity, _inputService, 0.25f);
+            AttackTriggerState attackTriggerState = new AttackTriggerState(entity);
+
+            ICondition canAttack = entity.CanStartAttack;
+            TriggerCondition startAttackTriggerCondition = new TriggerCondition(_inputService.Mouse1ClickedEvent);
+
+            ICompositeCondition fromRotateToAttackCondition = new CompositeCondition()
+                .Add(startAttackTriggerCondition)
+                .Add(canAttack);
+
+            ReactiveVariable<bool> inAttackProcess = entity.InAttackProcess;
+
+            ICondition fromAttackToRotateStateCondition = new FuncCondition(() => inAttackProcess.Value == false);
+
+            AIStateMachine stateMachine = new AIStateMachine(new List<IDisposable> { startAttackTriggerCondition });
+
+            stateMachine.AddState(aimingState);
+            stateMachine.AddState(attackTriggerState);
+
+            stateMachine.AddTransition(aimingState, attackTriggerState, fromRotateToAttackCondition);
+            stateMachine.AddTransition(attackTriggerState, aimingState, fromAttackToRotateStateCondition);
+
+            return stateMachine;
+        }
+
         private AIStateMachine CreateRandomTeleportStateMachine(Entity entity)
         {
             RandomTeleportState randomTeleportState = new RandomTeleportState(entity, 1f);
@@ -185,14 +205,14 @@ namespace Game.Gameplay.Features.AI
 
             return stateMachine;
         }
-        
+
         private AIStateMachine CreateAITeleportStateMachine(Entity entity, ITargetSelector targetSelector)
         {
             TeleportToTargetState randomTeleportState = new TeleportToTargetState(entity, 1f);
             FindTargetState findTargetState = new FindTargetState(targetSelector, _entitiesWorld, entity);
 
             AIParallelState parallelState = new AIParallelState(randomTeleportState, findTargetState);
-            
+
             AIStateMachine stateMachine = new AIStateMachine();
 
             stateMachine.AddState(parallelState);

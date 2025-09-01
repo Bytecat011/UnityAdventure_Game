@@ -6,6 +6,7 @@ using System.Collections;
 using Game.Configs.Gameplay;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.Input;
 using UnityEngine;
 
 namespace Game.Gameplay.Core
@@ -19,6 +20,7 @@ namespace Game.Gameplay.Core
 
         private EntitiesWorld _entitiesWorld;
         private AIBrainsContext _brainsContext;
+        private IInputService _inputService;
         
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
         {
@@ -40,6 +42,8 @@ namespace Game.Gameplay.Core
             
             _brainsContext = _container.Resolve<AIBrainsContext>();
             
+            _inputService = _container.Resolve<IInputService>();
+            
             _testGameplay.Initialize(_container);
             yield break;
         }
@@ -53,6 +57,7 @@ namespace Game.Gameplay.Core
         {
             _brainsContext?.Update(Time.deltaTime);
             _entitiesWorld?.Update(Time.deltaTime);
+            _inputService?.Update(Time.deltaTime);
         }
     }
 }

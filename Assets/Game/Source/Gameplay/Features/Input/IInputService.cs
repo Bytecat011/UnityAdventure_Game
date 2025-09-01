@@ -1,3 +1,4 @@
+using Game.Utility.Reactive;
 using UnityEngine;
 
 namespace Game.Gameplay.Features.Input
@@ -6,6 +7,12 @@ namespace Game.Gameplay.Features.Input
     {
         bool IsEnabled { get; set; }
         
+        void Update(float deltaTime);
+        
         Vector3 Direction { get; }
+        
+        Vector2 MouseDelta { get; }
+        
+        ReactiveEvent Mouse1ClickedEvent { get; }
     }
 }

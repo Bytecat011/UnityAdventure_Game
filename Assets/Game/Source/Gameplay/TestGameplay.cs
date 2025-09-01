@@ -68,6 +68,17 @@ namespace Game.Gameplay
                 _entity.AddCurrentTarget();
                 _brainsFactory.CreatTeleportToTargetBrain(_entity, new LowestHealthInRangeTargetSelector(_entity), 0.4f);
             }
+            
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                if (_entity != null)
+                {
+                    _entitiesWorld.Release(_entity);  
+                }
+                
+                _entity = _entitiesFactory.CreateHero(Vector3.zero);
+                _brainsFactory.CreateMainHeroBrain(_entity);
+            }
         }
     }
 }
