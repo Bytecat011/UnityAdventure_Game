@@ -1,4 +1,5 @@
 using System;
+using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
@@ -14,6 +15,9 @@ namespace Game.Gameplay
         private EntitiesFactory _entitiesFactory;
         private BrainsFactory _brainsFactory;
 
+        [SerializeField] private HeroConfig _heroConfig;
+        [SerializeField] private GhostConfig _ghostConfig;
+        
         private Entity _entity;
         private Entity _ghost;
         
@@ -28,11 +32,11 @@ namespace Game.Gameplay
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateHero(Vector3.zero);
+            _entity = _entitiesFactory.CreateHero(Vector3.zero, _heroConfig);
             _entity.AddCurrentTarget();
             _brainsFactory.CreateMainHeroBrain(_entity, new NearestDamageableTargetSelector(_entity));
             
-            _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5);
+            _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5, _ghostConfig);
             
             _isRunning = true;
         }
