@@ -8,6 +8,7 @@ using Game.Gameplay.Features.ContactTakeDamage;
 using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
 using Game.Gameplay.Features.Sensors;
+using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility;
 using Game.Utility.Conditions;
 using Game.Utility.Reactive;
@@ -178,12 +179,10 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new DeathProcessTimerSystem())
                 .AddSystem(new SelfReleaseSystem(_entitiesWorld));
 
-            _entitiesWorld.Add(entity);
-
             return entity;
         }
         
-        public Entity CreateProjectile(Vector3 position, Vector3 direction, float damage)
+        public Entity CreateProjectile(Vector3 position, Vector3 direction, float damage, Entity owner)
         {
             Entity entity = CreateEmpty();
 
@@ -196,12 +195,14 @@ namespace Game.Gameplay.EntitiesCore
                 .AddRotationDirection(new ReactiveVariable<Vector3>(direction))
                 .AddRotationSpeed(new ReactiveVariable<float>(9999))
                 .AddIsDead()
-                .AddContactsDetectingMask(UnityLayers.LayerMaskCharacters)
+                .AddContactsDetectingMask(UnityLayers.LayerMaskCharacters | UnityLayers.LayerMaskEnvironment)
                 .AddContactColliderBuffer(new Buffer<Collider>(64))
                 .AddContactEntitiesBuffer(new Buffer<Entity>(64))
                 .AddBodyContactDamage(new ReactiveVariable<float>(damage))
-                .AddDeathMask(UnityLayers.LayerMaskCharacters)
-                .AddIsTouchDeathMask();
+                .AddDeathMask(UnityLayers.LayerMaskEnvironment)
+                .AddIsTouchDeathMask()
+                .AddIsTouchAnotherTeam()
+                .AddTeam(new ReactiveVariable<Teams>(owner.Team.Value));
 
             var canMove = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value == false));
@@ -209,8 +210,9 @@ namespace Game.Gameplay.EntitiesCore
             var canRotate = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value == false));
 
-            var mustDie = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsTouchDeathMask.Value));
+            var mustDie = new CompositeCondition(LogicOperations.Or)
+                .Add(new FuncCondition(() => entity.IsTouchDeathMask.Value))
+                .Add(new FuncCondition(() => entity.IsTouchAnotherTeam.Value));
 
             var mustSelfRelease = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value));
@@ -228,6 +230,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new BodyContactsEntitiesFilterSystem(_collidersRegistryService))
                 .AddSystem(new DealDamageOnContactSystem())
                 .AddSystem(new DeathMaskTouchDetectorSystem())
+                .AddSystem(new AnotherTeamTouchDetectorSystem())
                 .AddSystem(new DeathSystem())
                 .AddSystem(new DisableCollidersOnDeathSystem())
                 .AddSystem(new SelfReleaseSystem(_entitiesWorld));

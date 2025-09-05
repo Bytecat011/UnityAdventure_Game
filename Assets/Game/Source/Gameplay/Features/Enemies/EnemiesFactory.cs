@@ -3,6 +3,8 @@ using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.TeamsFeatures;
+using Game.Utility.Reactive;
 using UnityEngine;
 
 namespace Game.Gameplay.Features.Enemies
@@ -36,6 +38,8 @@ namespace Game.Gameplay.Features.Enemies
                default:
                    throw new ArgumentException($"Not supported {config.GetType()} type config");
            }
+           
+           entity.AddTeam(new ReactiveVariable<Teams>(Teams.Enemies));
            
            _entitiesWorld.Add(entity);
            

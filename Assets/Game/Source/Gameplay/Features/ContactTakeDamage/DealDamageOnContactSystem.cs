@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Systems;
 using Game.Gameplay.Features.ApplyDamage;
+using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility;
 using Game.Utility.Reactive;
 
@@ -9,6 +10,7 @@ namespace Game.Gameplay.Features.ContactTakeDamage
 {
     public class DealDamageOnContactSystem : IInitializableSystem, IUpdatableSystem
     {
+        private Entity _entity;
         private Buffer<Entity> _contacts;
         private ReactiveVariable<float> _damage;
 
@@ -16,6 +18,8 @@ namespace Game.Gameplay.Features.ContactTakeDamage
         
         public void OnInit(Entity entity)
         {
+            _entity = entity;
+            
             _contacts = entity.ContactEntitiesBuffer;
             _damage = entity.BodyContactDamage;
             
@@ -31,9 +35,8 @@ namespace Game.Gameplay.Features.ContactTakeDamage
                 if (_processedEntities.Contains(contactEntity) == false)
                 {
                     _processedEntities.Add(contactEntity);
-                    
-                    if (contactEntity.HasComponent<TakeDamageRequest>())
-                        contactEntity.TakeDamageRequest.Notify(_damage.Value);
+
+                    EntitiesHelper.TryTakeDamageFrom(_entity, contactEntity, _damage.Value);
                 }
             }
 

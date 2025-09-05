@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.ApplyDamage;
+using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility.Conditions;
+using Game.Utility.Reactive;
 using UnityEngine;
 
 namespace Game.Gameplay.Features.AI.States
@@ -34,6 +36,12 @@ namespace Game.Gameplay.Features.AI.States
                     result = result && canApplyDamage.Evaluate();
                 }
 
+                if (_source.TryGetTeam(out ReactiveVariable<Teams> sourceTeam)
+                    && target.TryGetTeam(out ReactiveVariable<Teams> targetTeam))
+                {
+                    result = result && (sourceTeam.Value != targetTeam.Value);
+                }
+                
                 result = result && (target != _source);
                 
                 return result;
