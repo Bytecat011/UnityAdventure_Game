@@ -4,6 +4,8 @@ using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.AI.States;
+using Game.Gameplay.Features.Enemies;
+using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.Movement;
 using UnityEngine;
 
@@ -18,6 +20,9 @@ namespace Game.Gameplay
         [SerializeField] private HeroConfig _heroConfig;
         [SerializeField] private GhostConfig _ghostConfig;
         
+        private MainHeroFactory _mainHeroFactory;
+        private EnemiesFactory _enemiesFactory;
+        
         private Entity _entity;
         private Entity _ghost;
         
@@ -28,15 +33,16 @@ namespace Game.Gameplay
             _container = container;
             _entitiesFactory = _container.Resolve<EntitiesFactory>();
             _brainsFactory = _container.Resolve<BrainsFactory>();
+            
+            _mainHeroFactory = _container.Resolve<MainHeroFactory>();
+            _enemiesFactory = _container.Resolve<EnemiesFactory>();
         }
 
         public void Run()
         {
-            _entity = _entitiesFactory.CreateHero(Vector3.zero, _heroConfig);
-            _entity.AddCurrentTarget();
-            _brainsFactory.CreateMainHeroBrain(_entity, new NearestDamageableTargetSelector(_entity));
+            _entity = _mainHeroFactory.Create(Vector3.zero);
             
-            _ghost = _entitiesFactory.CreateGhost(Vector3.zero + Vector3.forward * 5, _ghostConfig);
+            _ghost = _enemiesFactory.Create(Vector3.zero + Vector3.forward * 5, _ghostConfig);
             
             _isRunning = true;
         }
@@ -45,12 +51,6 @@ namespace Game.Gameplay
         {
             if (_isRunning == false)
                 return;
-            
-            if (Input.GetKeyDown(KeyCode.R))
-                _entity.StartAttackRequest.Notify();
-
-            if (Input.GetKeyDown(KeyCode.I))
-                _brainsFactory.CreateGhostBrain(_ghost);
         }
     }
 }

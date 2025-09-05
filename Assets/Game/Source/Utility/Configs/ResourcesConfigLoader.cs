@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.Configs;
+using Game.Configs.Gameplay.Entities;
 using Game.Configs.Gameplay.Levels;
 using UnityEngine;
 
@@ -16,7 +17,8 @@ namespace Game.Utility.Configs
         {
             { typeof(StartResourcesDataConfig), "Configs/Meta/Resources/StartResourcesDataConfig" },
             { typeof(ResourceIconsConfig), "Configs/Meta/Resources/ResourceIconsConfig" },
-            { typeof(LevelsListConfig), "Configs/Gameplay/Levels/LevelsListConfig" }
+            { typeof(LevelsListConfig), "Configs/Gameplay/Levels/LevelsListConfig" },
+            { typeof(HeroConfig), "Configs/Gameplay/Entities/Characters/HeroConfig" },
         };
 
         public ResourcesConfigLoader(ResourcesAssetsLoader resources)

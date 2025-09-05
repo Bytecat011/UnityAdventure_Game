@@ -115,8 +115,6 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new DeathProcessTimerSystem())
                 .AddSystem(new SelfReleaseSystem(_entitiesWorld));
 
-            _entitiesWorld.Add(entity);
-
             return entity;
         }
         

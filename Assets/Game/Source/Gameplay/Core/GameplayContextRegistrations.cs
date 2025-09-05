@@ -2,7 +2,9 @@ using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
+using Game.Gameplay.Features.MainHero;
 using Game.Utility.Assets;
 
 namespace Game.Gameplay.Core
@@ -16,24 +18,32 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateCollidersRegistryService);
             container.RegisterAsSingle(CreateBrainsFactory);
             container.RegisterAsSingle(CreateAIBrainsContext);
+            container.RegisterAsSingle(CreateMainHeroFactory);
+            container.RegisterAsSingle(CreateEnemiesFactory);
             container.RegisterAsSingle<IInputService>(CreateDesktopInput);
             container.RegisterAsSingle(creaMonoEntitiesFactory).NonLazy();
         }
+
+        private static EnemiesFactory CreateEnemiesFactory(DIContainer c)
+            => new EnemiesFactory(c);
+        
+        private static MainHeroFactory CreateMainHeroFactory(DIContainer c)
+            => new MainHeroFactory(c);
 
         private static DesktopInput CreateDesktopInput(DIContainer container)
         {
             return new DesktopInput();
         }
-        
+
         private static AIBrainsContext CreateAIBrainsContext(DIContainer c) => new AIBrainsContext();
-        
+
         private static BrainsFactory CreateBrainsFactory(DIContainer c) => new BrainsFactory(c);
-        
+
         private static CollidersRegistryService CreateCollidersRegistryService(DIContainer c)
         {
             return new CollidersRegistryService();
         }
-        
+
         private static MonoEntitiesFactory creaMonoEntitiesFactory(DIContainer c)
         {
             return new MonoEntitiesFactory(
@@ -41,12 +51,12 @@ namespace Game.Gameplay.Core
                 c.Resolve<EntitiesWorld>(),
                 c.Resolve<CollidersRegistryService>());
         }
-        
+
         private static EntitiesWorld CreateEntitiesWorld(DIContainer c)
         {
             return new EntitiesWorld();
         }
-        
+
         private static EntitiesFactory CreateEntitiesFactory(DIContainer c)
         {
             return new EntitiesFactory(c);
