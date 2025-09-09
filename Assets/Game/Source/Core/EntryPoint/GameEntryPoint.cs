@@ -43,11 +43,11 @@ namespace Game.Core.EntryPoint
 
             bool isPlayerDataSaveExists = false;
 
-            yield return playerDataProvider.Exists(result => isPlayerDataSaveExists = result);
+            yield return playerDataProvider.ExistsTask(result => isPlayerDataSaveExists = result);
 
             if (isPlayerDataSaveExists)
             {
-                yield return playerDataProvider.Load();
+                yield return playerDataProvider.LoadTask();
             } else
             {
                 playerDataProvider.Reset();
@@ -55,7 +55,7 @@ namespace Game.Core.EntryPoint
 
             loadingScreen.Hide();
 
-            yield return sceneSwitcherService.SwitchTo(Scenes.Gameplay, new GameplayInputArgs(1));
+            yield return sceneSwitcherService.SwitchTo(Scenes.MainMenu);
         }
     }
 }

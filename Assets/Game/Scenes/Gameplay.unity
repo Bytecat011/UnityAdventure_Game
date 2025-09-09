@@ -375,7 +375,6 @@ GameObject:
   m_Component:
   - component: {fileID: 436583789}
   - component: {fileID: 436583788}
-  - component: {fileID: 436583790}
   m_Layer: 0
   m_Name: Bootsrap
   m_TagString: Untagged
@@ -395,7 +394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18379c381e716d74cb52adbda76d5c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _testGameplay: {fileID: 436583790}
 --- !u!4 &436583789
 Transform:
   m_ObjectHideFlags: 0
@@ -411,20 +409,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &436583790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 436583787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47faa49c5de746b8b491bf4070f422f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _heroConfig: {fileID: 11400000, guid: a68ea048b0acd5c4c8c41b7622d9df4a, type: 2}
-  _ghostConfig: {fileID: 11400000, guid: 6984bbb2dfe8a1f49af8e66926dd5308, type: 2}
 --- !u!1 &1448665316
 GameObject:
   m_ObjectHideFlags: 0

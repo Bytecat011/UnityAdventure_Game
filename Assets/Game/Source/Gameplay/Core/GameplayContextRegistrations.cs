@@ -7,6 +7,7 @@ using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.StagesFeature;
+using Game.Gameplay.States;
 using Game.Utility.Assets;
 using Game.Utility.Configs;
 
@@ -29,10 +30,32 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateEnemiesFactory);
             container.RegisterAsSingle(CreateStagesFactory);
             container.RegisterAsSingle(CreateStagesProviderService);
+            container.RegisterAsSingle(CreatePreparationTriggerService);
+            container.RegisterAsSingle(CreateGameplayStatesFactory);
+            container.RegisterAsSingle(CreateGameplayStatesContext);
+            container.RegisterAsSingle(CreateMainHeroHolderService).NonLazy();
             container.RegisterAsSingle<IInputService>(CreateDesktopInput);
-            container.RegisterAsSingle(creaMonoEntitiesFactory).NonLazy();
+            container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
         }
 
+        private static GameplayStatesContext CreateGameplayStatesContext(DIContainer c)
+        {
+            return new GameplayStatesContext(c.Resolve<GameplayStatesFactory>().CreateGameStateMachine(_inputArgs));
+        }
+        
+        private static GameplayStatesFactory CreateGameplayStatesFactory(DIContainer c)
+        {
+            return new GameplayStatesFactory(c);
+        }
+        
+        private static MainHeroHolderService CreateMainHeroHolderService(DIContainer c)
+            => new MainHeroHolderService(c.Resolve<EntitiesWorld>());
+        
+        private static PreparationTriggerService CreatePreparationTriggerService(DIContainer c)
+            => new PreparationTriggerService(
+                c.Resolve<EntitiesFactory>(),
+                c.Resolve<EntitiesWorld>());
+        
         private static StageProviderService CreateStagesProviderService(DIContainer c)
         {
             return new StageProviderService(
@@ -63,7 +86,7 @@ namespace Game.Gameplay.Core
             return new CollidersRegistryService();
         }
 
-        private static MonoEntitiesFactory creaMonoEntitiesFactory(DIContainer c)
+        private static MonoEntitiesFactory CreateMonoEntitiesFactory(DIContainer c)
         {
             return new MonoEntitiesFactory(
                 c.Resolve<ResourcesAssetsLoader>(),

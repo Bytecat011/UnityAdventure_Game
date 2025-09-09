@@ -34,21 +34,21 @@ namespace Game.Utility.DataManagement.DataProviders
             _readers.Add(reader);
         }
 
-        public IEnumerator Load()
+        public IEnumerator LoadTask()
         {
             yield return _saveLoadService.Load<TData>(result => _data = result);
 
             SendDataToReaders();
         }
 
-        public IEnumerator Save()
+        public IEnumerator SaveTask()
         {
             UpdateDataFoWriters();
 
             yield return _saveLoadService.Save(_data);
         }
 
-        public IEnumerator Exists(Action<bool> onExistsResult)
+        public IEnumerator ExistsTask(Action<bool> onExistsResult)
         {
             yield return _saveLoadService.Exists<TData>(result => onExistsResult?.Invoke(result));
         }
