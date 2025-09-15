@@ -55,7 +55,7 @@ namespace Game.Core.EntryPoint
 
             loadingScreen.Hide();
 
-            yield return sceneSwitcherService.SwitchTo(Scenes.MainMenu);
+            yield return sceneSwitcherService.SwitchTo(Scenes.Gameplay, new GameplayInputArgs(1));
         }
     }
 }
