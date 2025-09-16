@@ -14,6 +14,6 @@ namespace Game.Gameplay.EntitiesCore.Mono
             entity.Initialized -= OnEntityStartedWork;
         }
 
-        protected abstract void OnEntityStartedWork(Entity obj);
+        protected abstract void OnEntityStartedWork(Entity entity);
     }
 }

@@ -8,6 +8,7 @@ using Game.Gameplay.Features.ContactTakeDamage;
 using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
 using Game.Gameplay.Features.Sensors;
+using Game.Gameplay.Features.SpawnFeature;
 using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility;
 using Game.Utility.Conditions;
@@ -142,13 +143,18 @@ namespace Game.Gameplay.EntitiesCore
                 .AddContactsDetectingMask(UnityLayers.LayerMaskCharacters)
                 .AddContactColliderBuffer(new Buffer<Collider>(64))
                 .AddContactEntitiesBuffer(new Buffer<Entity>(64))
-                .AddBodyContactDamage(new ReactiveVariable<float>(config.BodyContactDamage));
+                .AddBodyContactDamage(new ReactiveVariable<float>(config.BodyContactDamage))
+                .AddSpawnInitialTime(new ReactiveVariable<float>(config.SpawnProcessTime))
+                .AddSpawnCurrentTime()
+                .AddInSpawnProcess();
 
             var canMove = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+                .Add(new FuncCondition(() => entity.IsDead.Value == false))
+                .Add(new FuncCondition(() => entity.InSpawnProcess.Value == false));
 
             var canRotate = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+                .Add(new FuncCondition(() => entity.IsDead.Value == false))
+                .Add(new FuncCondition(() => entity.InSpawnProcess.Value == false));
 
             var mustDie = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.CurrentHealth.Value <= 0));
@@ -158,7 +164,8 @@ namespace Game.Gameplay.EntitiesCore
                 .Add(new FuncCondition(() => entity.InDeathProcess.Value == false));
 
             var canApplyDamage = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+                .Add(new FuncCondition(() => entity.IsDead.Value == false))
+                .Add(new FuncCondition(() => entity.InSpawnProcess.Value == false));
 
             entity
                 .AddCanMove(canMove)
@@ -168,6 +175,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddCanApplyDamage(canApplyDamage);
 
             entity
+                .AddSystem(new SpawnProcessTimerSystem())
                 .AddSystem(new RigidbodyMovementSystem())
                 .AddSystem(new RigidbodyRotationSystem())
                 .AddSystem(new BodyContactsDetectingSystem())
