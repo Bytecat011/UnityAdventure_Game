@@ -5,6 +5,7 @@ using Game.Gameplay.Features.Input;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.StagesFeature;
 using Game.Meta.Features.LevelsProgression;
+using Game.UI.Gameplay;
 using Game.Utility.Conditions;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
@@ -37,16 +38,15 @@ namespace Game.Gameplay.States
                 _container.Resolve<LevelsProgressionService>(),
                 inputArgs,
                 _container.Resolve<PlayerDataProvider>(),
-                _container.Resolve<SceneSwitcherService>(),
-                _container.Resolve<ICoroutineRunner>());
+                _container.Resolve<ICoroutineRunner>(),
+            _container.Resolve<GameplayPopupService>());
         }
         
         public DefeatState CreateDefeatState()
         {
             return new DefeatState(
                 _container.Resolve<IInputService>(),
-                _container.Resolve<SceneSwitcherService>(),
-                _container.Resolve<ICoroutineRunner>());
+                _container.Resolve<GameplayPopupService>());
         }
 
         public GameplayStateMachine CreateGameStateMachine(GameplayInputArgs inputArgs)

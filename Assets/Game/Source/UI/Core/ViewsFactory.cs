@@ -17,6 +17,8 @@ namespace Game.UI.Core
             { ViewIDs.LevelTile, "UI/LevelsMenuPopup/LevelTile" },
             { ViewIDs.LevelsMenuPopup, "UI/LevelsMenuPopup/LevelsMenuPopup" },
             { ViewIDs.GameplayScreen, "UI/Gameplay/GameplayScreenView" },
+            { ViewIDs.WinPopup, "UI/Gameplay/ResultsPopup/WinPopup" },
+            { ViewIDs.LosePopup, "UI/Gameplay/ResultsPopup/LosePopup" },
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)

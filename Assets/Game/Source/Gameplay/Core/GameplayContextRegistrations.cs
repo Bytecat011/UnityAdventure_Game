@@ -83,7 +83,7 @@ namespace Game.Gameplay.Core
         
         private static GameplayPresentersFactory CreateGameplayPresentersFactory(DIContainer c)
         {
-            return new GameplayPresentersFactory(c);
+            return new GameplayPresentersFactory(c, _inputArgs);
         }
         
         private static GameplayStatesContext CreateGameplayStatesContext(DIContainer c)

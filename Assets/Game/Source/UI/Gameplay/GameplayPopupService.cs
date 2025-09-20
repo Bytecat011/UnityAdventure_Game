@@ -1,4 +1,6 @@
+using System;
 using Game.UI.Core;
+using Game.UI.Gameplay.ResultsPopup;
 using UnityEngine;
 
 namespace Game.UI.Gameplay
@@ -20,5 +22,27 @@ namespace Game.UI.Gameplay
         }
 
         protected override Transform PopupLayer => _uiRoot.PopupsLayer;
+
+        public WinPopupPresenter OpenWinPopup(Action closedCallback = null)
+        {
+            WinPopupView view = ViewsFactory.Create<WinPopupView>(ViewIDs.WinPopup, PopupLayer);
+
+            WinPopupPresenter popup = _gameplayPresentersFactory.CreateWinPopupPresenter(view);
+            
+            OnPopupCreated(popup, view, closedCallback);
+            
+            return popup;
+        }
+        
+        public LosePopupPresenter OpenLosePopup(Action closedCallback = null)
+        {
+            LosePopupView view = ViewsFactory.Create<LosePopupView>(ViewIDs.LosePopup, PopupLayer);
+
+            LosePopupPresenter popup = _gameplayPresentersFactory.CreateLosePopupPresenter(view);
+            
+            OnPopupCreated(popup, view, closedCallback);
+            
+            return popup;
+        }
     }
 }

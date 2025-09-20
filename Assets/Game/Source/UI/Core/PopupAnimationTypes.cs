@@ -4,5 +4,6 @@ namespace Game.UI.Core
     {
         None,
         Expand,
+        Fade,
     }
 }

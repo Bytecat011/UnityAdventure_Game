@@ -1,4 +1,5 @@
 using Game.Gameplay.Features.Input;
+using Game.UI.Gameplay;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
 using Game.Utility.StateMachineCore;
@@ -8,31 +9,23 @@ namespace Game.Gameplay.States
 {
     public class DefeatState : EndGameState, IUpdatableState
     {
-        private readonly SceneSwitcherService _sceneSwitcherService;
-        private readonly ICoroutineRunner _coroutineRunner;
+        private readonly GameplayPopupService _popupService;
         
         public DefeatState(
             IInputService inputService,
-            SceneSwitcherService sceneSwitcherService,
-            ICoroutineRunner coroutineRunner) : base(inputService)
+            GameplayPopupService popupService) : base(inputService)
         {
-            _sceneSwitcherService = sceneSwitcherService;
-            _coroutineRunner = coroutineRunner;
+            _popupService = popupService;
         }
 
         public override void Enter()
         {
             base.Enter();
-            
-            Debug.Log("Lose!");
+            _popupService.OpenLosePopup();
         }
 
         public void Update(float deltaTime)
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                _coroutineRunner.StartTask(_sceneSwitcherService.SwitchTo(Scenes.MainMenu));
-            }
         }
     }
 }
