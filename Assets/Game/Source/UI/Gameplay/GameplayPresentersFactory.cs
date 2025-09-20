@@ -1,6 +1,9 @@
 using Game.Core.DI;
 using Game.Gameplay.Core;
+using Game.Gameplay.Features.StagesFeature;
+using Game.UI.CommonViews;
 using Game.UI.Gameplay.ResultsPopup;
+using Game.UI.Gameplay.Stages;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
 
@@ -19,7 +22,12 @@ namespace Game.UI.Gameplay
 
         public GameplayScreenPresenter CreateGameplayScreenPresenter(GameplayScreenView view)
         {
-            return new GameplayScreenPresenter(view);
+            return new GameplayScreenPresenter(view, _container.Resolve<GameplayPresentersFactory>());
+        }
+
+        public StagePresenter CreaStagePresenter(IconTextView view)
+        {
+            return new StagePresenter(view, _container.Resolve<StageProviderService>());
         }
 
         public WinPopupPresenter CreateWinPopupPresenter(WinPopupView view)
