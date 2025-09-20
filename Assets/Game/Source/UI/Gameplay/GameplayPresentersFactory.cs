@@ -1,7 +1,10 @@
 using Game.Core.DI;
 using Game.Gameplay.Core;
+using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.StagesFeature;
 using Game.UI.CommonViews;
+using Game.UI.Core;
+using Game.UI.Gameplay.HealthDisplay;
 using Game.UI.Gameplay.ResultsPopup;
 using Game.UI.Gameplay.Stages;
 using Game.Utility.CoroutineManagement;
@@ -25,7 +28,12 @@ namespace Game.UI.Gameplay
             return new GameplayScreenPresenter(view, _container.Resolve<GameplayPresentersFactory>());
         }
 
-        public StagePresenter CreaStagePresenter(IconTextView view)
+        public EntityHealthPresenter CreateEntityHealthPresenter(Entity entity, BarWithText view)
+        {
+            return new EntityHealthPresenter(entity, view);
+        }
+        
+        public StagePresenter CreateStagePresenter(IconTextView view)
         {
             return new StagePresenter(view, _container.Resolve<StageProviderService>());
         }
@@ -46,6 +54,15 @@ namespace Game.UI.Gameplay
                 view,
                 _container.Resolve<SceneSwitcherService>(),
                 _gameplayInputArgs);
+        }
+
+        public EntitiesHealthDisplayPresenter CreateEntitiesHealthDisplayPresenter(EntitiesHealthDisplay view)
+        {
+            return new EntitiesHealthDisplayPresenter(
+                _container.Resolve<EntitiesWorld>(),
+                view,
+                _container.Resolve<ViewsFactory>(),
+                this);
         }
     }
 }

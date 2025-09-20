@@ -10,5 +10,7 @@ namespace Game.UI.Core
         public const string GameplayScreen = nameof(GameplayScreen);
         public const string WinPopup = nameof(WinPopup);
         public const string LosePopup = nameof(LosePopup);
+        public const string SimpleHealthBar = nameof(SimpleHealthBar);
+        public const string MainHeroHealthBar = nameof(MainHeroHealthBar);
     }
 }

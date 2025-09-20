@@ -19,6 +19,8 @@ namespace Game.UI.Core
             { ViewIDs.GameplayScreen, "UI/Gameplay/GameplayScreenView" },
             { ViewIDs.WinPopup, "UI/Gameplay/ResultsPopup/WinPopup" },
             { ViewIDs.LosePopup, "UI/Gameplay/ResultsPopup/LosePopup" },
+            { ViewIDs.SimpleHealthBar, "UI/Gameplay/HealthBars/SimpleHealthBar" },
+            { ViewIDs.MainHeroHealthBar, "UI/Gameplay/HealthBars/HeroHealthBar" },
         };
 
         public ViewsFactory(ResourcesAssetsLoader resourcesAssetsLoader)

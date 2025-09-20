@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Game.UI.Core;
+using Game.UI.Gameplay.HealthDisplay;
 using Game.UI.Gameplay.Stages;
+using Unity.VisualScripting;
 
 namespace Game.UI.Gameplay
 {
@@ -11,6 +13,8 @@ namespace Game.UI.Gameplay
         private readonly GameplayPresentersFactory _presentersFactory;
         
         private readonly List<IPresenter> _childPresenters = new();
+        
+        private EntitiesHealthDisplayPresenter _entitiesHealthDisplayPresenter;
 
         public GameplayScreenPresenter(GameplayScreenView screen, GameplayPresentersFactory presentersFactory)
         {
@@ -21,6 +25,7 @@ namespace Game.UI.Gameplay
         public void Initialize()
         {
             CreateStageNumber();
+            CreateEntitiesHealthDisplay();
             
             foreach (var presenter in _childPresenters)
                 presenter.Initialize();
@@ -33,11 +38,24 @@ namespace Game.UI.Gameplay
             
             _childPresenters.Clear();
         }
+
+        public void LateUpdate()
+        {
+            _entitiesHealthDisplayPresenter.LateUpdate();
+        }
         
         private void CreateStageNumber()
         {
-            StagePresenter stagePresenter = _presentersFactory.CreaStagePresenter(_screen.StageNumberView);
+            StagePresenter stagePresenter = _presentersFactory.CreateStagePresenter(_screen.StageNumberView);
             _childPresenters.Add(stagePresenter);
+        }
+
+        private void CreateEntitiesHealthDisplay()
+        {
+            _entitiesHealthDisplayPresenter =
+                _presentersFactory.CreateEntitiesHealthDisplayPresenter(_screen.EntitiesHealthDisplay);
+            
+            _childPresenters.Add(_entitiesHealthDisplayPresenter);
         }
     }
 }

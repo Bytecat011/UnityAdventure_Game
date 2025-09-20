@@ -8,6 +8,7 @@ using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.States;
+using Game.UI.Gameplay;
 using Game.Utility.CoroutineManagement;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ namespace Game.Gameplay.Core
 
         private EntitiesWorld _entitiesWorld;
         private AIBrainsContext _brainsContext;
+        
+        private GameplayScreenPresenter _screenPresenter;
         
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
         {
@@ -45,6 +48,8 @@ namespace Game.Gameplay.Core
             
             _gameplayStatesContext = _container.Resolve<GameplayStatesContext>();
 
+            _screenPresenter = _container.Resolve<GameplayScreenPresenter>();
+            
             _container.Resolve<MainHeroFactory>().Create(Vector3.zero);
             
             yield break;
@@ -67,6 +72,11 @@ namespace Game.Gameplay.Core
                 var coroutineRunner = _container.Resolve<ICoroutineRunner>();
                 coroutineRunner.StartTask(sceneSwitcherService.SwitchTo(Scenes.MainMenu));
             }
+        }
+
+        private void LateUpdate()
+        {
+            _screenPresenter?.LateUpdate();
         }
     }
 }
