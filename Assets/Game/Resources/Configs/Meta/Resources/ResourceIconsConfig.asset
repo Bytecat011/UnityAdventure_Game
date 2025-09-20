@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _configs:
   - <Type>k__BackingField: 0
-    <Sprite>k__BackingField: {fileID: 10913, guid: 0000000000000000f000000000000000,
-      type: 0}
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 609b0789b2cbf4ac7855ebf7bea37c69,
+      type: 3}
   - <Type>k__BackingField: 1
-    <Sprite>k__BackingField: {fileID: 10905, guid: 0000000000000000f000000000000000,
-      type: 0}
+    <Sprite>k__BackingField: {fileID: 21300000, guid: 3228592e66be14995a9c08343ff22e7c,
+      type: 3}
