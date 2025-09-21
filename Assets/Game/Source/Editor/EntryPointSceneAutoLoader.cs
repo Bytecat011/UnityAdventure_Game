@@ -11,10 +11,10 @@ namespace Game.Editor
         
         static EntryPointSceneAutoLoader()
         {
-            EditorApplication.playModeStateChanged += OnPLayModeStateChanged;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
         }
 
-        private static void OnPLayModeStateChanged(PlayModeStateChange state)
+        private static void OnPlayModeStateChanged(PlayModeStateChange state)
         {
             if (state == PlayModeStateChange.ExitingPlayMode)
             {
