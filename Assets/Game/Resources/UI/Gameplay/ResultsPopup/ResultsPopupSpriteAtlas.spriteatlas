@@ -20,7 +20,20 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 2048
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_IgnorePlatformSupport: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
       serializedVersion: 2
       padding: 8
@@ -42,20 +55,23 @@ SpriteAtlas:
     cachedData: {fileID: 0}
     packedSpriteRenderDataKeys:
     - e3ba9dc114f154439a3f8b0365070df3: 21300000
+    - b841d622050fe435ba204acb95bc6315: 21300000
     - 0fc80593f303f48349789748cd156104: 21300000
     - 395d838cf14e8485da4e9da25716d704: 21300000
     - 4721a02d13b204939a62463b27b33365: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: e3ba9dc114f154439a3f8b0365070df3, type: 3}
+  - {fileID: 21300000, guid: b841d622050fe435ba204acb95bc6315, type: 3}
   - {fileID: 21300000, guid: 0fc80593f303f48349789748cd156104, type: 3}
   - {fileID: 21300000, guid: 395d838cf14e8485da4e9da25716d704, type: 3}
   - {fileID: 21300000, guid: 4721a02d13b204939a62463b27b33365, type: 3}
   m_PackedSpriteNamesToIndex:
   - Image_Glow_Oval_01
+  - Title_Ribbon_01_Red
   - Icon_Star_Result_n
   - Icon_Star_Result_d
   - Title_Ribbon_01_Purple
   m_RenderDataMap: {}
-  m_Tag: WinPopupSpriteAtlas
+  m_Tag: ResultsPopupSpriteAtlas
   m_IsVariant: 0
