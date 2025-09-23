@@ -12,4 +12,9 @@ namespace Game.Gameplay.Features.Stats
     {
         public Dictionary<StatTypes, float> Value;
     }
+
+    public class StatsEffects : IEntityComponent
+    {
+        public StatsEffectsList Value;
+    }
 }

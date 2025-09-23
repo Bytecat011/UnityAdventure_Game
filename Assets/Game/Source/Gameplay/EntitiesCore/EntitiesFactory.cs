@@ -50,6 +50,7 @@ namespace Game.Gameplay.EntitiesCore
             Dictionary<StatTypes, float> modifiedStats = new(baseStats);
 
             entity
+                .AddStatsEffects()
                 .AddBaseStats(baseStats)
                 .AddModifiedStats(modifiedStats)
                 .AddMoveDirection()
@@ -115,6 +116,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddMustCancelAttack(mustCancelAttack);
 
             entity
+                .AddSystem(new StatEffectsApplierSystem())
                 .AddSystem(new MoveSpeedStatSyncSystem())
                 .AddSystem(new DamageStatSyncSystem())
                 .AddSystem(new MaxHealthStatSyncSystem())
