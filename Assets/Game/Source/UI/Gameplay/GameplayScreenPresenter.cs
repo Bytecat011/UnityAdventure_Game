@@ -26,6 +26,7 @@ namespace Game.UI.Gameplay
         {
             CreateStageNumber();
             CreateEntitiesHealthDisplay();
+            CreateMainHeroExpView();
             
             foreach (var presenter in _childPresenters)
                 presenter.Initialize();
@@ -56,6 +57,13 @@ namespace Game.UI.Gameplay
                 _presentersFactory.CreateEntitiesHealthDisplayPresenter(_screen.EntitiesHealthDisplay);
             
             _childPresenters.Add(_entitiesHealthDisplayPresenter);
+        }
+
+        private void CreateMainHeroExpView()
+        {
+            var view = _presentersFactory.CreateMainHeroExperiencePresenter(_screen.ExperienceBarView);
+            
+            _childPresenters.Add(view);
         }
     }
 }

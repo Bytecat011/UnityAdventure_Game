@@ -79,7 +79,7 @@ namespace Game.Gameplay.Core
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                _mainHeroHolderService.MainHero.Experience.Value += 1000;
+                _mainHeroHolderService.MainHero.Experience.Value += 500;
             }
         }
 

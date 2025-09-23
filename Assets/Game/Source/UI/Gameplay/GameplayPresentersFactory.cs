@@ -1,16 +1,20 @@
+using Game.Configs.Gameplay;
 using Game.Configs.Gameplay.Abilities;
 using Game.Core.DI;
 using Game.Gameplay.Core;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.Abilities;
 using Game.Gameplay.Features.AbilityDropping;
+using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.StagesFeature;
 using Game.UI.CommonViews;
 using Game.UI.Core;
 using Game.UI.Gameplay.AbilitySelectPopup;
+using Game.UI.Gameplay.Experience;
 using Game.UI.Gameplay.HealthDisplay;
 using Game.UI.Gameplay.ResultsPopup;
 using Game.UI.Gameplay.Stages;
+using Game.Utility.Configs;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
 
@@ -95,6 +99,14 @@ namespace Game.UI.Gameplay
                 _container.Resolve<ViewsFactory>(),
                 level
             );
+        }
+
+        public MainHeroExperiencePresenter CreateMainHeroExperiencePresenter(BarWithText view)
+        {
+            return new MainHeroExperiencePresenter(
+                _container.Resolve<MainHeroHolderService>(),
+                _container.Resolve<ConfigManager>().GetConfig<ExperienceForUpgradeLevelConfig>(),
+                view);
         }
     }
 }
