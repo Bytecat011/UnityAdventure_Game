@@ -1,6 +1,7 @@
 using Game.Data;
 using Game.Gameplay.Core;
 using Game.Gameplay.Features.Input;
+using Game.Gameplay.Features.Pause;
 using Game.Meta.Features.LevelsProgression;
 using Game.UI.Gameplay;
 using Game.Utility.CoroutineManagement;
@@ -21,11 +22,12 @@ namespace Game.Gameplay.States
         
         public WinState(
             IInputService inputService, 
+            IPauseService pauseService,
             LevelsProgressionService levelsProgressionService,
             GameplayInputArgs gameplayInputArgs,
             PlayerDataProvider playerDataProvider,
             ICoroutineRunner coroutineRunner,
-            GameplayPopupService popupService) : base(inputService)
+            GameplayPopupService popupService) : base(inputService, pauseService)
         {
             _levelsProgressionService = levelsProgressionService;
             _gameplayInputArgs = gameplayInputArgs;

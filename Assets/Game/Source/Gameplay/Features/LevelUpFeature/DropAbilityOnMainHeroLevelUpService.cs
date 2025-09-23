@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.MainHero;
+using Game.Gameplay.Features.Pause;
 using Game.UI.Gameplay;
 using Game.UI.Gameplay.AbilitySelectPopup;
 using Game.Utility.CoroutineManagement;
@@ -16,6 +17,7 @@ namespace Game.Gameplay.Features.LevelUpFeature
         private MainHeroHolderService _mainHeroHolderService;
         private GameplayPopupService _popupService;
         private ICoroutineRunner _coroutineRunner;
+        private IPauseService _pauseService;
 
         private Queue<int> _levelUpRequests = new();
 
@@ -28,11 +30,12 @@ namespace Game.Gameplay.Features.LevelUpFeature
         public DropAbilityOnMainHeroLevelUpService(
             MainHeroHolderService mainHeroHolderService, 
             GameplayPopupService popupService,
-            ICoroutineRunner coroutineRunner)
+            ICoroutineRunner coroutineRunner, IPauseService pauseService)
         {
             _mainHeroHolderService = mainHeroHolderService;
             _popupService = popupService;
             _coroutineRunner = coroutineRunner;
+            _pauseService = pauseService;
         }
 
         private bool PopupIsOpened => _popup != null;
@@ -69,8 +72,10 @@ namespace Game.Gameplay.Features.LevelUpFeature
             {
                 int level = _levelUpRequests.Dequeue();
 
+                _pauseService.Pause();
                 _popup = _popupService.OpenAbilitySelectPopup(_mainHeroHolderService.MainHero, level, () =>
                 {
+                    _pauseService.Unpause();
                     _popup = null;
                 });
                 

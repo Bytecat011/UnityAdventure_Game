@@ -10,6 +10,7 @@ using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
 using Game.Gameplay.Features.LevelUpFeature;
 using Game.Gameplay.Features.MainHero;
+using Game.Gameplay.Features.Pause;
 using Game.Gameplay.Features.StagesFeature;
 using Game.Gameplay.States;
 using Game.UI;
@@ -56,14 +57,22 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateAbilityDropService);
             
             container.RegisterAsSingle(CreateDropAbilityOnMainHeroLevelUpService).NonLazy();
+            
+            container.RegisterAsSingle<IPauseService>(CreateTimeScalePauseService);
         }
 
+        private static TimeScalePauseService CreateTimeScalePauseService(DIContainer c)
+        {
+            return new TimeScalePauseService();
+        }
+        
         private static DropAbilityOnMainHeroLevelUpService CreateDropAbilityOnMainHeroLevelUpService(DIContainer c)
         {
             return new DropAbilityOnMainHeroLevelUpService(
                 c.Resolve<MainHeroHolderService>(),
                 c.Resolve<GameplayPopupService>(),
-                c.Resolve<ICoroutineRunner>());
+                c.Resolve<ICoroutineRunner>(),
+                c.Resolve<IPauseService>());
         }
         
         private static AbilityDropService CreateAbilityDropService(DIContainer c)

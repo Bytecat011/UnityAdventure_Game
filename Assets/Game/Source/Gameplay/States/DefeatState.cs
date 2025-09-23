@@ -1,4 +1,5 @@
 using Game.Gameplay.Features.Input;
+using Game.Gameplay.Features.Pause;
 using Game.UI.Gameplay;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
@@ -13,7 +14,8 @@ namespace Game.Gameplay.States
         
         public DefeatState(
             IInputService inputService,
-            GameplayPopupService popupService) : base(inputService)
+            IPauseService pauseService,
+            GameplayPopupService popupService) : base(inputService, pauseService)
         {
             _popupService = popupService;
         }
