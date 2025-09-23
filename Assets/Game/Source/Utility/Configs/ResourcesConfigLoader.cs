@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Game.Configs;
+using Game.Configs.Gameplay;
 using Game.Configs.Gameplay.Abilities;
 using Game.Configs.Gameplay.Entities;
 using Game.Configs.Gameplay.Levels;
@@ -21,6 +22,7 @@ namespace Game.Utility.Configs
             { typeof(LevelsListConfig), "Configs/Gameplay/Levels/LevelsListConfig" },
             { typeof(HeroConfig), "Configs/Gameplay/Entities/Characters/HeroConfig" },
             { typeof(AbilitiesConfigsContainer), "Configs/Gameplay/Abilities/AbilitiesConfigsContainer" },
+            { typeof(ExperienceForUpgradeLevelConfig), "Configs/Gameplay/ExperienceForUpgradeLevelConfig" },
         };
 
         public ResourcesConfigLoader(ResourcesAssetsLoader resources)

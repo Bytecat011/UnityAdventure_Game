@@ -1,9 +1,11 @@
+using Game.Configs.Gameplay;
 using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.Abilities;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.AI.States;
+using Game.Gameplay.Features.LevelUpFeature;
 using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility.Configs;
 using Game.Utility.Reactive;
@@ -42,6 +44,11 @@ namespace Game.Gameplay.Features.MainHero
             entity
                 .AddAbilities()
                 .AddSystem(new AbilityOnAddActivatorSystem());
+
+            entity
+                .AddLevel(new ReactiveVariable<int>(1))
+                .AddExperience()
+                .AddSystem(new LevelUpSystem(_configManager.GetConfig<ExperienceForUpgradeLevelConfig>()));
             
             entity.AddCurrentTarget();
             _brainsFactory.CreateMainHeroBrain(entity, new NearestDamageableTargetSelector(entity));
