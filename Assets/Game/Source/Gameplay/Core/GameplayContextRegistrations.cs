@@ -8,6 +8,7 @@ using Game.Gameplay.Features.AbilityDropping;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
+using Game.Gameplay.Features.LevelUpFeature;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.StagesFeature;
 using Game.Gameplay.States;
@@ -16,6 +17,7 @@ using Game.UI.Core;
 using Game.UI.Gameplay;
 using Game.Utility.Assets;
 using Game.Utility.Configs;
+using Game.Utility.CoroutineManagement;
 
 namespace Game.Gameplay.Core
 {
@@ -52,8 +54,18 @@ namespace Game.Gameplay.Core
 
             container.RegisterAsSingle(CreateAbilityDroppingRulesService);
             container.RegisterAsSingle(CreateAbilityDropService);
+            
+            container.RegisterAsSingle(CreateDropAbilityOnMainHeroLevelUpService).NonLazy();
         }
 
+        private static DropAbilityOnMainHeroLevelUpService CreateDropAbilityOnMainHeroLevelUpService(DIContainer c)
+        {
+            return new DropAbilityOnMainHeroLevelUpService(
+                c.Resolve<MainHeroHolderService>(),
+                c.Resolve<GameplayPopupService>(),
+                c.Resolve<ICoroutineRunner>());
+        }
+        
         private static AbilityDropService CreateAbilityDropService(DIContainer c)
         {
             return new AbilityDropService(

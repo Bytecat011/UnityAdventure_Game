@@ -83,7 +83,8 @@ namespace Game.UI.Gameplay
 
         public AbilitySelectPopupPresenter CreateAbilitySelectPopupPresenter(
             AbilitySelectPopupView view,
-            Entity entity)
+            Entity entity,
+            int level)
         {
             return new AbilitySelectPopupPresenter(
                 _container.Resolve<ICoroutineRunner>(),
@@ -91,7 +92,8 @@ namespace Game.UI.Gameplay
                 entity,
                 this,
                 _container.Resolve<AbilityDropService>(),
-                _container.Resolve<ViewsFactory>()
+                _container.Resolve<ViewsFactory>(),
+                level
             );
         }
     }

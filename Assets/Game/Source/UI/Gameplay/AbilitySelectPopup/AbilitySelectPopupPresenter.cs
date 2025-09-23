@@ -20,6 +20,7 @@ namespace Game.UI.Gameplay.AbilitySelectPopup
         private readonly AbilityDropService _abilityDropper;
         private readonly GameplayPresentersFactory _presentersFactory;
         private readonly ViewsFactory _viewsFactory;
+        private int _level;
         
         private List<SelectableAbilityPresenter> _presenters = new();
         private SelectableAbilityPresenter _selectedPresenter;
@@ -30,13 +31,14 @@ namespace Game.UI.Gameplay.AbilitySelectPopup
             Entity entity,
             GameplayPresentersFactory presentersFactory,
             AbilityDropService abilityDropper,
-            ViewsFactory viewsFactory) : base(coroutineRunner)
+            ViewsFactory viewsFactory, int level) : base(coroutineRunner)
         {
             _view = view;
             _entity = entity;
             _presentersFactory = presentersFactory;
             _abilityDropper = abilityDropper;
             _viewsFactory = viewsFactory;
+            _level = level;
         }
 
         protected override PopupViewBase PopupView => _view;
@@ -45,7 +47,7 @@ namespace Game.UI.Gameplay.AbilitySelectPopup
         {
             base.Initialize();
             
-            _view.SetTitle(string.Format(Title, _entity.Level.Value));
+            _view.SetTitle(string.Format(Title, _level));
             _view.SetAdditionalText(SelectAbilityText);
             _view.SelectButtonOff();
 

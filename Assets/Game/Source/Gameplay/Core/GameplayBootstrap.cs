@@ -24,6 +24,8 @@ namespace Game.Gameplay.Core
         private EntitiesWorld _entitiesWorld;
         private AIBrainsContext _brainsContext;
         
+        private MainHeroHolderService _mainHeroHolderService;
+        
         private GameplayScreenPresenter _screenPresenter;
         
         public override void ProcessRegistrations(DIContainer container, IInputSceneArgs sceneArgs)
@@ -52,6 +54,8 @@ namespace Game.Gameplay.Core
             
             _container.Resolve<MainHeroFactory>().Create(Vector3.zero);
             
+            _mainHeroHolderService = _container.Resolve<MainHeroHolderService>();
+            
             yield break;
         }
 
@@ -71,6 +75,11 @@ namespace Game.Gameplay.Core
                 var sceneSwitcherService = _container.Resolve<SceneSwitcherService>();
                 var coroutineRunner = _container.Resolve<ICoroutineRunner>();
                 coroutineRunner.StartTask(sceneSwitcherService.SwitchTo(Scenes.MainMenu));
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                _mainHeroHolderService.MainHero.Experience.Value += 1000;
             }
         }
 
