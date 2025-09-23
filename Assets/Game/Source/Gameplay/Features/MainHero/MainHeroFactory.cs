@@ -1,6 +1,7 @@
 using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
+using Game.Gameplay.Features.Abilities;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.AI.States;
 using Game.Gameplay.Features.TeamsFeatures;
@@ -37,6 +38,10 @@ namespace Game.Gameplay.Features.MainHero
             entity
                 .AddIsMainHero()
                 .AddTeam(new ReactiveVariable<Teams>(Teams.MainHero));
+
+            entity
+                .AddAbilities()
+                .AddSystem(new AbilityOnAddActivatorSystem());
             
             entity.AddCurrentTarget();
             _brainsFactory.CreateMainHeroBrain(entity, new NearestDamageableTargetSelector(entity));

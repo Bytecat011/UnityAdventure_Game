@@ -2,6 +2,7 @@ using Game.Configs.Gameplay.Levels;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Mono;
+using Game.Gameplay.Features.Abilities;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
@@ -44,8 +45,15 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(createGameplayScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateGameplayPresentersFactory);
             container.RegisterAsSingle(CreateGameplayPopupService);
+            
+            container.RegisterAsSingle(CreateAbilityFactory);
         }
 
+        private static AbilityFactory CreateAbilityFactory(DIContainer c)
+        {
+            return new AbilityFactory(c);
+        }
+        
         private static GameplayPopupService CreateGameplayPopupService(DIContainer c)
         {
             return new GameplayPopupService(
