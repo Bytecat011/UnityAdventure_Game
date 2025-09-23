@@ -1,8 +1,10 @@
+using Game.Configs.Gameplay.Abilities;
 using Game.Configs.Gameplay.Levels;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.Abilities;
+using Game.Gameplay.Features.AbilityDropping;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
@@ -47,6 +49,21 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateGameplayPopupService);
             
             container.RegisterAsSingle(CreateAbilityFactory);
+
+            container.RegisterAsSingle(CreateAbilityDroppingRulesService);
+            container.RegisterAsSingle(CreateAbilityDropService);
+        }
+
+        private static AbilityDropService CreateAbilityDropService(DIContainer c)
+        {
+            return new AbilityDropService(
+                c.Resolve<ConfigManager>().GetConfig<AbilitiesConfigsContainer>(),
+                c.Resolve<AbilityDroppingRulesService>());
+        }
+        
+        private static AbilityDroppingRulesService CreateAbilityDroppingRulesService(DIContainer c)
+        {
+            return new AbilityDroppingRulesService();
         }
 
         private static AbilityFactory CreateAbilityFactory(DIContainer c)
