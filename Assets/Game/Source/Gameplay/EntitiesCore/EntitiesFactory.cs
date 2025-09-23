@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
@@ -9,6 +10,7 @@ using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
 using Game.Gameplay.Features.Sensors;
 using Game.Gameplay.Features.SpawnFeature;
+using Game.Gameplay.Features.Stats;
 using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility;
 using Game.Utility.Conditions;
@@ -38,14 +40,25 @@ namespace Game.Gameplay.EntitiesCore
 
             _monoEntitiesFactory.Create(entity, position, "Entities/Hero");
 
+            Dictionary<StatTypes, float> baseStats = new()
+            {
+                { StatTypes.MoveSpeed, config.MoveSpeed },
+                { StatTypes.MaxHealth, config.MaxHealth },
+                { StatTypes.Damage, config.InstantAttackDamage }
+            };
+
+            Dictionary<StatTypes, float> modifiedStats = new(baseStats);
+
             entity
+                .AddBaseStats(baseStats)
+                .AddModifiedStats(modifiedStats)
                 .AddMoveDirection()
-                .AddMoveSpeed(new ReactiveVariable<float>(config.MoveSpeed))
+                .AddMoveSpeed(new ReactiveVariable<float>(baseStats[StatTypes.MoveSpeed]))
                 .AddIsMoving()
                 .AddRotationDirection()
                 .AddRotationSpeed(new ReactiveVariable<float>(config.RotationSpeed))
-                .AddMaxHealth(new ReactiveVariable<float>(config.MaxHealth))
-                .AddCurrentHealth(new ReactiveVariable<float>(config.MaxHealth))
+                .AddMaxHealth(new ReactiveVariable<float>(baseStats[StatTypes.MaxHealth]))
+                .AddCurrentHealth(new ReactiveVariable<float>(baseStats[StatTypes.MaxHealth]))
                 .AddIsDead()
                 .AddInDeathProcess()
                 .AddDeathProcessInitialTime(new ReactiveVariable<float>(config.DeathProcessTime))
@@ -60,7 +73,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddEndAttackEvent()
                 .AddAttackDelayTime(new ReactiveVariable<float>(config.AttackDelayTime))
                 .AddAttackDelayEndEvent()
-                .AddInstantAttackDamage(new ReactiveVariable<float>(config.InstantAttackDamage))
+                .AddInstantAttackDamage(new ReactiveVariable<float>(baseStats[StatTypes.Damage]))
                 .AddAttackCancelEvent()
                 .AddAttackCooldownInitialTime(new ReactiveVariable<float>(config.AttackCooldown))
                 .AddAttackCooldownCurrentTime()
@@ -87,7 +100,7 @@ namespace Game.Gameplay.EntitiesCore
                 .Add(new FuncCondition(() => entity.InAttackProcess.Value == false))
                 .Add(new FuncCondition(() => entity.IsMoving.Value == false))
                 .Add(new FuncCondition(() => entity.InAttackCooldown.Value == false));
-            
+
             var mustCancelAttack = new CompositeCondition(LogicOperations.Or)
                 .Add(new FuncCondition(() => entity.IsDead.Value))
                 .Add(new FuncCondition(() => entity.IsMoving.Value));
@@ -102,12 +115,15 @@ namespace Game.Gameplay.EntitiesCore
                 .AddMustCancelAttack(mustCancelAttack);
 
             entity
+                .AddSystem(new MoveSpeedStatSyncSystem())
+                .AddSystem(new DamageStatSyncSystem())
+                .AddSystem(new MaxHealthStatSyncSystem())
                 .AddSystem(new RigidbodyMovementSystem())
                 .AddSystem(new RigidbodyRotationSystem())
                 .AddSystem(new AttackCancelSystem())
                 .AddSystem(new StartAttackSystem())
                 .AddSystem(new AttackProcessTimerSystem())
-                .AddSystem(new AttackDelayEndTriggerSystem())        
+                .AddSystem(new AttackDelayEndTriggerSystem())
                 .AddSystem(new InstantShootSystem(this))
                 .AddSystem(new EndAttackSystem())
                 .AddSystem(new AttackCooldownTimerSystem())
@@ -119,7 +135,7 @@ namespace Game.Gameplay.EntitiesCore
 
             return entity;
         }
-        
+
         public Entity CreateGhost(Vector3 position, GhostConfig config)
         {
             Entity entity = CreateEmpty();
@@ -189,7 +205,7 @@ namespace Game.Gameplay.EntitiesCore
 
             return entity;
         }
-        
+
         public Entity CreateProjectile(Vector3 position, Vector3 direction, float damage, Entity owner)
         {
             Entity entity = CreateEmpty();
@@ -267,7 +283,7 @@ namespace Game.Gameplay.EntitiesCore
 
             return entity;
         }
-        
+
         private Entity CreateEmpty() => new Entity();
     }
 }
