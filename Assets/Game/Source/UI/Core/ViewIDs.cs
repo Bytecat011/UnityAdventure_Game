@@ -12,5 +12,7 @@ namespace Game.UI.Core
         public const string LosePopup = nameof(LosePopup);
         public const string SimpleHealthBar = nameof(SimpleHealthBar);
         public const string MainHeroHealthBar = nameof(MainHeroHealthBar);
+        public const string SelectableAbilityView = nameof(SelectableAbilityView);
+        public const string AbilitySelectPopup = nameof(AbilitySelectPopup);
     }
 }

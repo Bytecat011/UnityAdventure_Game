@@ -1,5 +1,7 @@
 using System;
+using Game.Gameplay.EntitiesCore;
 using Game.UI.Core;
+using Game.UI.Gameplay.AbilitySelectPopup;
 using Game.UI.Gameplay.ResultsPopup;
 using UnityEngine;
 
@@ -39,6 +41,17 @@ namespace Game.UI.Gameplay
             LosePopupView view = ViewsFactory.Create<LosePopupView>(ViewIDs.LosePopup, PopupLayer);
 
             LosePopupPresenter popup = _gameplayPresentersFactory.CreateLosePopupPresenter(view);
+            
+            OnPopupCreated(popup, view, closedCallback);
+            
+            return popup;
+        }
+
+        public AbilitySelectPopupPresenter OpenAbilitySelectPopup(Entity entity, Action closedCallback = null)
+        {
+            var view = ViewsFactory.Create<AbilitySelectPopupView>(ViewIDs.AbilitySelectPopup);
+
+            var popup = _gameplayPresentersFactory.CreateAbilitySelectPopupPresenter(view, entity);
             
             OnPopupCreated(popup, view, closedCallback);
             

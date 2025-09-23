@@ -1,9 +1,13 @@
+using Game.Configs.Gameplay.Abilities;
 using Game.Core.DI;
 using Game.Gameplay.Core;
 using Game.Gameplay.EntitiesCore;
+using Game.Gameplay.Features.Abilities;
+using Game.Gameplay.Features.AbilityDropping;
 using Game.Gameplay.Features.StagesFeature;
 using Game.UI.CommonViews;
 using Game.UI.Core;
+using Game.UI.Gameplay.AbilitySelectPopup;
 using Game.UI.Gameplay.HealthDisplay;
 using Game.UI.Gameplay.ResultsPopup;
 using Game.UI.Gameplay.Stages;
@@ -63,6 +67,32 @@ namespace Game.UI.Gameplay
                 view,
                 _container.Resolve<ViewsFactory>(),
                 this);
+        }
+
+        public SelectableAbilityPresenter CreateSelectableAbilityPresenter(
+            AbilityConfig abilityConfig,
+            SelectableAbilityView view,
+            Entity entity)
+        {
+            return new SelectableAbilityPresenter(
+                abilityConfig,
+                view,
+                _container.Resolve<AbilityFactory>(),
+                entity);
+        }
+
+        public AbilitySelectPopupPresenter CreateAbilitySelectPopupPresenter(
+            AbilitySelectPopupView view,
+            Entity entity)
+        {
+            return new AbilitySelectPopupPresenter(
+                _container.Resolve<ICoroutineRunner>(),
+                view,
+                entity,
+                this,
+                _container.Resolve<AbilityDropService>(),
+                _container.Resolve<ViewsFactory>()
+            );
         }
     }
 }

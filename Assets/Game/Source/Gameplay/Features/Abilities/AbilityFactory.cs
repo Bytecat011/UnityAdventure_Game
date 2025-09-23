@@ -15,7 +15,7 @@ namespace Game.Gameplay.Features.Abilities
             _container = container;
         }
 
-        public Ability CreateAbility(Entity entity, AbilityConfig config)
+        public Ability CreateAbilityFor(Entity entity, AbilityConfig config)
         {
             switch (config)
             {
