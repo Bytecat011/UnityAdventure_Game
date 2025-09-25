@@ -4,6 +4,7 @@ using Game.Configs.Gameplay.Stages;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.Enemies;
 using Game.Utility.Reactive;
+using UnityEngine;
 
 namespace Game.Gameplay.Features.StagesFeature
 {
@@ -52,7 +53,9 @@ namespace Game.Gameplay.Features.StagesFeature
 
         private void SpawnEnemy(EnemyItemConfig enemyItemConfig)
         {
-            var spawnedEnemy = _enemiesFactory.Create(enemyItemConfig.SpawnPosition, enemyItemConfig.EnemyConfig);
+            var spawnedEnemy = _enemiesFactory.Create(
+                new Vector3(UnityEngine.Random.Range(-5, 5), 0 , UnityEngine.Random.Range(-5, 5)),
+                enemyItemConfig.EnemyConfig);
 
             IDisposable removeReason = spawnedEnemy.IsDead.Subscribe((_, isDead) =>
             {
