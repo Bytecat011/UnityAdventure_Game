@@ -153,7 +153,7 @@ namespace Game.Gameplay.Core
         private static StageProviderService CreateStagesProviderService(DIContainer c)
         {
             return new StageProviderService(
-                c.Resolve<ConfigManager>().GetConfig<LevelsListConfig>().GetBy(_inputArgs.LevelNumber),
+                _inputArgs.LevelConfig,
                 c.Resolve<StagesFactory>());
         }
         

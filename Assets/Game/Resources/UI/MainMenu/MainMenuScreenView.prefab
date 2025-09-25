@@ -188,7 +188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <ResourcesView>k__BackingField: {fileID: 4877615660591743227}
-  _openLevelsMenuButton: {fileID: 7824500768616002405}
+  _playButton: {fileID: 7824500768616002405}
 --- !u!222 &6573451390449267839
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -222,7 +222,7 @@ GameObject:
   - component: {fileID: 89928669294332095}
   - component: {fileID: 7824500768616002405}
   m_Layer: 5
-  m_Name: ButtonOpenLevelsMenu
+  m_Name: ButtonPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,6 +1,10 @@
 using System.Collections.Generic;
+using Game.Gameplay.Core;
+using Game.Meta.Features.LevelSelection;
 using Game.UI.Core;
 using Game.UI.Resources;
+using Game.Utility.CoroutineManagement;
+using Game.Utility.SceneManagement;
 
 namespace Game.UI.MainMenu
 {
@@ -10,23 +14,31 @@ namespace Game.UI.MainMenu
         
         private readonly ProjectPresentersFactory _projectPresentersFactory;
 
-        private readonly MainMenuPopupService _popupService;
+        private readonly ILevelSelector _levelSelector;
+        
+        private readonly ICoroutineRunner _coroutineRunner;
+        
+        private readonly SceneSwitcherService _sceneSwitcherService;
         
         private readonly List<IPresenter> _childPresenters = new();
         
         public MainMenuScreenPresenter(
             MainMenuScreenView screen, 
             ProjectPresentersFactory projectPresentersFactory, 
-            MainMenuPopupService popupService)
+            ILevelSelector levelSelector,
+            ICoroutineRunner coroutineRunner, 
+            SceneSwitcherService sceneSwitcherService)
         {
             _screen = screen;
             _projectPresentersFactory = projectPresentersFactory;
-            _popupService = popupService;
+            _levelSelector = levelSelector;
+            _coroutineRunner = coroutineRunner;
+            _sceneSwitcherService = sceneSwitcherService;
         }
 
         public void Initialize()
         {
-            _screen.OpenLevelsMenuButtonClicked += OnOpenLevelsMenuButtonClicked;
+            _screen.PlayButtonClicked += OnPlayButtonClicked;
             
             CreateResources();
 
@@ -36,16 +48,19 @@ namespace Game.UI.MainMenu
 
         public void Dispose()
         {
-            _screen.OpenLevelsMenuButtonClicked -= OnOpenLevelsMenuButtonClicked;
+            _screen.PlayButtonClicked -= OnPlayButtonClicked;
             foreach (var presenter in _childPresenters)
                 presenter.Dispose();
             
             _childPresenters.Clear();
         }
 
-        private void OnOpenLevelsMenuButtonClicked()
+        private void OnPlayButtonClicked()
         {
-            _popupService.OpenLevelsMenuPopup();
+            var level = _levelSelector.GetLevel();
+            _coroutineRunner.StartTask(_sceneSwitcherService.SwitchTo(
+                Scenes.Gameplay,
+                new GameplayInputArgs(level)));
         }
         
         private void CreateResources()

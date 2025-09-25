@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Game.UI.LevelsMenuPopup;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 
 namespace Game.UI.Core
@@ -23,17 +21,6 @@ namespace Game.UI.Core
         }
         
         protected abstract Transform PopupLayer { get; }
-
-        public LevelsMenuPopupPresenter OpenLevelsMenuPopup()
-        {
-            LevelsMenuPopupView view = ViewsFactory.Create<LevelsMenuPopupView>(ViewIDs.LevelsMenuPopup, PopupLayer);
-
-            LevelsMenuPopupPresenter popup = _presentersFactory.CreateLevelMenuPopupPresenter(view);
-            
-            OnPopupCreated(popup, view);
-
-            return popup;
-        }
         
         public TestPopupPresenter OpenTestPopup(Action closeCallback = null)
         {

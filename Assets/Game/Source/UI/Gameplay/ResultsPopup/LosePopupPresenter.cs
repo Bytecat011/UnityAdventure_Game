@@ -62,7 +62,7 @@ namespace Game.UI.Gameplay.ResultsPopup
         
         private void OnRestartClicked()
         {
-            _coroutineRunner.StartTask(_sceneSwitcher.SwitchTo(Scenes.Gameplay, new GameplayInputArgs(_currentLevelArgs.LevelNumber)));
+            _coroutineRunner.StartTask(_sceneSwitcher.SwitchTo(Scenes.Gameplay, new GameplayInputArgs(_currentLevelArgs.LevelConfig)));
             OnCloseRequest();
         }
     }

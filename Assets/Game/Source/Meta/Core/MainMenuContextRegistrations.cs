@@ -1,8 +1,10 @@
 using Game.Core.DI;
+using Game.Meta.Features.LevelSelection;
 using Game.UI;
 using Game.UI.Core;
 using Game.UI.MainMenu;
 using Game.Utility.Assets;
+using Game.Utility.Configs;
 
 namespace Game.Meta.Core
 {
@@ -14,8 +16,14 @@ namespace Game.Meta.Core
             container.RegisterAsSingle(CreateMainMenuPresentersFactory);
             container.RegisterAsSingle(CreateMainMenuScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateMainMenuPopupService);
+            container.RegisterAsSingle<ILevelSelector>(CreateRandomLevelSelector);
         }
 
+        private static RandomLevelSelector CreateRandomLevelSelector(DIContainer c)
+        {
+            return new RandomLevelSelector(c.Resolve<ConfigManager>());
+        }
+        
         private static MainMenuPopupService CreateMainMenuPopupService(DIContainer c)
         {
             return new MainMenuPopupService(

@@ -1,14 +1,15 @@
+using Game.Configs.Gameplay.Levels;
 using Game.Utility.SceneManagement;
 
 namespace Game.Gameplay.Core
 {
     public class GameplayInputArgs : IInputSceneArgs
     {
-        public GameplayInputArgs(int levelNumber)
+        public GameplayInputArgs(LevelConfig levelConfig)
         {
-            LevelNumber = levelNumber;
+            LevelConfig = levelConfig;
         }
 
-        public int LevelNumber { get; }
+        public LevelConfig LevelConfig { get; }
     }
 }

@@ -5,7 +5,6 @@ using Game.Gameplay.Features.Input;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.Pause;
 using Game.Gameplay.Features.StagesFeature;
-using Game.Meta.Features.LevelsProgression;
 using Game.UI.Gameplay;
 using Game.Utility.Conditions;
 using Game.Utility.CoroutineManagement;
@@ -37,7 +36,6 @@ namespace Game.Gameplay.States
             return new WinState(
                 _container.Resolve<IInputService>(),
                 _container.Resolve<IPauseService>(),
-                _container.Resolve<LevelsProgressionService>(),
                 inputArgs,
                 _container.Resolve<PlayerDataProvider>(),
                 _container.Resolve<ICoroutineRunner>(),

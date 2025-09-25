@@ -1,10 +1,8 @@
 using Game.Configs;
 using Game.Core.DI;
-using Game.Meta.Features.LevelsProgression;
 using Game.Meta.Features.Resources;
 using Game.UI.CommonViews;
 using Game.UI.Core;
-using Game.UI.LevelsMenuPopup;
 using Game.UI.Resources;
 using Game.Utility.Configs;
 using Game.Utility.CoroutineManagement;
@@ -48,26 +46,6 @@ namespace Game.UI
             return new TestPopupPresenter(
                 view,
                 _container.Resolve<ICoroutineRunner>());
-        }
-
-        public LevelTilePresenter CreateLevelTilePresenter(LevelTileView view, int levelNumber)
-        {
-            return new LevelTilePresenter(
-                _container.Resolve<LevelsProgressionService>(),
-                _container.Resolve<SceneSwitcherService>(),
-                _container.Resolve<ICoroutineRunner>(),
-                levelNumber,
-                view);
-        }
-
-        public LevelsMenuPopupPresenter CreateLevelMenuPopupPresenter(LevelsMenuPopupView view)
-        {
-            return new LevelsMenuPopupPresenter(
-                _container.Resolve<ICoroutineRunner>(),
-                _container.Resolve<ConfigManager>(),
-                this,
-                _container.Resolve<ViewsFactory>(),
-                view);
         }
     }
 }

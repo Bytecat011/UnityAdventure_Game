@@ -9,22 +9,22 @@ namespace Game.UI.MainMenu
 {
     public class MainMenuScreenView : MonoBehaviour, IView
     {
-        public event Action OpenLevelsMenuButtonClicked;
+        public event Action PlayButtonClicked;
         
         [field: SerializeField] public IconTextListView ResourcesView { get; private set; }
 
-        [SerializeField] private Button _openLevelsMenuButton;
+        [SerializeField] private Button _playButton;
 
         private void OnEnable()
         {
-            _openLevelsMenuButton.onClick.AddListener(OnOpenLevelsMenuButtonClicked);
+            _playButton.onClick.AddListener(OnPlayButtonClicked);
         }
 
         private void OnDisable()
         {
-            _openLevelsMenuButton.onClick.RemoveListener(OnOpenLevelsMenuButtonClicked);
+            _playButton.onClick.RemoveListener(OnPlayButtonClicked);
         }
         
-        private void OnOpenLevelsMenuButtonClicked() => OpenLevelsMenuButtonClicked?.Invoke();
+        private void OnPlayButtonClicked() => PlayButtonClicked?.Invoke();
     }
 }

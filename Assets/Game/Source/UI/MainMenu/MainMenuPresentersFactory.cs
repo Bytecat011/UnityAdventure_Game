@@ -1,4 +1,7 @@
 using Game.Core.DI;
+using Game.Meta.Features.LevelSelection;
+using Game.Utility.CoroutineManagement;
+using Game.Utility.SceneManagement;
 
 namespace Game.UI.MainMenu
 {
@@ -16,7 +19,9 @@ namespace Game.UI.MainMenu
             return new MainMenuScreenPresenter(
                 view,
                 _container.Resolve<ProjectPresentersFactory>(),
-                _container.Resolve<MainMenuPopupService>());
+                _container.Resolve<ILevelSelector>(),
+                _container.Resolve<ICoroutineRunner>(),
+                _container.Resolve<SceneSwitcherService>());
         }
     }
 }

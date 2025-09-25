@@ -14,8 +14,6 @@ namespace Game.UI.Core
             { ViewIDs.ResourceView, "UI/Resources/ResourceView" },
             { ViewIDs.MainMenuScreen, "UI/MainMenu/MainMenuScreenView" },
             { ViewIDs.TestPopup, "UI/TestPopup" },
-            { ViewIDs.LevelTile, "UI/LevelsMenuPopup/LevelTile" },
-            { ViewIDs.LevelsMenuPopup, "UI/LevelsMenuPopup/LevelsMenuPopup" },
             { ViewIDs.GameplayScreen, "UI/Gameplay/GameplayScreenView" },
             { ViewIDs.WinPopup, "UI/Gameplay/ResultsPopup/WinPopup" },
             { ViewIDs.LosePopup, "UI/Gameplay/ResultsPopup/LosePopup" },
