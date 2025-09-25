@@ -1,6 +1,7 @@
 using Game.Configs.Gameplay;
 using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
+using Game.Gameplay.Core;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.Abilities;
 using Game.Gameplay.Features.AI;
@@ -21,10 +22,12 @@ namespace Game.Gameplay.Features.MainHero
         private readonly BrainsFactory _brainsFactory;
         private readonly ConfigManager _configManager;
         private readonly EntitiesWorld _entitiesWorld;
+        private readonly GameplayInputArgs _inputArgs;
         
-        public MainHeroFactory(DIContainer container)
+        public MainHeroFactory(DIContainer container, GameplayInputArgs inputArgs)
         {
             _container = container;
+            _inputArgs = inputArgs;
             _entitiesFactory = _container.Resolve<EntitiesFactory>();
             _brainsFactory = _container.Resolve<BrainsFactory>();
             _configManager = _container.Resolve<ConfigManager>();
@@ -33,9 +36,9 @@ namespace Game.Gameplay.Features.MainHero
 
         public Entity Create(Vector3 position)
         {
-            HeroConfig config = _configManager.GetConfig<HeroConfig>();
+            PlayerTowerConfig config = _configManager.GetConfig<PlayerTowerConfig>();
             
-            Entity entity = _entitiesFactory.CreateHero(position, config);
+            Entity entity = _entitiesFactory.CreatePlayerTower(position, config, _inputArgs.LevelConfig);
 
             entity
                 .AddIsMainHero()
@@ -44,14 +47,6 @@ namespace Game.Gameplay.Features.MainHero
             entity
                 .AddAbilities()
                 .AddSystem(new AbilityOnAddActivatorSystem());
-
-            entity
-                .AddLevel(new ReactiveVariable<int>(1))
-                .AddExperience()
-                .AddSystem(new LevelUpSystem(_configManager.GetConfig<ExperienceForUpgradeLevelConfig>()));
-            
-            entity.AddCurrentTarget();
-            _brainsFactory.CreateMainHeroBrain(entity, new NearestDamageableTargetSelector(entity));
 
             _entitiesWorld.Add(entity);
             

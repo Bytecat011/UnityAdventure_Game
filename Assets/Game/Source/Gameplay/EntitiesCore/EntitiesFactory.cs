@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using Game.Configs.Gameplay.Entities;
+using Game.Configs.Gameplay.Levels;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.ApplyDamage;
 using Game.Gameplay.Features.Attack;
 using Game.Gameplay.Features.Attack.Shoot;
+using Game.Gameplay.Features.Attack.TowerAttack;
 using Game.Gameplay.Features.ContactTakeDamage;
 using Game.Gameplay.Features.LifeCycle;
 using Game.Gameplay.Features.Movement;
@@ -138,6 +140,96 @@ namespace Game.Gameplay.EntitiesCore
             return entity;
         }
 
+        public Entity CreatePlayerTower(Vector3 position, PlayerTowerConfig config, LevelConfig levelConfig)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/PlayerTower");
+
+            Dictionary<StatTypes, float> baseStats = new()
+            {
+                { StatTypes.MaxHealth, levelConfig.TowerHealth },
+                { StatTypes.TowerDamage, config.AttackDamage },
+            };
+
+            Dictionary<StatTypes, float> modifiedStats = new(baseStats);
+
+            entity
+                .AddStatsEffects()
+                .AddBaseStats(baseStats)
+                .AddModifiedStats(modifiedStats)
+                .AddMaxHealth(new ReactiveVariable<float>(baseStats[StatTypes.MaxHealth]))
+                .AddCurrentHealth(new ReactiveVariable<float>(baseStats[StatTypes.MaxHealth]))
+                .AddIsDead()
+                .AddInDeathProcess()
+                .AddDeathProcessInitialTime(new ReactiveVariable<float>(config.DeathProcessTime))
+                .AddDeathProcessCurrentTime()
+                .AddTakeDamageEvent()
+                .AddTakeDamageRequest()
+                .AddAttackProcessInitialTime(new ReactiveVariable<float>(config.AttackProcessTime))
+                .AddAttackProcessCurrentTime()
+                .AddInAttackProcess()
+                .AddStartAttackRequest()
+                .AddStartAttackEvent()
+                .AddEndAttackEvent()
+                .AddAttackDelayTime(new ReactiveVariable<float>(config.AttackDelayTime))
+                .AddAttackDelayEndEvent()
+                .AddTowerAttackDamage(new ReactiveVariable<float>(baseStats[StatTypes.TowerDamage]))
+                .AddAttackCancelEvent()
+                .AddAttackCooldownInitialTime(new ReactiveVariable<float>(config.AttackCooldown))
+                .AddAttackCooldownCurrentTime()
+                .AddInAttackCooldown();
+
+            var canMove = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+
+            var canRotate = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+
+            var mustDie = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.CurrentHealth.Value <= 0));
+
+            var mustSelfRelease = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value))
+                .Add(new FuncCondition(() => entity.InDeathProcess.Value == false));
+
+            var canApplyDamage = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false));
+
+            var canStartAttack = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value == false))
+                .Add(new FuncCondition(() => entity.InAttackProcess.Value == false))
+                .Add(new FuncCondition(() => entity.InAttackCooldown.Value == false));
+
+            var mustCancelAttack = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.IsDead.Value));
+
+            entity
+                .AddMustDie(mustDie)
+                .AddMustSelfRelease(mustSelfRelease)
+                .AddCanApplyDamage(canApplyDamage)
+                .AddCanStartAttack(canStartAttack)
+                .AddMustCancelAttack(mustCancelAttack);
+
+            entity
+                .AddSystem(new StatEffectsApplierSystem())
+                .AddSystem(new TowerDamageStatSyncSystem())
+                .AddSystem(new MaxHealthStatSyncSystem())
+                .AddSystem(new AttackCancelSystem())
+                .AddSystem(new AttackProcessTimerSystem())
+                .AddSystem(new AttackDelayEndTriggerSystem())
+                .AddSystem(new TowerAttackSystem(this))
+                .AddSystem(new EndAttackSystem())
+                .AddSystem(new AttackCooldownTimerSystem())
+                .AddSystem(new ApplyDamageSystem())
+                .AddSystem(new DeathSystem())
+                .AddSystem(new DisableCollidersOnDeathSystem())
+                .AddSystem(new DeathProcessTimerSystem())
+                .AddSystem(new SelfReleaseSystem(_entitiesWorld));
+
+            return entity;
+        }
+        
         public Entity CreateGhost(Vector3 position, GhostConfig config)
         {
             Entity entity = CreateEmpty();

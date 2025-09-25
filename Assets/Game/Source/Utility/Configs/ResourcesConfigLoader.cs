@@ -23,6 +23,7 @@ namespace Game.Utility.Configs
             { typeof(HeroConfig), "Configs/Gameplay/Entities/Characters/HeroConfig" },
             { typeof(AbilitiesConfigsContainer), "Configs/Gameplay/Abilities/AbilitiesConfigsContainer" },
             { typeof(ExperienceForUpgradeLevelConfig), "Configs/Gameplay/ExperienceForUpgradeLevelConfig" },
+            { typeof(PlayerTowerConfig), "Configs/Gameplay/Entities/Characters/PlayerTowerConfig" },
         };
 
         public ResourcesConfigLoader(ResourcesAssetsLoader resources)

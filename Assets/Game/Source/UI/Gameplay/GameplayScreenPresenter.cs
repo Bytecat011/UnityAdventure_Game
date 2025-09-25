@@ -26,7 +26,6 @@ namespace Game.UI.Gameplay
         {
             CreateStageNumber();
             CreateEntitiesHealthDisplay();
-            CreateMainHeroExpView();
             
             foreach (var presenter in _childPresenters)
                 presenter.Initialize();

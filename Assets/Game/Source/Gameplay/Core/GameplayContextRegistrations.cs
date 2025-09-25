@@ -52,11 +52,6 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateGameplayPopupService);
             
             container.RegisterAsSingle(CreateAbilityFactory);
-
-            container.RegisterAsSingle(CreateAbilityDroppingRulesService);
-            container.RegisterAsSingle(CreateAbilityDropService);
-            
-            container.RegisterAsSingle(CreateDropAbilityOnMainHeroLevelUpService).NonLazy();
             
             container.RegisterAsSingle<IPauseService>(CreateTimeScalePauseService);
         }
@@ -164,7 +159,7 @@ namespace Game.Gameplay.Core
             => new EnemiesFactory(c);
         
         private static MainHeroFactory CreateMainHeroFactory(DIContainer c)
-            => new MainHeroFactory(c);
+            => new MainHeroFactory(c, _inputArgs);
 
         private static DesktopInput CreateDesktopInput(DIContainer container)
         {
