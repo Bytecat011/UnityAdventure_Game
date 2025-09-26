@@ -33,7 +33,6 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateEnemiesFactory);
             container.RegisterAsSingle(CreateStagesFactory);
             container.RegisterAsSingle(CreateStagesProviderService);
-            container.RegisterAsSingle(CreatePreparationTriggerService);
             container.RegisterAsSingle(CreateGameplayStatesFactory);
             container.RegisterAsSingle(CreateGameplayStatesContext);
             container.RegisterAsSingle(CreateMainHeroHolderService).NonLazy();
@@ -112,11 +111,6 @@ namespace Game.Gameplay.Core
         
         private static MainHeroHolderService CreateMainHeroHolderService(DIContainer c)
             => new MainHeroHolderService(c.Resolve<EntitiesWorld>());
-        
-        private static PreparationTriggerService CreatePreparationTriggerService(DIContainer c)
-            => new PreparationTriggerService(
-                c.Resolve<EntitiesFactory>(),
-                c.Resolve<EntitiesWorld>());
         
         private static StageProviderService CreateStagesProviderService(DIContainer c)
         {

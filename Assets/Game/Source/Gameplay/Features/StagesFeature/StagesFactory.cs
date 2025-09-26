@@ -3,6 +3,7 @@ using Game.Configs.Gameplay.Stages;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.Enemies;
+using Game.Gameplay.Features.MainHero;
 
 namespace Game.Gameplay.Features.StagesFeature
 {
@@ -24,6 +25,13 @@ namespace Game.Gameplay.Features.StagesFeature
                         clearAllEnemiesStageConfig,
                         _container.Resolve<EnemiesFactory>(),
                         _container.Resolve<EntitiesWorld>());
+                
+                case ClearEnemiesWaveStageConfig clearEnemiesWaveStageConfig:
+                    return new ClearEnemiesWaveStage(
+                        clearEnemiesWaveStageConfig,
+                        _container.Resolve<EnemiesFactory>(),
+                        _container.Resolve<EntitiesWorld>(),
+                        _container.Resolve<MainHeroHolderService>());
                 
                 default:
                     throw new ArgumentException($"Not supported {stageConfig.GetType()} type config");

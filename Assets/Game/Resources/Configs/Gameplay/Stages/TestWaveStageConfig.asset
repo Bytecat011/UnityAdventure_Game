@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TestWaveStageConfig
   m_EditorClassIdentifier: 
   <EnemySpawnCooldown>k__BackingField: 2
+  <TotalEnemyCount>k__BackingField: 5
   _enemyItems:
   - <EnemyConfig>k__BackingField: {fileID: 11400000, guid: 6984bbb2dfe8a1f49af8e66926dd5308,
       type: 2}

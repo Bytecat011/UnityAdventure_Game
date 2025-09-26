@@ -76,11 +76,6 @@ namespace Game.Gameplay.Core
                 var coroutineRunner = _container.Resolve<ICoroutineRunner>();
                 coroutineRunner.StartTask(sceneSwitcherService.SwitchTo(Scenes.MainMenu));
             }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _mainHeroHolderService.MainHero.Experience.Value += 500;
-            }
         }
 
         private void LateUpdate()

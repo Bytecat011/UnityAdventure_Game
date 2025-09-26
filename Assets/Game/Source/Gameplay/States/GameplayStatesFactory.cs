@@ -9,6 +9,7 @@ using Game.UI.Gameplay;
 using Game.Utility.Conditions;
 using Game.Utility.CoroutineManagement;
 using Game.Utility.SceneManagement;
+using UnityEngine;
 
 namespace Game.Gameplay.States
 {
@@ -23,7 +24,7 @@ namespace Game.Gameplay.States
 
         public PreparationState CreatePreparationState()
         {
-            return new PreparationState(_container.Resolve<PreparationTriggerService>());
+            return new PreparationState();
         }
 
         public StageProcessStage CreateStageProcessStage()
@@ -52,7 +53,6 @@ namespace Game.Gameplay.States
 
         public GameplayStateMachine CreateGameStateMachine(GameplayInputArgs inputArgs)
         {
-            var preparationTriggerService = _container.Resolve<PreparationTriggerService>();
             var stageProviderService = _container.Resolve<StageProviderService>();
             var mainHeroHolderService = _container.Resolve<MainHeroHolderService>();
             
@@ -62,7 +62,6 @@ namespace Game.Gameplay.States
             WinState winState = CreateWinState(inputArgs);
 
             ICompositeCondition coreLoopToWinStateCondition = new CompositeCondition()
-                .Add(new FuncCondition(() => preparationTriggerService.HasMainHeroContact.Value))
                 .Add(new FuncCondition(() => stageProviderService.CurrentStageResult.Value == StageResults.Completed))
                 .Add(new FuncCondition(() => stageProviderService.HasNextStage() == false));
 
@@ -89,14 +88,13 @@ namespace Game.Gameplay.States
         
         public GameplayStateMachine CreateCoreLoopState()
         {
-            var preparationTriggerService = _container.Resolve<PreparationTriggerService>();
             var stageProviderService = _container.Resolve<StageProviderService>();
             
             var preparationState = CreatePreparationState();
             var stageProcessStage = CreateStageProcessStage();
 
             ICompositeCondition preparationToStateProcessCondition = new CompositeCondition()
-                .Add(new FuncCondition(() => preparationTriggerService.HasMainHeroContact.Value))
+                .Add(new FuncCondition(() => Input.GetKeyDown(KeyCode.Space)))
                 .Add(new FuncCondition(() => stageProviderService.HasNextStage()));
             
             FuncCondition stageProcessToPreparationCondition = 

@@ -180,18 +180,8 @@ namespace Game.Gameplay.EntitiesCore
                 .AddAttackCooldownCurrentTime()
                 .AddInAttackCooldown();
 
-            var canMove = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value == false));
-
-            var canRotate = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value == false));
-
             var mustDie = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.CurrentHealth.Value <= 0));
-
-            var mustSelfRelease = new CompositeCondition()
-                .Add(new FuncCondition(() => entity.IsDead.Value))
-                .Add(new FuncCondition(() => entity.InDeathProcess.Value == false));
 
             var canApplyDamage = new CompositeCondition()
                 .Add(new FuncCondition(() => entity.IsDead.Value == false));
@@ -206,7 +196,6 @@ namespace Game.Gameplay.EntitiesCore
 
             entity
                 .AddMustDie(mustDie)
-                .AddMustSelfRelease(mustSelfRelease)
                 .AddCanApplyDamage(canApplyDamage)
                 .AddCanStartAttack(canStartAttack)
                 .AddMustCancelAttack(mustCancelAttack);
@@ -224,8 +213,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new ApplyDamageSystem())
                 .AddSystem(new DeathSystem())
                 .AddSystem(new DisableCollidersOnDeathSystem())
-                .AddSystem(new DeathProcessTimerSystem())
-                .AddSystem(new SelfReleaseSystem(_entitiesWorld));
+                .AddSystem(new DeathProcessTimerSystem());
 
             return entity;
         }
