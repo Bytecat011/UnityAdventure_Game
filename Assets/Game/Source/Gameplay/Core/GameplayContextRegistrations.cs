@@ -1,14 +1,10 @@
-using Game.Configs.Gameplay.Abilities;
-using Game.Configs.Gameplay.Levels;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.EntitiesCore.Mono;
 using Game.Gameplay.Features.Abilities;
-using Game.Gameplay.Features.AbilityDropping;
 using Game.Gameplay.Features.AI;
 using Game.Gameplay.Features.Enemies;
 using Game.Gameplay.Features.Input;
-using Game.Gameplay.Features.LevelUpFeature;
 using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.Pause;
 using Game.Gameplay.Features.StagesFeature;
@@ -17,8 +13,6 @@ using Game.UI;
 using Game.UI.Core;
 using Game.UI.Gameplay;
 using Game.Utility.Assets;
-using Game.Utility.Configs;
-using Game.Utility.CoroutineManagement;
 
 namespace Game.Gameplay.Core
 {
@@ -47,7 +41,7 @@ namespace Game.Gameplay.Core
             container.RegisterAsSingle(CreateMonoEntitiesFactory).NonLazy();
             
             container.RegisterAsSingle(CreateGameplayUIRoot).NonLazy();
-            container.RegisterAsSingle(createGameplayScreenPresenter).NonLazy();
+            container.RegisterAsSingle(CreateGameplayScreenPresenter).NonLazy();
             container.RegisterAsSingle(CreateGameplayPresentersFactory);
             container.RegisterAsSingle(CreateGameplayPopupService);
             
@@ -59,27 +53,6 @@ namespace Game.Gameplay.Core
         private static TimeScalePauseService CreateTimeScalePauseService(DIContainer c)
         {
             return new TimeScalePauseService();
-        }
-        
-        private static DropAbilityOnMainHeroLevelUpService CreateDropAbilityOnMainHeroLevelUpService(DIContainer c)
-        {
-            return new DropAbilityOnMainHeroLevelUpService(
-                c.Resolve<MainHeroHolderService>(),
-                c.Resolve<GameplayPopupService>(),
-                c.Resolve<ICoroutineRunner>(),
-                c.Resolve<IPauseService>());
-        }
-        
-        private static AbilityDropService CreateAbilityDropService(DIContainer c)
-        {
-            return new AbilityDropService(
-                c.Resolve<ConfigManager>().GetConfig<AbilitiesConfigsContainer>(),
-                c.Resolve<AbilityDroppingRulesService>());
-        }
-        
-        private static AbilityDroppingRulesService CreateAbilityDroppingRulesService(DIContainer c)
-        {
-            return new AbilityDroppingRulesService();
         }
 
         private static AbilityFactory CreateAbilityFactory(DIContainer c)
@@ -107,7 +80,7 @@ namespace Game.Gameplay.Core
             return UnityEngine.Object.Instantiate(gameplayUIRootPrefab);
         }
         
-        private static GameplayScreenPresenter createGameplayScreenPresenter(DIContainer c)
+        private static GameplayScreenPresenter CreateGameplayScreenPresenter(DIContainer c)
         {
             GameplayUIRoot uiRoot = c.Resolve<GameplayUIRoot>();
             
