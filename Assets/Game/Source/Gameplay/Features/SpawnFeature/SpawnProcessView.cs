@@ -12,7 +12,7 @@ namespace Game.Gameplay.Features.SpawnFeature
         private readonly int SpawningProcessKey = Animator.StringToHash("IsSpawnProcess");
         
         [SerializeField] private Animator _animator;
-        [SerializeField] private ParticleSystem _spawnEffectPrefab;
+        [SerializeField] private GameObject _spawnEffectPrefab;
         
         private IReactiveVariable<bool> _inSpawnProcess;
         private Transform _entityTransform;

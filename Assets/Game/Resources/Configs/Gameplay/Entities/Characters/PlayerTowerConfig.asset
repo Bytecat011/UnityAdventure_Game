@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerTowerConfig
   m_EditorClassIdentifier: 
   <PrefabPath>k__BackingField: Entities/PlayerTower
-  <AttackProcessTime>k__BackingField: 1.5
-  <AttackDelayTime>k__BackingField: 0.75
-  <AttackCooldown>k__BackingField: 1
+  <AttackProcessTime>k__BackingField: 0.2
+  <AttackDelayTime>k__BackingField: 0.1
+  <AttackCooldown>k__BackingField: 0.5
   <AttackDamage>k__BackingField: 10
   <DeathProcessTime>k__BackingField: 2

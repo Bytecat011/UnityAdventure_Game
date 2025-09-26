@@ -175,6 +175,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddAttackDelayTime(new ReactiveVariable<float>(config.AttackDelayTime))
                 .AddAttackDelayEndEvent()
                 .AddTowerAttackDamage(new ReactiveVariable<float>(baseStats[StatTypes.TowerDamage]))
+                .AddTowerAttackTargetPoint()
                 .AddAttackCancelEvent()
                 .AddAttackCooldownInitialTime(new ReactiveVariable<float>(config.AttackCooldown))
                 .AddAttackCooldownCurrentTime()
@@ -205,6 +206,7 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new TowerDamageStatSyncSystem())
                 .AddSystem(new MaxHealthStatSyncSystem())
                 .AddSystem(new AttackCancelSystem())
+                .AddSystem(new StartAttackSystem())
                 .AddSystem(new AttackProcessTimerSystem())
                 .AddSystem(new AttackDelayEndTriggerSystem())
                 .AddSystem(new TowerAttackSystem(this))
@@ -342,6 +344,46 @@ namespace Game.Gameplay.EntitiesCore
                 .AddSystem(new SelfReleaseSystem(_entitiesWorld));
 
             _entitiesWorld.Add(entity);
+
+            return entity;
+        }
+        
+        public Entity CreateTowerAttack(Vector3 position, float delay, float damage, Entity owner)
+        {
+            Entity entity = CreateEmpty();
+
+            _monoEntitiesFactory.Create(entity, position, "Entities/TowerAttack");
+
+            entity
+                .AddContactsDetectingMask(UnityLayers.LayerMaskCharacters)
+                .AddContactColliderBuffer(new Buffer<Collider>(64))
+                .AddContactEntitiesBuffer(new Buffer<Entity>(64))
+                .AddTeam(new ReactiveVariable<Teams>(owner.Team.Value))
+                .AddInstantAttackDamage(new ReactiveVariable<float>(damage))
+                .AddAttackProcessInitialTime(new ReactiveVariable<float>(delay))
+                .AddAttackProcessCurrentTime()
+                .AddInAttackProcess(new ReactiveVariable<bool>(true))
+                .AddStartAttackEvent()
+                .AddEndAttackEvent();
+
+            var mustSelfRelease = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.InAttackProcess.Value == false));
+
+            entity
+                .AddMustSelfRelease(mustSelfRelease);
+
+            entity
+                .AddSystem(new BodyContactsDetectingSystem())
+                .AddSystem(new BodyContactsEntitiesFilterSystem(_collidersRegistryService))
+                .AddSystem(new AttackProcessTimerSystem())
+                .AddSystem(new EndAttackSystem())
+                .AddSystem(new InstantExplosionAttackSystem())
+                .AddSystem(new SelfReleaseSystem(_entitiesWorld));
+
+            
+            _entitiesWorld.Add(entity);
+            
+            entity.StartAttackEvent.Notify();
 
             return entity;
         }

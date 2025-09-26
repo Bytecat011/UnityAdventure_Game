@@ -466,7 +466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 4302900990581064016}
-  _spawnEffectPrefab: {fileID: 19884194, guid: 8f3db2ef4b3fd674eafb97a117b99408, type: 3}
+  _spawnEffectPrefab: {fileID: 171722, guid: 8f3db2ef4b3fd674eafb97a117b99408, type: 3}
 --- !u!4 &7878719291019696938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef5210dc7c68592419f623e891afb881,

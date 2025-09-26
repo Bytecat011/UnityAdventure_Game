@@ -58,6 +58,8 @@ namespace Game.Gameplay.Features.StagesFeature
             if (_inProcess == false)
                 return;
 
+            HandlePlayerAttack();
+            
             if (spawnedEnemyCount < _config.TotalEnemyCount)
             {
                 UpdateEnemySpawn(deltaTime);
@@ -65,6 +67,30 @@ namespace Game.Gameplay.Features.StagesFeature
             }
             if (_spawnedEnemiesToRemoveReason.Count == 0)
                 ProcessEnd();
+        }
+
+        private void HandlePlayerAttack()
+        {
+            if (UnityEngine.Input.GetMouseButtonDown(0))
+            {
+                _mainHeroHolderService.MainHero.TowerAttackTargetPoint.Value = GetMousePositionInWorld();
+                _mainHeroHolderService.MainHero.StartAttackRequest.Notify();
+            }
+        }
+
+        private Vector3 GetMousePositionInWorld()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(UnityEngine.Input.mousePosition);
+
+            Vector3 worldPos = Vector3.zero;
+            
+            float distance = -ray.origin.y / ray.direction.y;
+            if (distance >= 0)
+            {
+                worldPos = ray.origin + ray.direction * distance;
+            }
+
+            return worldPos;
         }
 
         private void UpdateEnemySpawn(float deltaTime)
