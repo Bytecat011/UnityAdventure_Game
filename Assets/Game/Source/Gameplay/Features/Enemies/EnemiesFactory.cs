@@ -31,8 +31,12 @@ namespace Game.Gameplay.Features.Enemies
 
            switch (config)
            {
-               case GhostConfig gohostConfig:
-                   entity = _entitiesFactory.CreateGhost(position, gohostConfig);
+               case GhostConfig ghostConfig:
+                   entity = _entitiesFactory.CreateGhost(position, ghostConfig);
+                   _brainsFactory.CreateGhostBrain(entity);
+                   break;
+               case CreeperConfig creeperConfig:
+                   entity = _entitiesFactory.CreateCreeper(position, creeperConfig);
                    _brainsFactory.CreateGhostBrain(entity);
                    break;
                default:

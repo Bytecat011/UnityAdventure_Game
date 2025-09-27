@@ -47,8 +47,6 @@ namespace Game.Gameplay.Features.StagesFeature
             {
                 throw new InvalidOperationException("Game mode already started");
             }
-
-            timeToSpawnNextEnemy = _config.EnemySpawnCooldown;
             
             _inProcess = true;
         }
@@ -95,10 +93,10 @@ namespace Game.Gameplay.Features.StagesFeature
 
         private void UpdateEnemySpawn(float deltaTime)
         {
-            if (timeToSpawnNextEnemy > 0)
+            if (timeToSpawnNextEnemy >= 0)
             {
                 timeToSpawnNextEnemy -= deltaTime;
-                if (timeToSpawnNextEnemy <= 0)
+                if (timeToSpawnNextEnemy < 0)
                 {
                     SpawnEnemy(_config.EnemyItems.GetRandomElement());
                     spawnedEnemyCount++;

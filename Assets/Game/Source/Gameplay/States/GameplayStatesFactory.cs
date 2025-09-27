@@ -102,8 +102,8 @@ namespace Game.Gameplay.States
 
             GameplayStateMachine coreLoopState = new GameplayStateMachine();
             
-            coreLoopState.AddState(preparationState);
             coreLoopState.AddState(stageProcessStage);
+            coreLoopState.AddState(preparationState);
             
             coreLoopState.AddTransition(preparationState, stageProcessStage, preparationToStateProcessCondition);
             coreLoopState.AddTransition(stageProcessStage, preparationState, stageProcessToPreparationCondition);
