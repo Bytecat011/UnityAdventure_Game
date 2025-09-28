@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: CreeperConfig
   m_EditorClassIdentifier: 
   <PrefabPath>k__BackingField: Entities/Creeper
-  <MoveSpeed>k__BackingField: 3
+  <MoveSpeed>k__BackingField: 1
   <RotationSpeed>k__BackingField: 900
   <MaxHealth>k__BackingField: 15
-  <DeathProcessTime>k__BackingField: 2
+  <DeathProcessTime>k__BackingField: 1
   <SpawnProcessTime>k__BackingField: 0.83333
-  <AttackProcessTime>k__BackingField: 1.5
-  <AttackDelayTime>k__BackingField: 0.75
+  <AttackProcessTime>k__BackingField: 1
+  <AttackDelayTime>k__BackingField: 0.8
   <InstantAttackDamage>k__BackingField: 10
+  <AttackDistance>k__BackingField: 1

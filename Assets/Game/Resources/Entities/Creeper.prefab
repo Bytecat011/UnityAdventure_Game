@@ -279,7 +279,7 @@ CapsuleCollider:
   m_Radius: 1.5
   m_Height: 2.4
   m_Direction: 1
-  m_Center: {x: 0, y: 1.2, z: 0}
+  m_Center: {x: 0, y: 1.5, z: 0}
 --- !u!4 &1685293558290084897 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8360808067569448400, guid: 92da1fe94dd06d544937221858fc80c7,
@@ -394,6 +394,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 816678444412287617}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6d8303d2cfc9a6b47800bb5574342b33,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3591246665437009707}
   m_SourcePrefab: {fileID: 100100000, guid: 6d8303d2cfc9a6b47800bb5574342b33, type: 3}
 --- !u!95 &4285891533980348378 stripped
 Animator:
@@ -462,6 +466,19 @@ MonoBehaviour:
   _applyDamageEffectPrefab: {fileID: 19862656, guid: bfbeddd8307f4e441aa8ae4537bf45ad,
     type: 3}
   _effectSpawnPoint: {fileID: 8803399084765973902}
+--- !u!114 &3591246665437009707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7408834650439495450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d361a016d7b46ada14680fb46a9ade0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4285891533980348378}
 --- !u!4 &7897809000215704992 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6d8303d2cfc9a6b47800bb5574342b33,

@@ -4,6 +4,7 @@ using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI.States;
 using Game.Gameplay.Features.Input;
+using Game.Gameplay.Features.MainHero;
 using Game.Utility.Conditions;
 using Game.Utility.Reactive;
 using Game.Utility.Timer;
@@ -63,6 +64,45 @@ namespace Game.Gameplay.Features.AI
             _brainsContext.SetFor(entity, brain);
             
             return brain;
+        }
+
+        public StateMachineBrain CreateCreeperBrain(Entity entity, float attackDistance)
+        {
+            var moveState = CreateFollowTargetState(entity);
+            AttackTriggerState attackState = new AttackTriggerState(entity);
+            DeathTriggerState deathState = new DeathTriggerState(entity);
+
+            Entity target = entity.CurrentTarget.Value;
+            
+            ICompositeCondition fromMoveToAttackStateCondition = new CompositeCondition()
+                .Add(new FuncCondition(() => Vector3.Distance(entity.Transform.position, target.Transform.position) <= attackDistance));
+            
+            ICompositeCondition fromAttackToDeathStateCondition = new CompositeCondition()
+                .Add(new FuncCondition(() => entity.InAttackProcess.Value == false));
+            
+            AIStateMachine rootStateMachine = new AIStateMachine();
+            rootStateMachine.AddState(moveState);
+            rootStateMachine.AddState(attackState);
+            rootStateMachine.AddState(deathState);
+            
+            rootStateMachine.AddTransition(moveState, attackState,fromMoveToAttackStateCondition);
+            rootStateMachine.AddTransition(attackState, deathState, fromAttackToDeathStateCondition);
+            
+            StateMachineBrain brain = new StateMachineBrain(rootStateMachine);
+
+            _brainsContext.SetFor(entity, brain);
+
+            return brain;
+        }
+
+        private static AIParallelState CreateFollowTargetState(Entity entity)
+        {
+            MoveToTargetState moveToTargetState = new MoveToTargetState(entity);
+            RotateToTargetState rotateToTargetState = new RotateToTargetState(entity);
+            
+            return new AIParallelState(
+                moveToTargetState, 
+                rotateToTargetState);
         }
 
         public StateMachineBrain CreateGhostBrain(Entity entity)

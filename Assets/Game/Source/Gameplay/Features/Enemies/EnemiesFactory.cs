@@ -3,6 +3,8 @@ using Game.Configs.Gameplay.Entities;
 using Game.Core.DI;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.AI;
+using Game.Gameplay.Features.AI.States;
+using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility.Reactive;
 using UnityEngine;
@@ -16,6 +18,7 @@ namespace Game.Gameplay.Features.Enemies
         private readonly EntitiesFactory _entitiesFactory;
         private readonly BrainsFactory _brainsFactory;
         private readonly EntitiesWorld _entitiesWorld;
+        private readonly MainHeroHolderService _mainHeroHolderService;
         
         public EnemiesFactory(DIContainer container)
         {
@@ -23,6 +26,7 @@ namespace Game.Gameplay.Features.Enemies
             _entitiesFactory = _container.Resolve<EntitiesFactory>();
             _brainsFactory = _container.Resolve<BrainsFactory>();
             _entitiesWorld = _container.Resolve<EntitiesWorld>();
+            _mainHeroHolderService = _container.Resolve<MainHeroHolderService>();
         }
 
         public Entity Create(Vector3 position, EntityConfig config)
@@ -37,7 +41,8 @@ namespace Game.Gameplay.Features.Enemies
                    break;
                case CreeperConfig creeperConfig:
                    entity = _entitiesFactory.CreateCreeper(position, creeperConfig);
-                   _brainsFactory.CreateGhostBrain(entity);
+                   entity.AddCurrentTarget(new ReactiveVariable<Entity>(_mainHeroHolderService.MainHero));
+                   _brainsFactory.CreateCreeperBrain(entity, creeperConfig.AttackDistance);
                    break;
                default:
                    throw new ArgumentException($"Not supported {config.GetType()} type config");

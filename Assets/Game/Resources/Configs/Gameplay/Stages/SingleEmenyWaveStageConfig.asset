@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3b8e4409f1d44a2d8d048c8b98c38fc5, type: 3}
-  m_Name: TestWaveStageConfig
+  m_Name: SingleEmenyWaveStageConfig
   m_EditorClassIdentifier: 
   <EnemySpawnCooldown>k__BackingField: 2
-  <TotalEnemyCount>k__BackingField: 3
+  <TotalEnemyCount>k__BackingField: 1
   <MinSpawnDistance>k__BackingField: 7
-  <MaxSpawnDistance>k__BackingField: 10
+  <MaxSpawnDistance>k__BackingField: 7
   _enemyItems:
   - <EnemyConfig>k__BackingField: {fileID: 11400000, guid: bd637aa912fb3234b9ee9ad477f95bb7,
       type: 2}

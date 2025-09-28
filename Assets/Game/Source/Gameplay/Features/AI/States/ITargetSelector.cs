@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Gameplay.EntitiesCore;
 using Game.Gameplay.Features.ApplyDamage;
+using Game.Gameplay.Features.MainHero;
 using Game.Gameplay.Features.TeamsFeatures;
 using Game.Utility.Conditions;
 using Game.Utility.Reactive;
@@ -13,7 +14,7 @@ namespace Game.Gameplay.Features.AI.States
     {
         Entity SelectTargetFrom(IEnumerable<Entity> targets);
     }
-
+    
     public class NearestDamageableTargetSelector : ITargetSelector
     {
         private Entity _source;

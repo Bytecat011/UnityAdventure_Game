@@ -107,7 +107,10 @@ namespace Game.Gameplay.Features.StagesFeature
         
         private void SpawnEnemy(EnemyItemConfig enemyItemConfig)
         {
-            var spawnPosition = RandomUtils.RandomPointInAnnulus(_mainHeroHolderService.MainHero.Transform.position, 2, 5);
+            var spawnPosition = RandomUtils.RandomPointInAnnulus(
+                _mainHeroHolderService.MainHero.Transform.position, 
+                _config.MinSpawnDistance,
+                _config.MaxSpawnDistance);
             var spawnedEnemy = _enemiesFactory.Create(
                 spawnPosition,
                 enemyItemConfig.EnemyConfig);

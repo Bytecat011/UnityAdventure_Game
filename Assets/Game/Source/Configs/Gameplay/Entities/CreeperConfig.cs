@@ -12,7 +12,7 @@ namespace Game.Configs.Gameplay.Entities
         [field: SerializeField, Min(0)] public float DeathProcessTime { get; private set; } = 2;
         [field: SerializeField, Min(0)] public float SpawnProcessTime { get; private set; } = 2;
         [field: SerializeField, Min(0)] public float AttackProcessTime { get; private set; } = 1.5f;
-        [field: SerializeField, Min(0)] public float AttackDelayTime { get; private set; } = 0.75f;
         [field: SerializeField, Min(0)] public float InstantAttackDamage { get; private set; } = 10;
+        [field: SerializeField, Min(0)] public float AttackDistance { get; private set; } = 1;
     }
 }
